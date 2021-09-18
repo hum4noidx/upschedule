@@ -1,7 +1,6 @@
 # 1208 BOT
 ## _Multifunctional Telegram Bot for School_
 
-[![Build Status](https://travis-ci.org/joemccann/dillinger.svg?branch=master)](https://travis-ci.org/joemccann/dillinger)
 
 ## Features
 
