@@ -12,6 +12,7 @@ class DBComm:
         user_id = user.id
         full_name = user.full_name
         args = (user_id, use, full_name)
+
         await conn.execute('INSERT INTO users (user_id, use, full_name, uses) VALUES ($1, $2, $3, $4) RETURNING id',
                            user_id, use, full_name, uses)
         await conn.close()
@@ -82,10 +83,14 @@ class DBAdmin:
     async def db_get_all_info():
         conn = await asyncpg.connect(host=DB_host, database=DB_name, user=DB_user, password=DB_pass,
                                      port=DB_port)
-        all_info = await conn.fetch('SELECT id, full_name FROM users ORDER BY id')
-        a = dict(all_info)
-        data = [f"{k}-{v}" for k, v in a.items()]
-        text = "\n".join(data)
+        all_info = await conn.fetch('SELECT id, full_name, uses, vip FROM users ORDER BY id')
+        top_text = ['ID  Имя  Использований VIP']
+        for info in all_info:
+            data = [f"{info[0]}|{info[1]}|{info[2]}|{info[3]}"]
+            textdata = '\n'.join(data)
+            top_text.append(textdata)
+        text = '\n'.join(top_text)
+        # TODO попробовать сделать вывод таблицы
         await conn.close()
         return text
 
@@ -101,8 +106,10 @@ class DBAdmin:
         conn = await asyncpg.connect(host=DB_host, database=DB_name, user=DB_user, password=DB_pass,
                                      port=DB_port)
         uid = int(info)
-        await conn.execute('UPDATE users SET vip = true WHERE user_id = $1', uid)
+        await conn.execute('UPDATE users SET vip = true WHERE id = $1', uid)
+        user_id = await conn.fetchrow('SELECT user_id FROM users WHERE id = $1', uid)
         await conn.close()
+        return user_id
 
     async def vips():
         conn = await asyncpg.connect(host=DB_host, database=DB_name, user=DB_user, password=DB_pass,
@@ -147,7 +154,8 @@ class DBGroup:
     async def create_note(note_id, note_text, note_owner, chat_id):
         conn = await asyncpg.connect(host=DB_host, database=DB_name, user=DB_user, password=DB_pass,
                                      port=DB_port)
-        await conn.execute('INSERT INTO notes (note_id, note_text, note_owner, chat_id) VALUES($1, $2, $3, $4)', note_id, note_text,
+        await conn.execute('INSERT INTO notes (note_id, note_text, note_owner, chat_id) VALUES($1, $2, $3, $4)',
+                           note_id, note_text,
                            note_owner, chat_id)
         await conn.close()
 

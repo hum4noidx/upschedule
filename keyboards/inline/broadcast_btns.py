@@ -3,7 +3,7 @@ from aiogram.utils.callback_data import CallbackData
 
 broadcast_class = CallbackData('smth', 'b_class')
 broadcast_prof = CallbackData('smth', 'b_prof')
-
+broadcast_math = CallbackData('math', 'b_math')
 broad_class = InlineKeyboardMarkup(
     inline_keyboard=[
         [
@@ -23,17 +23,20 @@ broad_prof = InlineKeyboardMarkup(
         [
             InlineKeyboardButton(text="Соцэконом", callback_data=broadcast_prof.new(b_prof="se")),
             InlineKeyboardButton(text="Биохим", callback_data=broadcast_prof.new(b_prof="bh")),
-        ],
-        [
-            InlineKeyboardButton(text="А", callback_data=broadcast_prof.new(b_prof="a")),
-            InlineKeyboardButton(text="Б", callback_data=broadcast_prof.new(b_prof="b")),
-        ],
-        [
-            InlineKeyboardButton(text="В", callback_data=broadcast_prof.new(b_prof="v"))
         ]
     ]
 )
-
+choose_math = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [
+            InlineKeyboardButton(text='Профиль', callback_data=broadcast_math.new(b_math='prof')),
+            InlineKeyboardButton(text='База', callback_data=broadcast_math.new(b_math='base')),
+        ],
+        [
+            InlineKeyboardButton(text="Назад", callback_data="cancel_to_class")
+        ]
+    ]
+)
 confirmation = InlineKeyboardMarkup(
     inline_keyboard=[
         [

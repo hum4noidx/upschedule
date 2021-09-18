@@ -75,8 +75,3 @@ async def create_note(message: types.Message):
 async def show_notes(message: types.Message):
     chat_id = int(message.chat.id)
     await message.answer(await DBGroup.show_notes(chat_id))
-
-
-@dp.poll_answer_handler()
-async def some_poll_answer_handler(poll_answer: types.PollAnswer):
-    print(poll_answer.user)

@@ -4,7 +4,7 @@ from asyncio import sleep
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 
-from keyboards.inline import broadcast_btns, admin_btns, nav_btns
+from keyboards.inline import broadcast_btns, nav_btns
 from keyboards.inline.broadcast_btns import broadcast_class, broadcast_prof
 from loader import dp, bot
 from states.states import Mailing
@@ -35,11 +35,7 @@ async def broad_class(call: types.CallbackQuery, callback_data: typing.Dict[str,
     async with state.proxy() as data:
         data['class'] = b_class = callback_data['b_class']
     print(b_class)
-    if b_class == "everyone":
-        await Mailing.Confirm.set()
-    else:
-        await Mailing.Prof.set()
-
+    await Mailing.Prof.set()
     m_id2 = await call.message.edit_text('Профиль/буква класса:\nВыбрать любое, если рассылка всем(о,костыль!)',
                                          reply_markup=broadcast_btns.broad_prof)
 
@@ -62,6 +58,11 @@ async def broad_class(call: types.CallbackQuery, callback_data: typing.Dict[str,
                                      f"Класс: <b>{b_class}</b>\n"
                                      f"Профиль/буква: <b>{b_prof}</b>", reply_markup=broadcast_btns.confirmation,
                                      parse_mode=types.ParseMode.HTML)
+
+
+# @dp.callback_query_handler(broadcast_prof.filter(), state=Mailing.Prof)
+# async def broad_class(call: types.CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
+#     await call.message.edit_text('Уровень математики')
 
 
 @dp.callback_query_handler(text="confirm", state=Mailing.Confirm)

@@ -1,11 +1,13 @@
 import typing
-from loader import dp
+
 from aiogram import types
 from aiogram.dispatcher import FSMContext
+
 from keyboards.inline import reg_btns
-from utils.db_api.db import DBComm
-from states.states import Register
 from keyboards.inline.reg_btns import register_class, register_profile, register_math
+from loader import dp
+from states.states import Register
+from utils.db_api.db import DBComm
 
 
 @dp.callback_query_handler(text="reg_cancel_to_class", state="*")
@@ -19,7 +21,7 @@ async def register(call: types.CallbackQuery):
     await Register.main.set()
     await call.answer()
     await call.message.edit_text("<b>Такс, это регистрация.</b>\nТут можно указать свой класс и букву, чтобы в "
-                                 "будущем не выбирать их.\nСтатус: WIP", reply_markup=reg_btns.register)
+                                 "будущем не выбирать их.", reply_markup=reg_btns.register)
     await call.answer()
 
 
@@ -31,6 +33,7 @@ async def reg_class(call: types.CallbackQuery):
     await call.answer()
 
 
+# TODO: Попробовать сделать регистрацию сначала
 @dp.callback_query_handler(register_class.filter(), state=Register.choose_class)
 async def reg_class_filter(call: types.CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
     callback = callback_data['reg_classes']

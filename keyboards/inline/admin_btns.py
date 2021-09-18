@@ -1,7 +1,8 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.callback_data import CallbackData
-from keyboards.inline.nav_btns import main_menu
 
+vip_schedule = CallbackData('schedule', 'vipday')
+presence_filter = CallbackData('user', 'ishere')
 main_admin_panel = InlineKeyboardMarkup(
     inline_keyboard=[
         [
@@ -13,15 +14,17 @@ main_admin_panel = InlineKeyboardMarkup(
             InlineKeyboardButton(text="Все пользователи", callback_data="admin_all_users")
         ],
         [
-            InlineKeyboardButton(text="Сегодня", callback_data="today_schedule"),
-            InlineKeyboardButton(text="Инфо по ID", callback_data="admin_info")
+            InlineKeyboardButton(text="Сегодня", callback_data=vip_schedule.new(vipday='today')),
+            InlineKeyboardButton(text="Завтра", callback_data=vip_schedule.new(vipday='tomorrow'))
         ]
     ]
 )
-cancel = InlineKeyboardMarkup(
-    inline_keyboard = [
+
+presence_btn = InlineKeyboardMarkup(
+    inline_keyboard=[
         [
-            InlineKeyboardButton(text="Назад", callback_data="vip_cancel")
+            InlineKeyboardButton(text='В школе', callback_data=presence_filter.new(ishere='here')),
+            InlineKeyboardButton(text='Не в школе', callback_data=presence_filter.new(ishere='not_here'))
         ]
     ]
 )

@@ -1,5 +1,6 @@
-from aiogram.types import BotCommandScopeDefault, BotCommandScopeChat
 from aiogram.types import BotCommand
+from aiogram.types import BotCommandScopeDefault, BotCommandScopeChat
+
 from utils.db_api.db import DBAdmin
 
 
@@ -8,15 +9,17 @@ async def set_default_commands(dp):
         BotCommand("start", "Запустить бота"),
         BotCommand("help", "Вывести справку"),
         BotCommand("support", "Написать создателю"),
-        BotCommand("discord", "Discord сервер")
+        BotCommand("discord", "Discord сервер"),
+        BotCommand("dice", "Бросить кубик")
     ]
 
     admin_commands = commands.copy()
-    admin_commands.append(BotCommand(command="broadcast", description="Рассылка сообщений"))
-    admin_commands.append(BotCommand(command="all", description="Посмотреть всех пользователей"))
     data = str(await DBAdmin.vips()).strip('[]')
-    await dp.bot.set_my_commands(commands=commands, scope=BotCommandScopeDefault())
-    await dp.bot.set_my_commands(
-        commands=admin_commands,
-        scope=BotCommandScopeChat(
-            chat_id=data))
+    try:
+        await dp.bot.set_my_commands(commands=commands, scope=BotCommandScopeDefault())
+        await dp.bot.set_my_commands(
+            commands=admin_commands,
+            scope=BotCommandScopeChat(
+                chat_id=data))
+    except:
+        Exception

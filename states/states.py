@@ -19,6 +19,7 @@ class Mailing(StatesGroup):
     People = State()
     Class = State()
     Prof = State()
+    Math = State()
     Confirm = State()
     Broadcast = State()
 

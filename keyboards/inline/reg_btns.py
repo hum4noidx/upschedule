@@ -4,28 +4,25 @@ from aiogram.utils.callback_data import CallbackData
 register_class = CallbackData('smth', 'reg_classes')
 register_profile = CallbackData('smth', 'reg_profile')
 register_math = CallbackData('smth', 'reg_math')
+
+cancel_btn = InlineKeyboardButton(text="Назад", callback_data="cancel")  # Возврат в главное меню
+cancel_class_btn = InlineKeyboardButton(text="Назад", callback_data="reg_cancel_to_class")  # Возврат к выбору класса
 register = InlineKeyboardMarkup(
     inline_keyboard=[
         [
             InlineKeyboardButton(text="Дальше", callback_data="reg.choose_class")
-        ],
-        [
-            InlineKeyboardButton(text="Назад", callback_data="cancel")
         ]
     ]
 )
+register.add(cancel_btn)
 select_classes = InlineKeyboardMarkup(
     inline_keyboard=[
         [
-            InlineKeyboardButton(text="9 класс", callback_data=register_class.new(reg_classes="reg_9")),
-            InlineKeyboardButton(text="10 класс", callback_data=register_class.new(reg_classes="reg_10"))
-        ],
-        [
-            InlineKeyboardButton(text="11 класс", callback_data=register_class.new(reg_classes="reg_11")),
-            InlineKeyboardButton(text="Назад", callback_data="cancel")
+            InlineKeyboardButton(text="11 класс", callback_data=register_class.new(reg_classes="reg_11"))
         ]
     ]
 )
+select_classes.add(cancel_btn)
 select_profiles = InlineKeyboardMarkup(
     inline_keyboard=[
         [
@@ -35,36 +32,19 @@ select_profiles = InlineKeyboardMarkup(
         [
             InlineKeyboardButton(text="Соцэконом", callback_data=register_profile.new(reg_profile="se")),
             InlineKeyboardButton(text="Биохим", callback_data=register_profile.new(reg_profile="bh")),
-        ],
-        [
-            InlineKeyboardButton(text="Назад", callback_data="reg_cancel_to_class")
         ]
     ]
 )
+select_profiles.add(cancel_class_btn)
 select_math = InlineKeyboardMarkup(
     inline_keyboard=[
         [
             InlineKeyboardButton(text='Профиль', callback_data=register_math.new(reg_math='prof')),
             InlineKeyboardButton(text='База', callback_data=register_math.new(reg_math='base'))
-        ],
-        [
-            InlineKeyboardButton(text="Назад", callback_data="reg_cancel_to_class")
         ]
     ]
 )
-select_letters = InlineKeyboardMarkup(
-    inline_keyboard=[
-        [
-            InlineKeyboardButton(text="А", callback_data=register_profile.new(reg_profile="a")),
-            InlineKeyboardButton(text="Б", callback_data=register_profile.new(reg_profile="b")),
-        ],
-        [
-            InlineKeyboardButton(text="В", callback_data=register_profile.new(reg_profile="v")),
-            InlineKeyboardButton(text="Назад", callback_data="reg_cancel_to_class")
-        ]
-
-    ]
-)
+select_math.add(cancel_class_btn)
 main_menu = InlineKeyboardMarkup(
     inline_keyboard=[
         [

@@ -3,7 +3,7 @@ from asyncio import sleep
 from aiogram import types
 from aiogram.types import InlineQuery, InputTextMessageContent, InlineQueryResultArticle
 from loader import bot
-from keyboards.inline import nav_btns
+from keyboards.inline import nav_btns, admin_btns
 from loader import dp
 from utils.db_api.db import DBAdmin
 from utils.set_bot_commands import set_default_commands
@@ -18,7 +18,11 @@ async def user(call: types.CallbackQuery):
 @dp.message_handler(commands=['i'], is_vip=True, state="*")
 async def get_user_info(message: types.message):
     info = message.get_args()
-    await message.answer(await DBAdmin.db_get_info(info), reply_markup=nav_btns.cancel_today)
+    #TODO: сделать все в одном сообщении, с возможностью возврата назад
+    try:
+        await message.answer(await DBAdmin.db_get_info(info), reply_markup=nav_btns.cancel_today)
+    except:
+        await message.answer('Необходимо указать ID')
 
 
 # @dp.inline_handler()
@@ -56,11 +60,19 @@ async def reset_state(message: types.message):
 async def add_vip(message: types.message):
     info = message.get_args()
     await set_default_commands(dp)
-    await message.answer("Пользователь успешно добавлен", await DBAdmin.db_add_vip(info))
+    a = await DBAdmin.db_add_vip(info)
+    await message.answer("Пользователь успешно добавлен")
+    await bot.send_message(chat_id=a['user_id'], text='Ваш статус обновлен', reply_markup=admin_btns.main_admin_panel)
 
 
 @dp.message_handler(is_vip=False, commands="vip", state="*")
 async def add_vip(message: types.message):
     await message.answer("Не твой уровень, дорогой")
 
+
+@dp.message_handler(commands='ban',state="*")
+async def ban_user(message: types.message):
+    until_date = message.get_args()
+    await dp.bot.ban_chat_member(chat_id=message.chat.id, user_id=message.reply_to_message.from_user.id, until_date=until_date, revoke_messages=False)
+    await message.answer(f'Пользователь заблокирован')
 # TODO: Сделать отдельную панель для учителей с проверкой из бд

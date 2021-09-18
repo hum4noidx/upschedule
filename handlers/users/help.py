@@ -18,3 +18,8 @@ async def bot_help(message: types.Message):
 @dp.message_handler(commands="discord", state="*")
 async def discord(message: types.message):
     await message.answer('https://discord.gg/4ySJkst')
+
+
+@dp.message_handler(commands="support", state="*")
+async def bot_support(call: types.CallbackQuery):
+    await call.answer("Связь с администратором - t.me/hum4noidx")
