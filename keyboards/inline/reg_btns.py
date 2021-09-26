@@ -18,12 +18,13 @@ register.add(cancel_btn)
 select_classes = InlineKeyboardMarkup(
     inline_keyboard=[
         [
+            InlineKeyboardButton(text="10 класс", callback_data=register_class.new(reg_classes="reg_10")),
             InlineKeyboardButton(text="11 класс", callback_data=register_class.new(reg_classes="reg_11"))
         ]
     ]
 )
 select_classes.add(cancel_btn)
-select_profiles = InlineKeyboardMarkup(
+select_profiles11 = InlineKeyboardMarkup(
     inline_keyboard=[
         [
             InlineKeyboardButton(text="Физмат", callback_data=register_profile.new(reg_profile="fm")),
@@ -35,7 +36,20 @@ select_profiles = InlineKeyboardMarkup(
         ]
     ]
 )
-select_profiles.add(cancel_class_btn)
+select_profiles11.add(cancel_class_btn)
+select_profiles10 = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [
+            InlineKeyboardButton(text="Медицинский", callback_data=register_profile.new(reg_profile="med")),
+            InlineKeyboardButton(text="Медиа", callback_data=register_profile.new(reg_profile="media"))],
+        [
+            InlineKeyboardButton(text="Академический", callback_data=register_profile.new(reg_profile="akadem")),
+            InlineKeyboardButton(text="Инженеры/IT", callback_data=register_profile.new(reg_profile="it"))
+        ],
+
+    ]
+)
+select_profiles10.add(cancel_class_btn)
 select_math = InlineKeyboardMarkup(
     inline_keyboard=[
         [

@@ -3,11 +3,12 @@ import typing
 from aiogram import types
 from aiogram.dispatcher import FSMContext
 
+from handlers.users.reg10 import register_math10
 from keyboards.inline import reg_btns
 from keyboards.inline.reg_btns import register_class, register_profile, register_math
 from loader import dp
 from states.states import Register
-from utils.db_api.db import DBComm
+from utils.db_api.db import DBMain, DBRegistration
 
 
 @dp.callback_query_handler(text="reg_cancel_to_class", state="*")
@@ -41,24 +42,28 @@ async def reg_class_filter(call: types.CallbackQuery, callback_data: typing.Dict
     for c in callback:
         if c.isdigit():
             info = info + c
-    await DBComm.reg_class(info)
+    await DBRegistration.reg_class(info)
     await Register.choose_profile.set()
-    classes = int(info)
-    if classes > 9:
-        await call.message.edit_text("Выбери профиль", reply_markup=reg_btns.select_profiles)
+    async with state.proxy() as data:
+        data['class'] = classes = int(info)
+    if classes == 11:
+        await call.message.edit_text("Выбери профиль", reply_markup=reg_btns.select_profiles11)
     else:
-        await call.message.edit_text("Выбери букву", reply_markup=reg_btns.select_letters)
+        await call.message.edit_text("Выбери профиль", reply_markup=reg_btns.select_profiles10)
     await call.answer()
 
 
 @dp.callback_query_handler(register_profile.filter(), state=Register.choose_profile)
 async def reg_class_filter(call: types.CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
     async with state.proxy() as data:
-        data['profile'] = callback_data['reg_profile']
+        profile = data['profile'] = callback_data['reg_profile']
+        user_class = data['class']
     await Register.choose_math.set()
-    # await call.message.edit_text("Круто, ты зарегистрирован.", reply_markup=reg_btns.main_menu)
-    await call.message.edit_text('Выбери уровень математики', reply_markup=reg_btns.select_math)
-    await call.answer()
+    if data['class'] == 11:
+        await call.message.edit_text('Выбери уровень математики', reply_markup=reg_btns.select_math)
+        await call.answer()
+    elif data['class'] == 10:
+        await register_math10(call, profile)
 
 
 @dp.callback_query_handler(register_math.filter(), state=Register.choose_math)
@@ -66,6 +71,10 @@ async def register_math(call: types.CallbackQuery, callback_data: typing.Dict[st
     math = callback_data['reg_math']
     async with state.proxy() as data:
         profile = data['profile']
-    await DBComm.reg_profile(profile, math)
-    await call.message.edit_text("Круто, ты зарегистрирован.", reply_markup=reg_btns.main_menu)
-    await state.reset_state()
+        user_class = data['class']
+    if user_class == 11:
+        await DBRegistration.reg_profile(profile, math)
+        await call.message.edit_text("Круто, ты зарегистрирован.", reply_markup=reg_btns.main_menu)
+        await state.reset_state()
+    else:
+        await register_math10(call, profile)

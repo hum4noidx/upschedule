@@ -17,4 +17,4 @@ async def spam(message: types.Message):
     while x > 7:
         await message.answer(f"{x} - 7 = {x - 7}")
         x -= 7
-        await sleep(0.1)
+        await sleep(0.3)

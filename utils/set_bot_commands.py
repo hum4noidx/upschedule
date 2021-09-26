@@ -13,13 +13,13 @@ async def set_default_commands(dp):
         BotCommand("dice", "Бросить кубик")
     ]
 
-    admin_commands = commands.copy()
-    data = str(await DBAdmin.vips()).strip('[]')
+    # admin_commands = commands.copy()
+    # data = str(await DBAdmin.vips()).strip('[]')
     try:
         await dp.bot.set_my_commands(commands=commands, scope=BotCommandScopeDefault())
-        await dp.bot.set_my_commands(
-            commands=admin_commands,
-            scope=BotCommandScopeChat(
-                chat_id=data))
+        # await dp.bot.set_my_commands(
+        #     commands=admin_commands,
+        #     scope=BotCommandScopeChat(
+        #         chat_id=data))
     except:
         Exception

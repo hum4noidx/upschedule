@@ -1,2 +1,2 @@
 from . import admin_panel
-from . import broadcast
+from . import new_broadcast

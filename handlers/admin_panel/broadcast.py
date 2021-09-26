@@ -5,13 +5,13 @@ from aiogram import types
 from aiogram.dispatcher import FSMContext
 
 from keyboards.inline import broadcast_btns, nav_btns
-from keyboards.inline.broadcast_btns import broadcast_class, broadcast_prof
+from keyboards.inline.broadcast_btns import broadcast_class, broadcast_prof11
 from loader import dp, bot
 from states.states import Mailing
 from utils.db_api.db import DBAdmin
 
 
-@dp.callback_query_handler(is_vip=True, text="admin_broadcast")
+@dp.callback_query_handler(is_vip=True, text="broadcast")
 async def mailing(call: types.CallbackQuery, state: FSMContext):
     m_id = await call.message.edit_text('Пришли текст рассылки', reply_markup=nav_btns.cancel_today)
     async with state.proxy() as data:
@@ -34,7 +34,6 @@ async def enter_text(message: types.message, state: FSMContext):
 async def broad_class(call: types.CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
     async with state.proxy() as data:
         data['class'] = b_class = callback_data['b_class']
-    print(b_class)
     await Mailing.Prof.set()
     m_id2 = await call.message.edit_text('Профиль/буква класса:\nВыбрать любое, если рассылка всем(о,костыль!)',
                                          reply_markup=broadcast_btns.broad_prof)
@@ -43,7 +42,7 @@ async def broad_class(call: types.CallbackQuery, callback_data: typing.Dict[str,
 # TODO: Починить костыль
 
 
-@dp.callback_query_handler(broadcast_prof.filter(), state=Mailing.Prof)
+@dp.callback_query_handler(broadcast_prof11.filter(), state=Mailing.Prof)
 async def broad_class(call: types.CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
     async with state.proxy() as data:
         data['prof'] = callback_data['b_prof']
@@ -60,7 +59,7 @@ async def broad_class(call: types.CallbackQuery, callback_data: typing.Dict[str,
                                      parse_mode=types.ParseMode.HTML)
 
 
-# @dp.callback_query_handler(broadcast_prof.filter(), state=Mailing.Prof)
+# @dp.callback_query_handler(broadcast_prof11.filter(), state=Mailing.Prof)
 # async def broad_class(call: types.CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
 #     await call.message.edit_text('Уровень математики')
 

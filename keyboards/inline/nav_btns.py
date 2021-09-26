@@ -1,7 +1,7 @@
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.callback_data import CallbackData
 
-from keyboards.inline.admin_btns import vip_schedule
+from keyboards.inline.vip_btns import vip_schedule
 
 classes = CallbackData('class', 'classes')
 prof = CallbackData('profile', 'profile')
@@ -50,7 +50,7 @@ main_menu = InlineKeyboardMarkup(
 choose_class = InlineKeyboardMarkup(
     inline_keyboard=[
         [
-            # InlineKeyboardButton(text="10 класс", callback_data=classes.new(classes="10")),
+            InlineKeyboardButton(text="10 класс", callback_data=classes.new(classes="10")),
             InlineKeyboardButton(text="11 класс", callback_data=classes.new(classes="11"))
         ],
         [
@@ -58,7 +58,7 @@ choose_class = InlineKeyboardMarkup(
         ]
     ]
 )
-choose_profile = InlineKeyboardMarkup(
+choose_profile11 = InlineKeyboardMarkup(
     inline_keyboard=[
         [
             InlineKeyboardButton(text="Физмат", callback_data=prof.new(profile="fm")),
@@ -66,6 +66,20 @@ choose_profile = InlineKeyboardMarkup(
         [
             InlineKeyboardButton(text="Соцэконом", callback_data=prof.new(profile="se")),
             InlineKeyboardButton(text="Биохим", callback_data=prof.new(profile="bh"))
+        ],
+        [
+            InlineKeyboardButton(text="Назад", callback_data="cancel_to_class")
+        ]
+    ]
+)
+choose_profile10 = InlineKeyboardMarkup(
+    inline_keyboard=[
+        [
+            InlineKeyboardButton(text="Медицинский", callback_data=prof.new(profile="med")),
+            InlineKeyboardButton(text="Медиа", callback_data=prof.new(profile="media"))],
+        [
+            InlineKeyboardButton(text="Академический", callback_data=prof.new(profile="akadem")),
+            InlineKeyboardButton(text="Инженеры/IT", callback_data=prof.new(profile="it"))
         ],
         [
             InlineKeyboardButton(text="Назад", callback_data="cancel_to_class")

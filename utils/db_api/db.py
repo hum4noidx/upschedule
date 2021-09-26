@@ -4,19 +4,7 @@ from aiogram import types
 from data.config import DB_host, DB_name, DB_user, DB_pass, DB_port
 
 
-class DBComm:
-    async def db_new_user(use=True, uses=1):
-        conn = await asyncpg.connect(host=DB_host, database=DB_name, user=DB_user, password=DB_pass,
-                                     port=DB_port)
-        user = types.User.get_current()
-        user_id = user.id
-        full_name = user.full_name
-        args = (user_id, use, full_name)
-
-        await conn.execute('INSERT INTO users (user_id, use, full_name, uses) VALUES ($1, $2, $3, $4) RETURNING id',
-                           user_id, use, full_name, uses)
-        await conn.close()
-
+class DBMain:
     async def db_user_exists():
         conn = await asyncpg.connect(host=DB_host, database=DB_name, user=DB_user, password=DB_pass,
                                      port=DB_port)
@@ -27,29 +15,22 @@ class DBComm:
         await conn.close()
         return bool(result)
 
+    async def db_new_user(uses=1):
+        conn = await asyncpg.connect(host=DB_host, database=DB_name, user=DB_user, password=DB_pass,
+                                     port=DB_port)
+        user = types.User.get_current()
+        user_id = user.id
+        full_name = user.full_name
+        await conn.execute('INSERT INTO users (user_id, full_name, uses) VALUES ($1, $2, $3) RETURNING id',
+                           user_id, full_name, uses)
+        await conn.close()
+
     async def db_usage():
         conn = await asyncpg.connect(host=DB_host, database=DB_name, user=DB_user, password=DB_pass,
                                      port=DB_port)
         user = types.User.get_current()
         user_id = user.id
         await conn.execute('UPDATE users  SET uses = uses + 1 WHERE user_id = $1', user_id)
-        await conn.close()
-
-    async def reg_class(info):
-        conn = await asyncpg.connect(host=DB_host, database=DB_name, user=DB_user, password=DB_pass,
-                                     port=DB_port)
-        user = types.User.get_current()
-        user_id = user.id
-        num = int(info)
-        await conn.execute('UPDATE users  SET user_class = $2 WHERE user_id = $1', user_id, num)
-        await conn.close()
-
-    async def reg_profile(info, math):
-        conn = await asyncpg.connect(host=DB_host, database=DB_name, user=DB_user, password=DB_pass,
-                                     port=DB_port)
-        user = types.User.get_current()
-        user_id = user.id
-        await conn.execute('UPDATE users  SET prof = $2, math = $3 WHERE user_id = $1', user_id, info, math)
         await conn.close()
 
     async def get_schedule():
@@ -94,14 +75,6 @@ class DBAdmin:
         await conn.close()
         return text
 
-    async def get_user_ids():
-        conn = await asyncpg.connect(host=DB_host, database=DB_name, user=DB_user, password=DB_pass,
-                                     port=DB_port)
-        ids = await conn.fetch('SELECT user_id from users')
-        data = ([id['user_id'] for id in ids])
-        await conn.close()
-        return data
-
     async def db_add_vip(info):
         conn = await asyncpg.connect(host=DB_host, database=DB_name, user=DB_user, password=DB_pass,
                                      port=DB_port)
@@ -119,15 +92,32 @@ class DBAdmin:
         await conn.close()
         return data
 
-    async def user_profile_broadcast(b_class, b_prof):
+    async def admins():
         conn = await asyncpg.connect(host=DB_host, database=DB_name, user=DB_user, password=DB_pass,
                                      port=DB_port)
-        _class = int(b_class)
-        users = await conn.fetch('SELECT user_id FROM users where prof = $1 AND user_class = $2', b_prof, _class)
-        data = ([user['user_id'] for user in users])
-        print(data)
+        admins = await conn.fetch('SELECT user_id FROM users WHERE admin = True')
+        data = ([admin['user_id'] for admin in admins])
         await conn.close()
         return data
+
+
+class DBRegistration:
+    async def reg_class(info):
+        conn = await asyncpg.connect(host=DB_host, database=DB_name, user=DB_user, password=DB_pass,
+                                     port=DB_port)
+        user = types.User.get_current()
+        user_id = user.id
+        num = int(info)
+        await conn.execute('UPDATE users  SET user_class = $2 WHERE user_id = $1', user_id, num)
+        await conn.close()
+
+    async def reg_profile(info, math):
+        conn = await asyncpg.connect(host=DB_host, database=DB_name, user=DB_user, password=DB_pass,
+                                     port=DB_port)
+        user = types.User.get_current()
+        user_id = user.id
+        await conn.execute('UPDATE users  SET prof = $2, math = $3 WHERE user_id = $1', user_id, info, math)
+        await conn.close()
 
 
 class DBGroup:
@@ -151,6 +141,7 @@ class DBGroup:
         await conn.execute('UPDATE groups SET group_name = $1 WHERE chat_id = $2', group_name, chat_id)
         await conn.close()
 
+    # Notes
     async def create_note(note_id, note_text, note_owner, chat_id):
         conn = await asyncpg.connect(host=DB_host, database=DB_name, user=DB_user, password=DB_pass,
                                      port=DB_port)
@@ -168,3 +159,32 @@ class DBGroup:
         text = "\n".join(data)
         await conn.close()
         return text
+
+
+class DBBroadcast:
+    async def user_class_broadcast(b_class):  # Получаем список пользователей одного класса
+        conn = await asyncpg.connect(host=DB_host, database=DB_name, user=DB_user, password=DB_pass,
+                                     port=DB_port)
+        data = await conn.fetch('SELECT user_id FROM users WHERE user_class = $1', b_class)
+        users = ([user['user_id'] for user in data])
+        await conn.close()
+        return users
+
+    async def user_profile_broadcast(b_class, b_prof):
+        conn = await asyncpg.connect(host=DB_host, database=DB_name, user=DB_user, password=DB_pass,
+                                     port=DB_port)
+        _class = int(b_class)
+        users = await conn.fetch('SELECT user_id FROM users where prof = $1 AND user_class = $2', b_prof, _class)
+        data = ([user['user_id'] for user in users])
+        await conn.close()
+        return data
+
+    async def get_user_ids():
+        conn = await asyncpg.connect(host=DB_host, database=DB_name, user=DB_user, password=DB_pass,
+                                     port=DB_port)
+        ids = await conn.fetch('SELECT user_id from users')
+        data = ([id['user_id'] for id in ids])
+        await conn.close()
+        return data
+
+
