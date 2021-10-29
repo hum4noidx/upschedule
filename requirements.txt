@@ -1,3 +1,4 @@
-aiogram~=2.15
-environs~=8.0.0
-asyncpg~=0.23.0
+aiogram
+aioredis
+asyncpg
+aiogram_broadcaster
