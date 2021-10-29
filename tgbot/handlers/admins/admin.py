@@ -2,7 +2,7 @@ from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
 
-from tgbot.handlers.users.user import main_menu
+from tgbot.handlers.users.user_main import main_menu
 from tgbot.keyboards import nav_btns
 from tgbot.services.repository import Repo
 
@@ -18,9 +18,6 @@ async def admin_get_user_list(c: CallbackQuery, repo: Repo):
     await c.message.edit_text(await repo.list_all_users(), reply_markup=nav_btns.back_to_mm)
 
 
-async def menu_access_level(c: CallbackQuery, repo: Repo):
-    users = await repo.repo_access_level()
-    print(users)
 
 
 async def get_user_info(message: types.message, repo: Repo):

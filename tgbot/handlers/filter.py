@@ -3,7 +3,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
 
 from tgbot.handlers.admins.admin import main_menu_admin
-from tgbot.handlers.users.user import main_menu
+from tgbot.handlers.users.user_main import main_menu
 from tgbot.handlers.vips.vip import main_menu_vip
 
 

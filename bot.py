@@ -11,7 +11,7 @@ from tgbot.filters.role import RoleFilter, AdminFilter, VIPFilter
 from tgbot.handlers.admins.admin import register_admin
 from tgbot.handlers.admins.broadcaster import register_broadcast
 from tgbot.handlers.filter import register_level_filter
-from tgbot.handlers.users.user import register_user
+from tgbot.handlers.users.user_main import register_user
 from tgbot.handlers.users.users_register import register_user_reg
 from tgbot.handlers.vips.vip import register_vip
 from tgbot.middlewares.db import DbMiddleware

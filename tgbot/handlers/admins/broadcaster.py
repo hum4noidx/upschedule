@@ -34,7 +34,6 @@ async def start_broadcast(msg: Message, state: FSMContext):
     # collecting data
     users = None
     user_data = await state.get_data()
-    print(user_data)
     user_class = user_data['broadcast_class']
     user_profile = user_data['broadcast_profile']
     user_math = user_data['broadcast_math']
@@ -49,16 +48,14 @@ async def start_broadcast(msg: Message, state: FSMContext):
         user_class = int(user_class)
         if user_profile == 'class_all':
             users = await repo.broadcast_get_class_ids(int(user_class))
-            print('Берем список айдишников для одного класса')
+            # Берем список айдишников для одного класса
         elif user_profile != 'class_all' and user_math == 'all':
             users = await repo.broadcast_get_profile_ids(user_profile)
-            print('Берем айдишники для класса и профиля, математика не учитывается')
+            # Берем айдишники для класса и профиля, математика не учитывается
         elif user_profile != 'prof_all' and user_math != 'all':
             users = await repo.broadcast_get_first_ids(user_class, user_profile, user_math)
-            print('Берем айдишники для класса, профиля и математики. Полноценная рассылка, получается..')
-            print(users)
+            # Берем айдишники для класса, профиля и математики. Полноценная рассылка, получается..
 
-    print(users)
     await state.finish()
     await MessageBroadcaster(users, msg).run()
 
@@ -70,7 +67,6 @@ async def broadcast_choose_class(c: CallbackQuery):
 
 async def broadcast_choose_profile(c: CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
     await state.update_data(broadcast_class=callback_data['classes'])
-    print(callback_data['classes'])
     if callback_data['classes'] == '11':
         await c.message.edit_text('Профиль:', reply_markup=choose_btns.broadcast_choose_profile_11)
         await Broadcast.choose_math.set()
@@ -87,7 +83,6 @@ async def broadcast_choose_profile(c: CallbackQuery, callback_data: typing.Dict[
 async def broadcast_choose_math(c: CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
     await state.update_data(broadcast_profile=callback_data['profile'])
     data = await state.get_data()
-    print(callback_data['profile'])
     if data['broadcast_class'] == '11' and callback_data['profile'] != 'fm':
         await Broadcast.confirm.set()
         await c.message.edit_text('Уровень математики', reply_markup=choose_btns.broadcast_choose_math)

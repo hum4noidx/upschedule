@@ -6,7 +6,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.handler import ctx_data
 from aiogram.types import CallbackQuery
 
-from tgbot.handlers.users.user import main_menu
+from tgbot.handlers.users.user_main import main_menu
 from tgbot.keyboards import nav_btns, choose_btns
 from tgbot.keyboards.choose_btns import classes, profile, math
 from tgbot.states.states import Register
