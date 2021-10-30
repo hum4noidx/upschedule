@@ -102,11 +102,15 @@ async def user_schedule_choose_math(c: CallbackQuery, state: FSMContext, callbac
 async def make_schedule(c: CallbackQuery, state: FSMContext, user_class, user_profile, user_math, user_date):
     await c.answer()
     await user_usage(c.from_user.id)
+    if user_class == '11':
+        markup = make_buttons()
+    else:
+        markup = nav_btns.back_to_mm
     try:
         await c.message.edit_text(
             f"{days.get(user_class).get(user_profile).get(user_math).get(user_date).get('description')}\n\n"
             f"{days.get(user_class).get(user_profile).get(user_math).get(user_date).get('classes')}",
-            parse_mode='HTML', reply_markup=make_buttons())
+            parse_mode='HTML', reply_markup=markup)
         await state.set_state('other_schedule')
     except aiogram.exceptions.MessageNotModified:
         pass
@@ -116,20 +120,17 @@ async def user_schedule_recent(c: CallbackQuery, callback_data: typing.Dict[str,
     data = ctx_data.get()
     repo = data.get("repo")
     udata = await repo.get_schedule(c.from_user.id)
-    try:
-        user_class = str(udata['user_class'])
-        user_profile = str(udata['user_prof'])
-        user_math = str(udata['user_math'])
-        if callback_data['day'] == 'today':
-            user_date = str(datetime.date.today().isoweekday())
-        else:
-            user_date = datetime.date.today() + datetime.timedelta(days=1)
-            user_date = str(user_date.isoweekday())
-        await state.update_data(user_class=user_class, user_profile=user_profile, user_math=user_math,
-                                user_date=user_date)
-        await make_schedule(c, state, user_class, user_profile, user_math, user_date)
-    except:
-        await c.answer('Ошибка!\nВернитесь в главное меню')
+    user_class = str(udata['user_class'])
+    user_profile = str(udata['user_prof'])
+    user_math = str(udata['user_math'])
+    if callback_data['day'] == 'today':
+        user_date = str(datetime.date.today().isoweekday())
+    else:
+        user_date = datetime.date.today() + datetime.timedelta(days=1)
+        user_date = str(user_date.isoweekday())
+    await state.update_data(user_class=user_class, user_profile=user_profile, user_math=user_math,
+                            user_date=user_date)
+    await make_schedule(c, state, user_class, user_profile, user_math, user_date)
 
 
 async def other_schedule11(c: CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):

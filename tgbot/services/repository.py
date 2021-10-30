@@ -2,12 +2,11 @@ from typing import List
 
 
 class Repo:
-    """Db abstraction layer"""
 
     def __init__(self, conn):
         self.conn = conn
 
-    # users
+    # ______________________ USERS ______________________
     async def add_user(self, user_id, full_name):
         """Store user in DB, ignore duplicates"""
         await self.conn.execute(
@@ -21,7 +20,7 @@ class Repo:
             'UPDATE users_new SET (uses, last_seen) = (uses + 1, localtimestamp(0)::timestamp) WHERE user_id = $1',
             user_id)
 
-    # registration
+    # ______________________ REGISTRATION ______________________
     async def register_user(self, user_class, user_prof, user_math, userid):
         await self.conn.execute(
             'UPDATE users_new SET (user_class, user_prof, user_math) = ($1, $2, $3) WHERE user_id =$4',
@@ -33,7 +32,7 @@ class Repo:
             'SELECT user_class, user_prof, user_math FROM users_new WHERE user_id = $1', userid)
         return dict(user_profile)
 
-    # roles
+    # ______________________ ROLES ______________________
     async def get_admins(self) -> List[int]:
         admins = await self.conn.fetch(
             'SELECT user_id FROM users_new WHERE admin = True'
@@ -48,7 +47,7 @@ class Repo:
         data = ([vip['user_id'] for vip in vips])
         return data
 
-    # admin
+    # ______________________ ADMIN PANEL ______________________
     async def list_all_users(self):
         all_info = await self.conn.fetch('Select id, full_name, uses, vip From users_new Order by id')
         top_text = ['ID  Имя  Использований VIP']
@@ -76,6 +75,11 @@ class Repo:
                 f'Admin - <code>{in1["admin"]}</code>\n'
                 f'Last seen - <code>{in1["last_seen"]}</code>')
         return text
+
+    async def add_vip_user(self, user_id):
+        await self.conn.execute('UPDATE users SET vip = true WHERE id = $1 and vip = False', user_id)
+        status = await self.conn.fetchrow('SELECT vip FROM users_new Where id = $1', user_id)
+        return status['vip']
 
     # broadcast
     async def get_user_ids(self):  # getting ALL id's to broadcast

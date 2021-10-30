@@ -21,7 +21,7 @@ async def user_end_registration(c: CallbackQuery, state: FSMContext, callback_da
     user_class = int(user_data.get('user_class'))
     user_prof = user_data.get('user_profile')
     userid = c.from_user.id
-    if user_data.get('user_math') == 'Null':
+    if user_data.get('user_math') == 'None':
         user_math = user_data.get('user_math')
     else:
         user_math = callback_data['math']
@@ -61,9 +61,13 @@ async def user_register_math(c: CallbackQuery, callback_data: typing.Dict[str, s
     await state.update_data(user_profile=callback_data['profile'])
     data = await state.get_data()
     if data['user_class'] == '11':
-        await c.message.edit_text('Выбери уровень математики', reply_markup=choose_btns.user_choose_math)
+        if callback_data['profile'] == 'fm':
+            callback_data['math'] = 'prof'
+            await user_end_registration(c,state,callback_data)
+        else:
+            await c.message.edit_text('Выбери уровень математики', reply_markup=choose_btns.user_choose_math)
     else:
-        await state.update_data(user_math='Null')
+        await state.update_data(user_math='None')
         await user_end_registration(c, state, callback_data)
     await Register.confirm.set()
     await c.answer()
