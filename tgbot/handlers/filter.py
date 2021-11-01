@@ -8,17 +8,17 @@ from tgbot.handlers.vips.vip import main_menu_vip
 
 
 async def level_filter_admin(c: CallbackQuery, state: FSMContext):
-    await state.reset_state()
+    await state.reset_state(with_data=True)
     await main_menu_admin(c, state)
 
 
 async def level_filter_vip(c: CallbackQuery, state: FSMContext):
-    await state.reset_state()
+    await state.reset_state(with_data=True)
     await main_menu_vip(c, state)
 
 
 async def level_filter_base(c: CallbackQuery, state: FSMContext):
-    await state.reset_state()
+    await state.reset_state(with_data=True)
     await main_menu(c, state)
 
 

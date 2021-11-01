@@ -39,7 +39,6 @@ user_choose_profile_10 = InlineKeyboardMarkup(row_width=2).add(
 )
 broadcast_choose_profile_10 = InlineKeyboardMarkup(row_width=2).add(profile_med, profile_media, profile_akadem,
                                                                     profile_it, profile_all, cancel_butt)
-
 # choosing math level
 math_prof = InlineKeyboardButton(text='Профиль', callback_data=math.new(math='prof'))
 math_base = InlineKeyboardButton(text='База', callback_data=math.new(math='base'))
@@ -47,12 +46,15 @@ math_all = InlineKeyboardButton(text='Всему профилю', callback_data=
 user_choose_math = InlineKeyboardMarkup(row_width=2).add(math_prof, math_base, cancel_butt)
 broadcast_choose_math = InlineKeyboardMarkup(row_width=2).add(math_prof, math_base, math_all, cancel_butt)
 
+# choosing day
 day_1 = InlineKeyboardButton(text="Понедельник", callback_data=week.new(day="1"))
 day_2 = InlineKeyboardButton(text="Вторник", callback_data=week.new(day="2"))
 day_3 = InlineKeyboardButton(text="Среда", callback_data=week.new(day="3"))
 day_4 = InlineKeyboardButton(text="Четверг", callback_data=week.new(day="4"))
 day_5 = InlineKeyboardButton(text="Пятница", callback_data=week.new(day="5"))
 user_choose_day = InlineKeyboardMarkup(row_width=2).add(day_1, day_2, day_3, day_4, day_5, cancel_butt)
+
+
 # other_schedule buttons
 profile_fm_other = InlineKeyboardButton(text='Физмат', callback_data=profile_other.new(profile='fm', math='prof'))
 profile_gum_other = InlineKeyboardButton(text="Гуманитарий(П)",

@@ -63,7 +63,7 @@ async def user_register_math(c: CallbackQuery, callback_data: typing.Dict[str, s
     if data['user_class'] == '11':
         if callback_data['profile'] == 'fm':
             callback_data['math'] = 'prof'
-            await user_end_registration(c,state,callback_data)
+            await user_end_registration(c, state, callback_data)
         else:
             await c.message.edit_text('Выбери уровень математики', reply_markup=choose_btns.user_choose_math)
     else:

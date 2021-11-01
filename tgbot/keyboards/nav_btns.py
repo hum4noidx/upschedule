@@ -30,3 +30,6 @@ admin_main_menu = InlineKeyboardMarkup(row_width=2).add(
 go_register = InlineKeyboardButton('Поехали', callback_data='reg.class')
 cancel_register = InlineKeyboardButton('Назад', callback_data='go_main')
 user_confirm_register = InlineKeyboardMarkup(row_width=2).add(go_register, cancel_register)
+
+donut_link = InlineKeyboardButton(text='Ссылка на сбор', url='https://www.tinkoff.ru/cf/AJ5VRaWJQjq')
+donut = InlineKeyboardMarkup(row_width=1).add(donut_link)
