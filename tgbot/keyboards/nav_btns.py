@@ -26,6 +26,9 @@ admin_button_all_users = InlineKeyboardButton(text="USERS", callback_data="admin
 admin_main_menu = InlineKeyboardMarkup(row_width=2).add(
     schedule_button, register_button).row(admin_button_broadcast, admin_button_all_users).row(
     today_button, tomorrow_button)
+today_users = InlineKeyboardButton(text="Сегодня", callback_data='admin_today_all_users')
+admin_users_list = InlineKeyboardMarkup(row_width=1).add(today_users, cancel_butt)
+
 # Register navigation buttons
 go_register = InlineKeyboardButton('Поехали', callback_data='reg.class')
 cancel_register = InlineKeyboardButton('Назад', callback_data='go_main')

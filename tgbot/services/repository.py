@@ -60,6 +60,18 @@ class Repo:
         text = text.replace('True', 'VIP')
         return text
 
+    async def list_all_today_users(self):
+        today_users = await self.conn.fetch(
+            'SELECT id, full_name, uses, last_seen From users_new WHERE last_seen::date=current_date '
+            'Order by id')
+        top_text = ['ID Name Uses Last seen']
+        for user in today_users:
+            data = [f"{user[0]}|{user[1]}|{user[2]}|{user[3]}"]
+            textpath = '\n'.join(data)
+            top_text.append(textpath)
+        text = '\n'.join(top_text)
+        return text
+
     async def user_info(self, info):
         uid = int(info)
         rer = await self.conn.fetchrow('SELECT * FROM users_new WHERE id = $1', uid)
