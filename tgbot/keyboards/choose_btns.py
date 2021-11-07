@@ -3,7 +3,8 @@ from aiogram.utils.callback_data import CallbackData
 
 classes = CallbackData('class', 'classes')
 profile = CallbackData('profile', 'profile')
-profile_other = CallbackData('profile', 'profile', 'math')
+profile_other = CallbackData('profile', 'profile', 'math', 'day')
+profile_other_day = CallbackData('day', 'day')
 math = CallbackData('math', 'math')
 week = CallbackData('day', 'day')
 # \____________________ CANCEL BUTTONS ____________________/
@@ -54,25 +55,28 @@ day_4 = InlineKeyboardButton(text="Четверг", callback_data=week.new(day="
 day_5 = InlineKeyboardButton(text="Пятница", callback_data=week.new(day="5"))
 user_choose_day = InlineKeyboardMarkup(row_width=2).add(day_1, day_2, day_3, day_4, day_5, cancel_butt)
 
-
 # other_schedule buttons
-profile_fm_other = InlineKeyboardButton(text='Физмат', callback_data=profile_other.new(profile='fm', math='prof'))
+profile_fm_other = InlineKeyboardButton(text='Физмат',
+                                        callback_data=profile_other.new(profile='fm', math='prof', day='None'))
 profile_gum_other = InlineKeyboardButton(text="Гуманитарий(П)",
-                                         callback_data=profile_other.new(profile="gum", math='prof'))
+                                         callback_data=profile_other.new(profile="gum", math='prof', day='None'))
 profile_gum_base_other = InlineKeyboardButton(text="Гуманитарий(Б)",
-                                              callback_data=profile_other.new(profile="gum", math='base'))
+                                              callback_data=profile_other.new(profile="gum", math='base', day='None'))
 profile_se_other = InlineKeyboardButton(text="Соцэконом(П)",
-                                        callback_data=profile_other.new(profile="se", math='prof'))
+                                        callback_data=profile_other.new(profile="se", math='prof', day='None'))
 profile_se_base = InlineKeyboardButton(text="Соцэконом(Б)",
-                                       callback_data=profile_other.new(profile="se", math='base'))
+                                       callback_data=profile_other.new(profile="se", math='base', day='None'))
 profile_bh_other = InlineKeyboardButton(text="Биохим(П)",
-                                        callback_data=profile_other.new(profile="bh", math='prof'))
+                                        callback_data=profile_other.new(profile="bh", math='prof', day='None'))
 profile_bh_base = InlineKeyboardButton(text="Биохим(Б)",
-                                       callback_data=profile_other.new(profile="bh", math='base'))
+                                       callback_data=profile_other.new(profile="bh", math='base', day='None'))
+prev_day = InlineKeyboardButton(text="День-1", callback_data=profile_other.new(profile='None', math='None', day='prev'))
+next_day = InlineKeyboardButton(text="День+1", callback_data=profile_other.new(profile='None', math='None', day='next'))
 
 
 def make_buttons():
     markup_1 = InlineKeyboardMarkup(row_width=1)
     markup_1.row(profile_fm_other).row(profile_gum_other, profile_gum_base_other).row(
-        profile_se_other, profile_se_base).row(profile_bh_other, profile_bh_base).row(cancel_butt)
+        profile_se_other, profile_se_base).row(profile_bh_other, profile_bh_base).row(prev_day, next_day).row(
+        cancel_butt)
     return markup_1

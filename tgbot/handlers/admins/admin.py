@@ -1,7 +1,6 @@
 from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
-from tgbot.handlers.users.user_main import main_menu
 from tgbot.keyboards import nav_btns
 from tgbot.services.repository import Repo
 

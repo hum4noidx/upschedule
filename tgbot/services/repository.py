@@ -11,7 +11,7 @@ class Repo:
         """Store user in DB, ignore duplicates"""
         await self.conn.execute(
             'INSERT INTO users_new (user_id, full_name) VALUES ($1, $2)'
-            'ON CONFLICT (user_id) DO UPDATE SET uses= users_new.uses+1',
+            'ON CONFLICT (user_id) DO UPDATE SET uses=users_new.uses+1',
             user_id, full_name)
         return
 
@@ -115,3 +115,5 @@ class Repo:
         ids = await self.conn.fetch('Select user_id From users_new Where user_prof = $1', user_profile)
         data = ([uid['user_id'] for uid in ids])
         return data
+
+#  ======================== SCHEDULE DATABASE ATTEMPTS ========================

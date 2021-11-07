@@ -9,7 +9,7 @@ from aiogram.dispatcher.handler import ctx_data
 from aiogram.types import Message, CallbackQuery
 
 from tgbot.keyboards import nav_btns, choose_btns
-from tgbot.keyboards.choose_btns import classes, profile, math, week, make_buttons, profile_other
+from tgbot.keyboards.choose_btns import classes, profile, math, week, make_buttons, profile_other, profile_other_day
 from tgbot.keyboards.nav_btns import recent_schedule
 from tgbot.schedule import days
 from tgbot.services.repository import Repo
@@ -51,19 +51,23 @@ async def make_schedule(c: CallbackQuery, state: FSMContext, user_class,
     await user_usage(c.from_user.id)
     if user_class == '11':
         markup = make_buttons()
+        await state.update_data(user_class=user_class, user_profile=user_profile, user_math=user_math,
+                                user_date=user_date)
     else:
         markup = nav_btns.back_to_mm
     try:  # собираем расписание по переданным данным
+
         await c.message.edit_text(
             f"{days.get(user_class).get(user_profile).get(user_math).get(user_date).get('description')}\n\n"
-            f"{days.get(user_class).get(user_profile).get(user_math).get(user_date).get('classes')}",
+            f"{days.get(user_class).get(user_profile).get(user_math).get(user_date).get('classes')}"
+            ,
             parse_mode='HTML', reply_markup=markup)
         await state.set_state('other_schedule')
     except aiogram.exceptions.MessageNotModified:
         pass
 
 
-async def get_schedule(c: CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext, *args):
+async def get_schedule(c: CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
     user_data = await state.get_data()
     user_class = user_data['user_class']
     user_profile = user_data['user_profile']
@@ -78,7 +82,7 @@ async def user_schedule_choose_day(c: CallbackQuery, state: FSMContext, callback
     await c.message.edit_text('Выбери день недели', reply_markup=choose_btns.user_choose_day)
 
 
-async def user_schedule_choose_class(c: CallbackQuery, state: FSMContext):
+async def user_schedule_choose_class(c: CallbackQuery):
     await c.answer()
     await c.message.edit_text('Выбери класс', reply_markup=choose_btns.user_choose_class)
     await Schedule.choose_profile.set()
@@ -112,8 +116,7 @@ async def user_schedule_choose_math(c: CallbackQuery, state: FSMContext, callbac
         await user_schedule_choose_day(c, state, callback_data)
 
 
-async def user_schedule_recent_handler(c: CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext,
-                                       *kwargs):
+async def user_schedule_recent_handler(c: CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
     data = ctx_data.get()
     repo = data.get("repo")
     user_data = await repo.get_schedule(c.from_user.id)
@@ -132,14 +135,31 @@ async def user_schedule_recent_handler(c: CallbackQuery, callback_data: typing.D
 
 async def other_schedule_11(c: CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
     data = await state.get_data()
+
     try:
         user_class = str(data['user_class'])
-        user_date = str(data['user_date'])
-        user_profile = callback_data['profile']
-        user_math = callback_data['math']
+        user_date = int(data['user_date'])
+        if callback_data['profile'] and callback_data['math'] != 'None':
+            user_profile = callback_data['profile']
+            user_math = callback_data['math']
+        else:
+            user_profile = str(data['user_profile'])
+            user_math = str(data['user_math'])
+        if callback_data['day']:
+            date = callback_data['day']
+            if date == 'prev':
+                user_date = user_date - 1
+            elif date == 'next':
+                user_date = user_date + 1
+        if user_date == 8:
+            user_date -= 7
+        elif user_date == 0:
+            user_date += 7
+        user_date = str(user_date)
         await c.answer()
+
         await make_schedule(c, state, user_class, user_profile, user_math, user_date)
-    except:
+    except KeyError:
         await c.answer(
             'Ошибка!\nСкорее всего, это произошло из-за того, что вы долго оставались в этом меню.\n'
             'Вернитесь в главное меню', show_alert=True)
@@ -161,3 +181,5 @@ def register_user(dp: Dispatcher):
     dp.register_callback_query_handler(user_schedule_recent_handler, recent_schedule.filter(), state='*')
     dp.register_callback_query_handler(other_schedule_11, profile_other.filter(), state='*')
     dp.register_message_handler(donut_info, commands='donut', state='*')
+
+# TODO: переписать названия функций на нормальный язык
