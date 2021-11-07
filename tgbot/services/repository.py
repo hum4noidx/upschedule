@@ -116,4 +116,20 @@ class Repo:
         data = ([uid['user_id'] for uid in ids])
         return data
 
-#  ======================== SCHEDULE DATABASE ATTEMPTS ========================
+    #  ======================== SCHEDULE DATABASE ATTEMPTS ========================
+
+    async def experimental_schedule(self):
+        schedule = await self.conn.fetchrow(
+            'SELECT lesson_1, lesson_2, lesson_3, lesson_4, lesson_5, lesson_6, lesson_7, lesson_8, lesson_9 '
+            'From timetable Where day=2')
+        text1 = []
+        for lesson in schedule:
+            data = [f"{lesson}"]
+            data = '\n'.join(data)
+            if data == 'None':
+                break
+            text1.append(data)
+
+        text2 = '\n'.join(text1)
+        print(text2)
+        return text2

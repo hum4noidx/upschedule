@@ -171,15 +171,21 @@ async def donut_info(message: Message):
                          'Если он действительно полезный - поддержи его работу.', reply_markup=nav_btns.donut)
 
 
+async def test_schedule(message: Message, repo: Repo):
+    await message.answer(await repo.experimental_schedule(), parse_mode='HTML')
+
+
 def register_user(dp: Dispatcher):
     dp.register_message_handler(user_start, commands=['start'], state='*')
     dp.register_callback_query_handler(user_schedule_choose_class, text='schedule', state='*')
-    dp.register_callback_query_handler(user_schedule_choose_profile, classes.filter(), state=Schedule.choose_profile)
+    dp.register_callback_query_handler(user_schedule_choose_profile, classes.filter(),
+                                       state=Schedule.choose_profile)
     dp.register_callback_query_handler(user_schedule_choose_math, profile.filter(), state=Schedule.choose_math)
     dp.register_callback_query_handler(user_schedule_choose_day, math.filter(), state=Schedule.choose_day)
     dp.register_callback_query_handler(get_schedule, week.filter(), state=Schedule.choose_day)
     dp.register_callback_query_handler(user_schedule_recent_handler, recent_schedule.filter(), state='*')
     dp.register_callback_query_handler(other_schedule_11, profile_other.filter(), state='*')
     dp.register_message_handler(donut_info, commands='donut', state='*')
+    dp.register_message_handler(test_schedule, commands='test', state='*')
 
 # TODO: переписать названия функций на нормальный язык
