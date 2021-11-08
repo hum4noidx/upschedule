@@ -70,8 +70,8 @@ profile_bh_other = InlineKeyboardButton(text="Биохим(П)",
                                         callback_data=profile_other.new(profile="bh", math='prof', day='None'))
 profile_bh_base = InlineKeyboardButton(text="Биохим(Б)",
                                        callback_data=profile_other.new(profile="bh", math='base', day='None'))
-prev_day = InlineKeyboardButton(text="День-1", callback_data=profile_other.new(profile='None', math='None', day='prev'))
-next_day = InlineKeyboardButton(text="День+1", callback_data=profile_other.new(profile='None', math='None', day='next'))
+prev_day = InlineKeyboardButton(text="⬅️", callback_data=profile_other.new(profile='None', math='None', day='prev'))
+next_day = InlineKeyboardButton(text="➡️", callback_data=profile_other.new(profile='None', math='None', day='next'))
 
 
 def make_buttons():
