@@ -120,8 +120,7 @@ class Repo:
 
     async def experimental_schedule(self):
         schedule = await self.conn.fetchrow(
-            'SELECT lesson_1, lesson_2, lesson_3, lesson_4, lesson_5, lesson_6, lesson_7, lesson_8, lesson_9 '
-            'From timetable Where day=2')
+            'SELECT l_1, l_2, l_3, l_4, l_5, l_6, l_7, l_8, l_9 From timetable Where day=2')
         text1 = []
         for lesson in schedule:
             data = [f"{lesson}"]
@@ -129,7 +128,5 @@ class Repo:
             if data == 'None':
                 break
             text1.append(data)
-
         text2 = '\n'.join(text1)
-        print(text2)
         return text2
