@@ -1,14 +1,33 @@
+import datetime
+
 from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
+from aiogram.dispatcher.handler import ctx_data
 from aiogram.types import CallbackQuery
 from tgbot.keyboards import nav_btns
 from tgbot.services.repository import Repo
+
+opts = {"hey": ('Привет', 'Здравствуйте', 'Доброе утро', 'Добрый день', 'Добрый вечер', 'Доброй ночи')}
 
 
 async def main_menu_admin(c: CallbackQuery, state: FSMContext):
     await state.reset_state()
     await c.answer()
-    await c.message.edit_text('Главное меню|Админ👑', reply_markup=nav_btns.admin_main_menu)
+    data = ctx_data.get()
+    repo = data.get("repo")
+    name = await repo.get_user_name(c.from_user.id)
+    now = datetime.datetime.now()
+    now += datetime.timedelta(hours=1)
+    if 4 < now.hour <= 12:
+        greet = opts["hey"][2]
+    if 12 < now.hour <= 16:
+        greet = opts["hey"][3]
+    if 16 < now.hour <= 24:
+        greet = opts["hey"][4]
+    if 0 <= now.hour <= 4:
+        greet = opts["hey"][5]
+
+    await c.message.edit_text(f'{greet}, {name}.\nГлавное меню|Админ👑', reply_markup=nav_btns.admin_main_menu)
 
 
 async def get_user_list(c: CallbackQuery, repo: Repo):

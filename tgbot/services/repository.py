@@ -93,6 +93,10 @@ class Repo:
         status = await self.conn.fetchrow('SELECT vip FROM users_new Where id = $1', user_id)
         return status['vip']
 
+    async def get_user_name(self, id):
+        name = await self.conn.fetchrow('SELECT full_name FROM users_new WHERE  user_id=$1', id)
+        return name['full_name']
+
     # broadcast
     async def get_user_ids(self):  # getting ALL id's to broadcast
         ids = await self.conn.fetch('SELECT user_id from users_new')
