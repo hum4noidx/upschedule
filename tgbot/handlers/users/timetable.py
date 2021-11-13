@@ -89,7 +89,7 @@ async def timetable_choose_math(c: CallbackQuery, state: FSMContext, callback_da
 async def timetable_nearest(c: CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
     data = ctx_data.get()
     repo = data.get("repo")
-    user_data = await repo.timetable_prepare_data(c.from_user.id)
+    user_data = await repo.get_timetable(c.from_user.id)
     user_class = str(user_data['user_class'])
     user_profile = str(user_data['user_prof'])
     user_math = str(user_data['user_math'])
@@ -118,7 +118,7 @@ async def timetable_other(c: CallbackQuery, callback_data: typing.Dict[str, str]
             date = callback_data['day']
             if date == 'prev':
                 user_date = user_date - 1
-            else:
+            elif date == 'next':
                 user_date = user_date + 1
         if user_date == 8:
             user_date -= 7
