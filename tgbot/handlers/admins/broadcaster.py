@@ -7,6 +7,7 @@ from aiogram.dispatcher.handler import ctx_data
 from aiogram.types import CallbackQuery, Message
 from aiogram_broadcaster import MessageBroadcaster
 
+from tgbot.handlers.admins.admin import main_menu_admin
 from tgbot.keyboards import choose_btns, nav_btns
 from tgbot.keyboards.choose_btns import classes, profile, math
 from tgbot.states.states import Broadcast
@@ -28,7 +29,7 @@ async def broadcast_get_message(c: CallbackQuery):
     await c.message.edit_text('Введите текст для рассылки:', reply_markup=nav_btns.back_to_mm)
 
 
-async def start_broadcast(msg: Message, state: FSMContext):
+async def broadcast_start(msg: Message, state: FSMContext):
     data = ctx_data.get()
     repo = data.get("repo")
     # collecting data
@@ -54,10 +55,11 @@ async def start_broadcast(msg: Message, state: FSMContext):
             # Берем айдишники для класса и профиля, математика не учитывается
         elif user_profile != 'prof_all' and user_math != 'all':
             users = await repo.broadcast_get_first_ids(user_class, user_profile, user_math)
-            # Берем айдишники для класса, профиля и математики. Полноценная рассылка, получается..
+            # Берем айдишники для класса, профиля и математики
 
     await state.finish()
     await MessageBroadcaster(users, msg).run()
+    await msg.edit_text('Рассылка успешна', reply_markup=nav_btns.back_to_mm)
 
 
 async def broadcast_choose_class(c: CallbackQuery):
@@ -72,7 +74,6 @@ async def broadcast_choose_profile(c: CallbackQuery, callback_data: typing.Dict[
         await Broadcast.choose_math.set()
     elif callback_data['classes'] == 'classes_all':
         await state.update_data(broadcast_profile=None, broadcast_math=None)
-        print('Рассылка для всех')
         await Broadcast.final.set()
         await broadcast_get_message(c)
     elif callback_data['classes'] == '10':
@@ -108,7 +109,7 @@ def register_broadcast(dp: Dispatcher):
     dp.register_callback_query_handler(broadcast_choose_math, profile.filter(), state=Broadcast.choose_math)
     dp.register_callback_query_handler(broadcast_data_collect, math.filter(), state=Broadcast.confirm)
     dp.register_callback_query_handler(broadcast_get_message, state=Broadcast.confirm)
-    dp.register_message_handler(start_broadcast, state=Broadcast.final,
+    dp.register_message_handler(broadcast_start, state=Broadcast.final,
                                 content_types=types.ContentTypes.ANY)
 
 # TODO: мб сделать планировщик рассылки?..

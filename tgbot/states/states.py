@@ -9,7 +9,7 @@ class Register(StatesGroup):
     confirm = State()
 
 
-class Schedule(StatesGroup):
+class Timetable(StatesGroup):
     choose_profile = State()
     choose_math = State()
     choose_day = State()

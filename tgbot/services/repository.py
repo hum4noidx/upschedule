@@ -27,7 +27,7 @@ class Repo:
             user_class, user_prof, user_math, userid)
 
     # user_data for recent_schedule
-    async def get_schedule(self, userid):
+    async def get_timetable(self, userid):
         user_profile = await self.conn.fetchrow(
             'SELECT user_class, user_prof, user_math FROM users_new WHERE user_id = $1', userid)
         return dict(user_profile)
