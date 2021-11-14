@@ -1,5 +1,4 @@
 import typing
-from asyncio import sleep
 
 from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
@@ -7,7 +6,6 @@ from aiogram.dispatcher.handler import ctx_data
 from aiogram.types import CallbackQuery, Message
 from aiogram_broadcaster import MessageBroadcaster
 
-from tgbot.handlers.admins.admin import main_menu_admin
 from tgbot.keyboards import choose_btns, nav_btns
 from tgbot.keyboards.choose_btns import classes, profile, math
 from tgbot.states.states import Broadcast
