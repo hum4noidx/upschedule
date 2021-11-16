@@ -33,7 +33,7 @@ async def greeting(user_id):
 async def main_menu_admin(c: CallbackQuery, state: FSMContext):
     await state.reset_state()
     await c.answer()
-    await c.message.edit_text(f'{await greeting(c.from_user.id)}.\nГлавное меню|Админ👑', reply_markup=nav_btns.admin_main_menu)
+    await c.message.edit_text(f'{await greeting(c.from_user.id)}.\nГлавное меню|Админ 👑', reply_markup=nav_btns.admin_main_menu)
 
 
 async def get_user_list(c: CallbackQuery, repo: Repo):
