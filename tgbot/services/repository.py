@@ -20,6 +20,22 @@ class Repo:
             'UPDATE users_new SET (uses, last_seen) = (uses + 1, localtimestamp(0)::timestamp) WHERE user_id = $1',
             user_id)
 
+    async def show_user_info(self, user_id):
+        user_data = dict(await self.conn.fetchrow('Select full_name, uses, user_class, user_math, user_prof, vip '
+                                                  'from users_new Where user_id = $1', user_id))
+        msg = (f"Имя - {user_data['full_name']}\n"
+               f"Жмякал на кнопки - {user_data['uses']} раз\n"
+               f"Класс - {user_data['user_class']}\n"
+               f"Профиль - {user_data['user_prof']}\n"
+               f"Математика - {user_data['user_math']}\n"
+               f"VIP - {user_data['vip']}")
+        message = msg.replace('prof', 'Профиль').replace('base', 'База').replace('fm', 'Физмат').replace(
+            'bh', 'Биохим').replace('se', 'Соцэконом').replace('gum', 'Гуманитарий')
+        return message
+
+    async def user_change_name(self, user_id, name):
+        await self.conn.execute('Update users_new Set full_name = $1 Where user_id = $2', name, user_id)
+
     # ______________________ REGISTRATION ______________________
     async def register_user(self, user_class, user_prof, user_math, userid):
         await self.conn.execute(

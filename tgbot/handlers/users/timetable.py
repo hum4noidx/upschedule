@@ -19,7 +19,6 @@ from tgbot.states.states import Timetable
 async def timetable_make(c: CallbackQuery, state: FSMContext, user_class,
                          user_profile, user_math, user_date):
     await c.answer()
-    await user_usage(c.from_user.id)
     if user_class == '11':
         markup = make_buttons()
         await state.update_data(user_class=user_class, user_profile=user_profile, user_math=user_math,
@@ -33,6 +32,7 @@ async def timetable_make(c: CallbackQuery, state: FSMContext, user_class,
             f"{days.get(user_class).get(user_profile).get(user_math).get(user_date).get('classes')}",
             parse_mode='HTML', reply_markup=markup)
         await state.set_state('other_schedule')
+        await user_usage(c.from_user.id)
     except aiogram.exceptions.MessageNotModified:
         pass
 

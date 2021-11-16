@@ -11,12 +11,10 @@ from tgbot.services.repository import Repo
 opts = {"hey": ('Привет', 'Здравствуйте', 'Доброе утро', 'Добрый день', 'Добрый вечер', 'Доброй ночи')}
 
 
-async def main_menu_admin(c: CallbackQuery, state: FSMContext):
-    await state.reset_state()
-    await c.answer()
+async def greeting(user_id):
     data = ctx_data.get()
     repo = data.get("repo")
-    name = await repo.get_user_name(c.from_user.id)
+    name = await repo.get_user_name(user_id)
     now = datetime.datetime.now()
     now += datetime.timedelta(hours=1)
     if 4 < now.hour <= 12:
@@ -28,7 +26,14 @@ async def main_menu_admin(c: CallbackQuery, state: FSMContext):
     if 0 <= now.hour <= 4:
         greet = opts["hey"][5]
 
-    await c.message.edit_text(f'{greet}, {name}.\nГлавное меню|Админ👑', reply_markup=nav_btns.admin_main_menu)
+    text = f'{greet}, {name}'
+    return text
+
+
+async def main_menu_admin(c: CallbackQuery, state: FSMContext):
+    await state.reset_state()
+    await c.answer()
+    await c.message.edit_text(f'{await greeting(c.from_user.id)}.\nГлавное меню|Админ👑', reply_markup=nav_btns.admin_main_menu)
 
 
 async def get_user_list(c: CallbackQuery, repo: Repo):
