@@ -17,8 +17,8 @@ class Repo:
 
     async def schedule_user_usage(self, user_id):
         await self.conn.execute(
-            'UPDATE users_new SET (uses, last_seen) = (uses + 1, localtimestamp(0)::timestamp) WHERE user_id = $1',
-            user_id)
+            'UPDATE users_new SET (uses, last_seen) = (uses + 1, localtimestamp(0)::timestamp) '
+            'WHERE user_id = $1', user_id)
 
     async def show_user_info(self, user_id):
         user_data = dict(await self.conn.fetchrow('Select full_name, uses, user_class, user_math, user_prof, vip '
@@ -40,12 +40,14 @@ class Repo:
     async def register_user(self, user_class, user_prof, user_math, userid):
         await self.conn.execute(
             'UPDATE users_new SET (user_class, user_prof, user_math) = ($1, $2, $3) WHERE user_id =$4',
-            user_class, user_prof, user_math, userid)
+            user_class, user_prof, user_math, userid
+        )
 
     # user_data for recent_schedule
     async def get_timetable(self, userid):
         user_profile = await self.conn.fetchrow(
-            'SELECT user_class, user_prof, user_math FROM users_new WHERE user_id = $1', userid)
+            'SELECT user_class, user_prof, user_math FROM users_new WHERE user_id = $1', userid
+        )
         return dict(user_profile)
 
     # ______________________ ROLES ______________________
@@ -65,7 +67,9 @@ class Repo:
 
     # ______________________ ADMIN PANEL ______________________
     async def list_all_users(self):
-        all_info = await self.conn.fetch('Select id, full_name, uses, vip From users_new Order by id')
+        all_info = await self.conn.fetch(
+            'Select id, full_name, uses, vip From users_new Order by id'
+        )
         top_text = ['ID  Имя  Использований VIP']
         for info in all_info:
             data = [f"{info[0]}|{info[1]}|{info[2]}|{info[3]}"]
@@ -79,7 +83,8 @@ class Repo:
     async def list_all_today_users(self):
         today_users = await self.conn.fetch(
             'SELECT id, full_name, uses, last_seen From users_new WHERE last_seen::date=current_date '
-            'Order by id')
+            'Order by last_seen'
+        )
         top_text = ['ID Name Uses Last seen']
         for user in today_users:
             data = [f"{user[0]}|{user[1]}|{user[2]}|{user[3]}"]
@@ -90,49 +95,66 @@ class Repo:
 
     async def user_info(self, info):
         uid = int(info)
-        rer = await self.conn.fetchrow('SELECT * FROM users_new WHERE id = $1', uid)
-        in1 = dict(rer)
-        text = (f'ID - <code>{in1["id"]}</code>\n'
-                f'User_ID - <code>{in1["user_id"]}</code>\n'
-                f'Имя - <code>{in1["full_name"]}</code>\n'
-                f'Количество использований - <code>{in1["uses"]}</code>\n'
-                f'Класс пользователя - <code>{in1["user_class"]}</code>\n'
-                f'Профиль пользователя - <code>{in1["user_prof"]}</code>\n'
-                f'Математика - <code>{in1["user_math"]}</code>\n'
-                f'VIP - <code>{in1["vip"]}</code>\n'
-                f'Admin - <code>{in1["admin"]}</code>\n'
-                f'Last seen - <code>{in1["last_seen"]}</code>')
+        user_info = dict(await self.conn.fetchrow(
+            'SELECT * FROM users_new WHERE id = $1', uid
+        ))
+        text = (f'ID - <code>{user_info["id"]}</code>\n'
+                f'User_ID - <code>{user_info["user_id"]}</code>\n'
+                f'Имя - <code>{user_info["full_name"]}</code>\n'
+                f'Количество использований - <code>{user_info["uses"]}</code>\n'
+                f'Класс пользователя - <code>{user_info["user_class"]}</code>\n'
+                f'Профиль пользователя - <code>{user_info["user_prof"]}</code>\n'
+                f'Математика - <code>{user_info["user_math"]}</code>\n'
+                f'VIP - <code>{user_info["vip"]}</code>\n'
+                f'Admin - <code>{user_info["admin"]}</code>\n'
+                f'Last seen - <code>{user_info["last_seen"]}</code>')
         return text
 
     async def add_vip_user(self, user_id):
-        await self.conn.execute('UPDATE users SET vip = true WHERE id = $1 and vip = False', user_id)
+        await self.conn.execute(
+            'UPDATE users SET vip = true WHERE id = $1 and vip = False', user_id
+        )
         status = await self.conn.fetchrow('SELECT vip FROM users_new Where id = $1', user_id)
         return status['vip']
 
-    async def get_user_name(self, id):
-        name = await self.conn.fetchrow('SELECT full_name FROM users_new WHERE  user_id=$1', id)
+    async def get_user_name(self, user_id):
+        name = await self.conn.fetchrow(
+            'SELECT full_name FROM users_new WHERE  user_id=$1', user_id
+        )
         return name['full_name']
 
-    # broadcast
+    async def admin_switch(self, user_id):
+        await self.conn.execute('Update users_new Set admin = CASE When '
+                                'admin = True Then (admin = False) ELSE (admin = True) END Where user_id = $1',
+                                user_id)
+        # broadcast
+
     async def get_user_ids(self):  # getting ALL id's to broadcast
-        ids = await self.conn.fetch('SELECT user_id from users_new')
+        ids = await self.conn.fetch(
+            'SELECT user_id from users_new'
+        )
         data = ([uid['user_id'] for uid in ids])
         return data
 
     async def broadcast_get_first_ids(self, user_class, user_profile, user_math):
         ids = await self.conn.fetch(
             'Select user_id From users_new Where user_class = $1 And user_prof = $2 And user_math = $3',
-            user_class, user_profile, user_math)
+            user_class, user_profile, user_math
+        )
         data = ([uid['user_id'] for uid in ids])
         return data
 
     async def broadcast_get_class_ids(self, user_class):
-        ids = await self.conn.fetch('Select user_id From users_new Where user_class = $1', user_class)
+        ids = await self.conn.fetch(
+            'Select user_id From users_new Where user_class = $1', user_class
+        )
         data = ([uid['user_id'] for uid in ids])
         return data
 
     async def broadcast_get_profile_ids(self, user_profile):
-        ids = await self.conn.fetch('Select user_id From users_new Where user_prof = $1', user_profile)
+        ids = await self.conn.fetch(
+            'Select user_id From users_new Where user_prof = $1', user_profile
+        )
         data = ([uid['user_id'] for uid in ids])
         return data
 

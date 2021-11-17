@@ -3,7 +3,8 @@ import datetime
 from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.handler import ctx_data
-from aiogram.types import CallbackQuery
+from aiogram.types import CallbackQuery, Message
+
 
 from tgbot.keyboards import nav_btns
 from tgbot.services.repository import Repo
@@ -33,7 +34,8 @@ async def greeting(user_id):
 async def main_menu_admin(c: CallbackQuery, state: FSMContext):
     await state.reset_state()
     await c.answer()
-    await c.message.edit_text(f'{await greeting(c.from_user.id)}.\nГлавное меню|Админ 👑', reply_markup=nav_btns.admin_main_menu)
+    await c.message.edit_text(f'{await greeting(c.from_user.id)}.\nГлавное меню|Админ 👑',
+                              reply_markup=nav_btns.admin_main_menu)
 
 
 async def get_user_list(c: CallbackQuery, repo: Repo):
@@ -53,9 +55,15 @@ async def get_user_info(message: types.message, repo: Repo):
         await message.answer('Ошибка')
 
 
-async def add_vip_user(message: types.message, repo: Repo):
-    info = message.get_args()
-    await message.answer(f"Статус обновлен. Текущий статус - {await repo.add_vip_user(int(info))}")
+async def add_vip_user(m: Message, repo: Repo):
+    info = m.get_args()
+    await m.answer(f"Статус обновлен. Текущий статус - {await repo.add_vip_user(int(info))}")
+
+
+async def admin_panel_switch(m: Message, repo: Repo):
+    await repo.admin_switch(int(m.from_user.id))
+    await m.delete()
+    await m.answer(f'<a href="tg://user?id={m.from_user.id}">Успешно</a>', parse_mode='HTML')
 
 
 def register_admin(dp: Dispatcher):
@@ -64,3 +72,4 @@ def register_admin(dp: Dispatcher):
     dp.register_message_handler(get_user_info, commands=['i'], state='*', is_admin=True)
     dp.register_message_handler(add_vip_user, commands=['vip'], state='*', is_admin=True)
     dp.register_callback_query_handler(get_today_user_list, text=['admin_today_all_users'], state='*', is_admin=True)
+    dp.register_message_handler(admin_panel_switch, commands='a', commands_prefix='!', state='*')
