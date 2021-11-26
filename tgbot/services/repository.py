@@ -124,9 +124,7 @@ class Repo:
         return name['full_name']
 
     async def admin_switch(self, user_id):
-        await self.conn.execute('Update users_new Set admin = CASE When '
-                                'admin = True Then (admin = False) ELSE (admin = True) END Where user_id = $1',
-                                user_id)
+        await self.conn.executemany('IF users_new.admin = True THEN UPDATE users_new SET admin = False', user_id)
         # broadcast
 
     async def get_user_ids(self):  # getting ALL id's to broadcast

@@ -75,7 +75,7 @@ next_day = InlineKeyboardButton(text="🔜", callback_data=profile_other.new(pro
 
 
 def make_buttons():
-    markup_1 = InlineKeyboardMarkup(row_width=1)
+    markup_1 = InlineKeyboardMarkup(resize_keyboard=True,row_width=1)
     markup_1.row(profile_fm_other).row(profile_gum_other, profile_gum_base_other).row(
         profile_se_other, profile_se_base).row(profile_bh_other, profile_bh_base).row(prev_day, next_day).row(
         cancel_butt)
