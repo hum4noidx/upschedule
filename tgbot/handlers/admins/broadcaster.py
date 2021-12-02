@@ -23,13 +23,16 @@ from tgbot.states.states import Broadcast
 # 9. ask for confirmation and do broadcast
 
 
-async def broadcast_get_message(c: CallbackQuery):
-    await c.message.edit_text('Введите текст для рассылки:', reply_markup=nav_btns.back_to_mm)
+async def broadcast_get_message(c: CallbackQuery, state: FSMContext):
+    await c.message.edit_text('✏️ Введите текст для рассылки:', reply_markup=nav_btns.back_to_mm)
+    await state.update_data(m_id=c.message.message_id)
 
 
 async def broadcast_start(msg: Message, state: FSMContext):
     data = ctx_data.get()
     repo = data.get("repo")
+    m_id = await state.get_data()
+    await msg.bot.delete_message(msg.chat.id, m_id['m_id'])
     # collecting data
     users = None
     user_data = await state.get_data()
@@ -57,11 +60,11 @@ async def broadcast_start(msg: Message, state: FSMContext):
 
     await state.finish()
     await MessageBroadcaster(users, msg).run()
-    await msg.edit_text('Рассылка успешна', reply_markup=nav_btns.back_to_mm)
+    await msg.answer('📨 Рассылка успешна', reply_markup=nav_btns.back_to_mm)
 
 
 async def broadcast_choose_class(c: CallbackQuery):
-    await c.message.edit_text('Получатели рассылки:', reply_markup=choose_btns.broadcast_choose_class)
+    await c.message.edit_text('📃 Получатели рассылки:', reply_markup=choose_btns.broadcast_choose_class)
     await Broadcast.choose_profile.set()
 
 
@@ -73,7 +76,7 @@ async def broadcast_choose_profile(c: CallbackQuery, callback_data: typing.Dict[
     elif callback_data['classes'] == 'classes_all':
         await state.update_data(broadcast_profile=None, broadcast_math=None)
         await Broadcast.final.set()
-        await broadcast_get_message(c)
+        await broadcast_get_message(c, state)
     elif callback_data['classes'] == '10':
         await Broadcast.choose_math.set()
         await c.message.edit_text('Профиль:', reply_markup=choose_btns.broadcast_choose_profile_10)
@@ -91,13 +94,13 @@ async def broadcast_choose_math(c: CallbackQuery, callback_data: typing.Dict[str
         else:
             await state.update_data(broadcast_math=None)
         await Broadcast.final.set()
-        await broadcast_get_message(c)
+        await broadcast_get_message(c, state)
 
 
 async def broadcast_data_collect(c: CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
     await state.update_data(broadcast_math=callback_data['math'])
     await Broadcast.final.set()
-    await broadcast_get_message(c)
+    await broadcast_get_message(c, state)
 
 
 def register_broadcast(dp: Dispatcher):
