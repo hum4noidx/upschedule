@@ -26,7 +26,6 @@ async def timetable_make(c: CallbackQuery, state: FSMContext, user_class,
     else:
         markup = nav_btns.back_to_mm
     try:  # собираем расписание по переданным данным
-
         await c.message.edit_text(
             f"{days.get(user_class).get(user_profile).get(user_math).get(user_date).get('description')}\n\n"
             f"{days.get(user_class).get(user_profile).get(user_math).get(user_date).get('classes')}",
@@ -93,14 +92,17 @@ async def timetable_nearest(c: CallbackQuery, callback_data: typing.Dict[str, st
     user_class = str(user_data['user_class'])
     user_profile = str(user_data['user_prof'])
     user_math = str(user_data['user_math'])
-    if callback_data['day'] == 'today':
-        user_date = str(datetime.date.today().isoweekday())
+    if user_class and user_profile and user_math != 'None':
+        if callback_data['day'] == 'today':
+            user_date = str(datetime.date.today().isoweekday())
+        else:
+            user_date = datetime.date.today() + datetime.timedelta(days=1)
+            user_date = str(user_date.isoweekday())
+        await state.update_data(user_class=user_class, user_profile=user_profile, user_math=user_math,
+                                user_date=user_date)
+        await timetable_make(c, state, user_class, user_profile, user_math, user_date)
     else:
-        user_date = datetime.date.today() + datetime.timedelta(days=1)
-        user_date = str(user_date.isoweekday())
-    await state.update_data(user_class=user_class, user_profile=user_profile, user_math=user_math,
-                            user_date=user_date)
-    await timetable_make(c, state, user_class, user_profile, user_math, user_date)
+        await c.answer('Необходима регистрация', show_alert=True)
 
 
 async def timetable_other(c: CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
