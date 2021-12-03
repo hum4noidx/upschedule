@@ -92,7 +92,7 @@ async def timetable_nearest(c: CallbackQuery, callback_data: typing.Dict[str, st
     user_class = str(user_data['user_class'])
     user_profile = str(user_data['user_prof'])
     user_math = str(user_data['user_math'])
-    if user_class and user_profile and user_math != 'None':
+    if user_class and user_profile != 'None':
         if callback_data['day'] == 'today':
             user_date = str(datetime.date.today().isoweekday())
         else:
