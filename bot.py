@@ -11,6 +11,7 @@ from tgbot.filters.role import RoleFilter, AdminFilter, VIPFilter
 from tgbot.handlers.admins.admin import register_admin
 from tgbot.handlers.admins.broadcaster import register_broadcast
 from tgbot.handlers.filter import register_level_filter
+from tgbot.handlers.groups.group_helper import register_groups
 from tgbot.handlers.user_settings import register_user_settings
 from tgbot.handlers.users.timetable import register_timetable
 from tgbot.handlers.users.user_main import register_user
@@ -63,6 +64,7 @@ async def main():
     register_broadcast(dp)
     register_user_reg(dp)
     register_user_settings(dp)
+    register_groups(dp)
 
     # start
     try:

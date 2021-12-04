@@ -65,6 +65,19 @@ class Repo:
         data = ([vip['user_id'] for vip in vips])
         return data
 
+    # ______________________ GROUPS ______________________
+    async def add_group(self, group_id, group_name):
+        await self.conn.execute(
+            'INSERT INTO groups (chat_id, group_name) VALUES ($1, $2)'
+            'ON CONFLICT (chat_id) DO UPDATE SET group_name = $2',
+            group_id, group_name)
+        return
+
+    async def get_groups(self):
+        groups = dict(await self.conn.fetch('SELECT group_name, chat_id FROM groups'))
+        groups = list(groups.items())
+        return groups
+
     # ______________________ ADMIN PANEL ______________________
     async def list_all_users(self):
         all_info = await self.conn.fetch(
