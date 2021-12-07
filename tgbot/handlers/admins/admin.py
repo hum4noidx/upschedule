@@ -5,8 +5,7 @@ from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.handler import ctx_data
 from aiogram.types import CallbackQuery, Message
 
-
-from tgbot.keyboards import nav_btns
+from tgbot.keyboards import nav_btns, test_keyboards
 from tgbot.services.repository import Repo
 
 opts = {"hey": ('Привет', 'Здравствуйте', 'Доброе утро', 'Добрый день', 'Добрый вечер', 'Доброй ночи')}
@@ -66,6 +65,10 @@ async def admin_panel_switch(m: Message, repo: Repo):
     await m.answer(f'<a href="tg://user?id={m.from_user.id}">Успешно</a>', parse_mode='HTML')
 
 
+async def admin_test(m: Message):
+    await m.answer('TEST', reply_markup=test_keyboards.fruits_kbd)
+
+
 def register_admin(dp: Dispatcher):
     dp.register_callback_query_handler(get_user_list, text=['admin_all_users'], is_admin=True,
                                        state='*')
@@ -73,3 +76,4 @@ def register_admin(dp: Dispatcher):
     dp.register_message_handler(add_vip_user, commands=['vip'], state='*', is_admin=True)
     dp.register_callback_query_handler(get_today_user_list, text=['admin_today_all_users'], state='*', is_admin=True)
     dp.register_message_handler(admin_panel_switch, commands='a', commands_prefix='!', state='*')
+    dp.register_message_handler(admin_test, commands='tt', state='*')
