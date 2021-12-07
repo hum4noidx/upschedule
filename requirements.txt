@@ -2,3 +2,4 @@ aiogram
 aioredis
 asyncpg
 aiogram_broadcaster
+aiogram_dialog

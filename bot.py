@@ -7,18 +7,18 @@ from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.fsm_storage.redis import RedisStorage
 
 from tgbot.config import load_config
-from tgbot.filters.role import RoleFilter, AdminFilter, VIPFilter
-from tgbot.handlers.admins.admin import register_admin
+from tgbot.filters import RoleFilter, AdminFilter, VIPFilter
+from tgbot.handlers import register_admin
 from tgbot.handlers.admins.broadcaster import register_broadcast
 from tgbot.handlers.filter import register_level_filter
-from tgbot.handlers.groups.group_helper import register_groups
-from tgbot.handlers.user_settings import register_user_settings
+from tgbot.handlers import register_groups
+from tgbot.handlers import register_user_settings
 from tgbot.handlers.users.timetable import register_timetable
 from tgbot.handlers.users.user_main import register_user
 from tgbot.handlers.users.users_register import register_user_reg
 from tgbot.handlers.vips.vip import register_vip
-from tgbot.middlewares.db import DbMiddleware
-from tgbot.middlewares.role import RoleMiddleware
+from tgbot.middlewares import DbMiddleware
+from tgbot.middlewares import RoleMiddleware
 
 logger = logging.getLogger(__name__)
 
