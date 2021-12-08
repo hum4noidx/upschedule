@@ -5,6 +5,7 @@ import asyncpg
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.fsm_storage.redis import RedisStorage
+from aiogram_dialog import DialogRegistry
 
 from tgbot.config import load_config
 from tgbot.filters.role import RoleFilter, AdminFilter, VIPFilter
@@ -17,6 +18,7 @@ from tgbot.handlers.users.timetable import register_timetable
 from tgbot.handlers.users.user_main import register_user
 from tgbot.handlers.users.users_register import register_user_reg
 from tgbot.handlers.vips.vip import register_vip
+from tgbot.keyboards.test_keyboards import register_dialog
 from tgbot.middlewares.db import DbMiddleware
 from tgbot.middlewares.role import RoleMiddleware
 
@@ -65,6 +67,7 @@ async def main():
     register_user_reg(dp)
     register_user_settings(dp)
     register_groups(dp)
+    register_dialog(dp)
 
     # start
     try:
