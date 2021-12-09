@@ -11,7 +11,7 @@ async def main_menu_vip(c: CallbackQuery, state: FSMContext):
     await state.reset_state()
     try:
         await c.message.edit_text(
-            f'{await greeting(c.from_user.id)}\nГлавное меню|VIP', reply_markup=nav_btns.main_menu_vip
+            f'<b>Главное меню</b>\n{await greeting(c.from_user.id)}', reply_markup=nav_btns.main_menu_vip, parse_mode='HTML'
         )
     except MessageNotModified:
         print('Edit failure.', c.from_user.id)

@@ -17,7 +17,7 @@ class_11 = InlineKeyboardButton(text="11 класс", callback_data=classes.new(
 class_all = InlineKeyboardButton(text='Все классы', callback_data=classes.new(classes='classes_all'))
 broadcast_groups = InlineKeyboardButton(text="Рассылка в беседы", callback_data='group_broadcast')
 user_choose_class = InlineKeyboardMarkup(row_width=2).add(class_10, class_11, cancel_butt)
-broadcast_choose_class = InlineKeyboardMarkup(row_width=2).add(class_10, class_11, class_all,broadcast_groups).row(cancel_butt)
+broadcast_choose_class = InlineKeyboardMarkup(row_width=2).add(class_10, class_11, class_all).row(cancel_butt)
 
 # choosing profile for 11 class
 profile_fm = InlineKeyboardButton(text="Физмат", callback_data=profile.new(profile="fm"))
