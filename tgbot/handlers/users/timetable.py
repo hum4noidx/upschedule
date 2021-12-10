@@ -32,6 +32,8 @@ async def timetable_make(c: CallbackQuery, state: FSMContext, user_class,
             parse_mode='HTML', reply_markup=markup)
         await state.set_state('other_schedule')
         await user_usage(c.from_user.id)
+    except AttributeError:
+        await c.answer('УЖЕ СКОРО', show_alert=True)
     except aiogram.exceptions.MessageNotModified:
         pass
 
@@ -62,8 +64,11 @@ async def timetable_choose_profile(c: CallbackQuery, callback_data: typing.Dict[
     await state.update_data(user_class=callback_data['classes'])
     if int(callback_data['classes']) == 11:
         await c.message.edit_text('Выбери профиль', reply_markup=choose_btns.user_choose_profile_11)
-    else:
+    elif int(callback_data['classes']) == 10:
         await c.message.edit_text('Выбери профиль', reply_markup=choose_btns.user_choose_profile_10)
+    else:
+        await c.message.edit_text('Выбери букву класса', reply_markup=choose_btns.user_choose_letter)
+
     await Timetable.next()
 
 
