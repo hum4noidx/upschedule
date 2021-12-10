@@ -93,3 +93,8 @@ def make_buttons():
         profile_se_other, profile_se_base).row(profile_bh_other, profile_bh_base).row(prev_day, next_day).row(
         cancel_butt)
     return markup_1
+
+
+def make_buttons_y():
+    markup_2 = InlineKeyboardMarkup(resize_keyboard=True, row_width=2)
+    markup_2.row(letter_a, letter_b, letter_v).row(cancel_butt)

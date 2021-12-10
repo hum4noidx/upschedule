@@ -10,7 +10,7 @@ from aiogram.types import CallbackQuery
 
 from tgbot.handlers.users.user_main import user_usage
 from tgbot.keyboards import nav_btns, choose_btns
-from tgbot.keyboards.choose_btns import week, profile, classes, math, profile_other, make_buttons
+from tgbot.keyboards.choose_btns import week, profile, classes, math, profile_other, make_buttons, make_buttons_y
 from tgbot.keyboards.nav_btns import recent_schedule
 from tgbot.schedule import days
 from tgbot.states.states import Timetable
@@ -18,11 +18,13 @@ from tgbot.states.states import Timetable
 
 async def timetable_make(c: CallbackQuery, state: FSMContext, user_class,
                          user_profile, user_math, user_date):
-    await c.answer()
+    ignore_classes = [5, 6, 7, 8, 9]
     if user_class == '11':
         markup = make_buttons()
         await state.update_data(user_class=user_class, user_profile=user_profile, user_math=user_math,
                                 user_date=user_date)
+    # elif user_class == '9':
+    #     markup = make_buttons_y()
     else:
         markup = nav_btns.back_to_mm
     try:  # собираем расписание по переданным данным
@@ -33,7 +35,7 @@ async def timetable_make(c: CallbackQuery, state: FSMContext, user_class,
         await state.set_state('other_schedule')
         await user_usage(c.from_user.id)
     except AttributeError:
-        await c.answer('УЖЕ СКОРО', show_alert=True)
+        await c.answer('COMING SOON!', show_alert=True)
     except aiogram.exceptions.MessageNotModified:
         pass
 
@@ -60,16 +62,16 @@ async def timetable_choose_class(c: CallbackQuery):
 
 
 async def timetable_choose_profile(c: CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
-    await c.answer()
     await state.update_data(user_class=callback_data['classes'])
     if int(callback_data['classes']) == 11:
         await c.message.edit_text('Выбери профиль', reply_markup=choose_btns.user_choose_profile_11)
+        await Timetable.next()
     elif int(callback_data['classes']) == 10:
         await c.message.edit_text('Выбери профиль', reply_markup=choose_btns.user_choose_profile_10)
+        await Timetable.next()
     else:
-        await c.message.edit_text('Выбери букву класса', reply_markup=choose_btns.user_choose_letter)
-
-    await Timetable.next()
+        # await c.message.edit_text('Выбери букву класса', reply_markup=choose_btns.user_choose_letter)
+        await c.answer('COMING SOON!', show_alert=True)
 
 
 async def timetable_choose_math(c: CallbackQuery, state: FSMContext, callback_data: typing.Dict[str, str]):

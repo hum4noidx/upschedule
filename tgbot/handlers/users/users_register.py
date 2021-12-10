@@ -48,8 +48,10 @@ async def user_register_profile(c: CallbackQuery, callback_data: typing.Dict[str
     await state.update_data(user_class=callback_data['classes'])
     if int(callback_data['classes']) == 11:
         await c.message.edit_text('Выбери профиль', reply_markup=choose_btns.user_choose_profile_11)
-    else:
+    elif int(callback_data['classes']) == 10:
         await c.message.edit_text('Выбери профиль', reply_markup=choose_btns.user_choose_profile_10)
+    else:
+        await c.message.edit_text('Выбери букву класса', reply_markup=choose_btns.user_choose_letter)
     await Register.choose_math.set()
     await c.answer()
 
