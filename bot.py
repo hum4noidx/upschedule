@@ -5,17 +5,22 @@ import asyncpg
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.fsm_storage.redis import RedisStorage
+from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from tgbot.config import load_config
 from tgbot.filters.role import RoleFilter, AdminFilter, VIPFilter
 from tgbot.handlers.admins.admin import register_admin
 from tgbot.handlers.admins.broadcaster import register_broadcast
 from tgbot.handlers.filter import register_level_filter
+from tgbot.handlers.groups.group_helper import register_groups
 from tgbot.handlers.user_settings import register_user_settings
+from tgbot.handlers.users.compliments import register_compliments
+from tgbot.handlers.users.compliments_broadcaster import schedule_jobs
 from tgbot.handlers.users.timetable import register_timetable
 from tgbot.handlers.users.user_main import register_user
 from tgbot.handlers.users.users_register import register_user_reg
 from tgbot.handlers.vips.vip import register_vip
+# from tgbot.keyboards.test_keyboards import register_dialog
 from tgbot.middlewares.db import DbMiddleware
 from tgbot.middlewares.role import RoleMiddleware
 
@@ -49,11 +54,13 @@ async def main():
 
     bot = Bot(token=config.tg_bot.token)
     dp = Dispatcher(bot, storage=storage)
+
     dp.middleware.setup(DbMiddleware(pool))
     dp.middleware.setup(RoleMiddleware(config.tg_bot.admin_id))
     dp.filters_factory.bind(RoleFilter)
     dp.filters_factory.bind(AdminFilter)
     dp.filters_factory.bind(VIPFilter)
+    scheduler = AsyncIOScheduler()
 
     register_level_filter(dp)
     register_admin(dp)
@@ -63,9 +70,14 @@ async def main():
     register_broadcast(dp)
     register_user_reg(dp)
     register_user_settings(dp)
+    register_groups(dp)
+    register_compliments(dp)
+    # register_dialog(dp)
+    schedule_jobs(dp, scheduler)
 
     # start
     try:
+        scheduler.start()
         await dp.start_polling()
     finally:
         await dp.storage.close()

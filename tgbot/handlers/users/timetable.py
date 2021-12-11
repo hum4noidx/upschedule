@@ -18,11 +18,13 @@ from tgbot.states.states import Timetable
 
 async def timetable_make(c: CallbackQuery, state: FSMContext, user_class,
                          user_profile, user_math, user_date):
-    await c.answer()
+    ignore_classes = [5, 6, 7, 8, 9]
     if user_class == '11':
         markup = make_buttons()
         await state.update_data(user_class=user_class, user_profile=user_profile, user_math=user_math,
                                 user_date=user_date)
+    # elif user_class == '9':
+    #     markup = make_buttons_y()
     else:
         markup = nav_btns.back_to_mm
     try:  # собираем расписание по переданным данным
@@ -32,6 +34,8 @@ async def timetable_make(c: CallbackQuery, state: FSMContext, user_class,
             parse_mode='HTML', reply_markup=markup)
         await state.set_state('other_schedule')
         await user_usage(c.from_user.id)
+    except AttributeError:
+        await c.answer('COMING SOON!', show_alert=True)
     except aiogram.exceptions.MessageNotModified:
         pass
 
@@ -58,13 +62,18 @@ async def timetable_choose_class(c: CallbackQuery):
 
 
 async def timetable_choose_profile(c: CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
-    await c.answer()
     await state.update_data(user_class=callback_data['classes'])
     if int(callback_data['classes']) == 11:
         await c.message.edit_text('Выбери профиль', reply_markup=choose_btns.user_choose_profile_11)
-    else:
+        await Timetable.next()
+    elif int(callback_data['classes']) == 10:
         await c.message.edit_text('Выбери профиль', reply_markup=choose_btns.user_choose_profile_10)
-    await Timetable.next()
+        await Timetable.next()
+    elif int(callback_data['classes']) == 9:
+        await c.message.edit_text('Выбери букву класса', reply_markup=choose_btns.user_choose_letter)
+        await Timetable.next()
+    else:
+        await c.answer('COMING SOON!', show_alert=True)
 
 
 async def timetable_choose_math(c: CallbackQuery, state: FSMContext, callback_data: typing.Dict[str, str]):

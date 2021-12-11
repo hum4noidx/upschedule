@@ -65,6 +65,19 @@ class Repo:
         data = ([vip['user_id'] for vip in vips])
         return data
 
+    # ______________________ GROUPS ______________________
+    async def add_group(self, group_id, group_name):
+        await self.conn.execute(
+            'INSERT INTO groups (chat_id, group_name) VALUES ($1, $2)'
+            'ON CONFLICT (chat_id) DO UPDATE SET group_name = $2',
+            group_id, group_name)
+        return
+
+    async def get_groups(self):
+        groups = dict(await self.conn.fetch('SELECT group_name, chat_id FROM groups'))
+        groups = list(groups.items())
+        return groups
+
     # ______________________ ADMIN PANEL ______________________
     async def list_all_users(self):
         all_info = await self.conn.fetch(
@@ -156,4 +169,17 @@ class Repo:
         data = ([uid['user_id'] for uid in ids])
         return data
 
+    #  ======================== COMPLIMENTS ========================
+
+    # async def db_get_compliments(self):
+    #     result = await self.conn.fetch('SELECT compliment, com_owner, theme FROM compliments')
+    #     compliments = ([compliment['compliment'] for compliment in result])
+    #     return compliments
+    async def add_compliment(self, compliment, full_name):
+        await self.conn.execute('INSERT INTO compliments (compliment, com_owner) Values($1,$2)', compliment, full_name)
+
+    async def add_compliment_subscription(self, user_id, full_name):
+        await self.conn.execute(
+            'INSERT INTO user_compliments (user_id, full_name) Values ($1, $2) ON CONFLICT (user_id) DO NOTHING ',
+            user_id, full_name)
 #  ======================== SCHEDULE DATABASE ATTEMPTS ========================

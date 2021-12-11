@@ -25,14 +25,12 @@ from tgbot.states.states import Broadcast
 
 async def broadcast_get_message(c: CallbackQuery, state: FSMContext):
     await c.message.edit_text('✏️ Введите текст для рассылки:', reply_markup=nav_btns.back_to_mm)
-    await state.update_data(m_id=c.message.message_id)
 
 
 async def broadcast_start(msg: Message, state: FSMContext):
     data = ctx_data.get()
     repo = data.get("repo")
     m_id = await state.get_data()
-    await msg.bot.delete_message(msg.chat.id, m_id['m_id'])
     # collecting data
     users = None
     user_data = await state.get_data()

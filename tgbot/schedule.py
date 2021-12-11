@@ -1,4 +1,157 @@
 days = {
+    '8':{
+        'a': {},
+        'b':{},
+        'v':{}
+    },
+    '9': {
+        'a': {
+            'None': {
+                '1': {'description': 'Понедельник|9А',
+                      'classes': '1️⃣ <code>Химия</code> <b>40</b>\n'
+                                 '2️⃣ <code>Информатика</code> <b>24/25</b>\n'
+                                 '3️⃣ <code>Алгебра</code> <b>13</b>\n'
+                                 '4️⃣ <code>Англ.яз</code> <b>20/23а</b>\n'
+                                 '5️⃣ <code>Нем/Исп.яз</code> <b>2/4</b>\n'
+                                 '6️⃣ <code>Рус.яз</code> <b>19</b>\n'
+                                 '7️⃣ <code>Литература</code> <b>19</b>\n'
+                                 '8️⃣ <code>Математика</code> <b>-</b>\n'
+                      },
+                '2': {'description': 'Вторник|9А',
+                      'classes': '1️⃣ <code>Рус.яз</code> <b>8</b>\n'
+                                 '2️⃣ <code>Биология</code> <b>33</b>\n'
+                                 '3️⃣ <code>Англ.яз</code> <b>20/23а</b>\n'
+                                 '4️⃣ <code>Англ.яз</code> <b>20/23а</b>\n'
+                                 '5️⃣ <code>Геометрия</code> <b>22</b>\n'
+                                 '6️⃣ <code>Обществознание</code> <b>22</b>\n'
+                                 '7️⃣ <code>География</code> <b>22</b>\n'
+                                 '8️⃣ <code>Обществознание</code> <b>-</b>\n'},
+                '3': {'description': 'Среда|9А',
+                      'classes': '1️⃣ <code>Информатика</code> <b>24/25</b>\n'
+                                 '2️⃣ <code>Химия</code> <b>40</b>\n'
+                                 '3️⃣ <code>Алгебра</code> <b>21</b>\n'
+                                 '4️⃣ <code>Физика</code> <b>39</b>\n'
+                                 '5️⃣ <code>География</code> <b>9</b>\n'
+                                 '6️⃣ <code>Физ-ра</code> <b>Зал</b>\n'},
+                '4': {'description': 'Четверг|9А',
+                      'classes': '1️⃣ <code>Алгебра</code> <b>35</b>\n'
+                                 '2️⃣ <code>Геометрия</code> <b>35</b>\n'
+                                 '3️⃣ <code>Англ.яз</code> <b>20/23а</b>\n'
+                                 '4️⃣ <code>История</code> <b>26</b>\n'
+                                 '5️⃣ <code>Родная литература</code> <b>21</b>\n'
+                                 '6️⃣ <code>Физ-ра</code> <b>Зал</b>\n'
+                                 '7️⃣ <code>Англ.яз</code> <b>Доп</b>\n'
+                                 '8️⃣ <code>Программирование</code> <b>25</b>\n'},
+                '5': {'description': 'Пятница|9А',
+                      'classes': '1️⃣ <code>Биология</code> <b>16</b>\n'
+                                 '2️⃣ <code>История</code> <b>14</b>\n'
+                                 '3️⃣ <code>Алгебра</code> <b>22</b>\n'
+                                 '4️⃣ <code>Родной рус.яз</code> <b>22</b>\n'
+                                 '5️⃣ <code>Нем/Исп.яз</code> <b>2/4</b>\n'
+                                 '6️⃣ <code>МХК</code> <b>20/23а</b>\n'
+                                 '7️⃣ <code>Физика</code> <b>39</b>\n'}
+            }
+        },
+        'b': {
+            'None': {
+                '1': {'description': 'Понедельник|9Б',
+                      'classes': '1️⃣ <code>Информатика</code> <b>24/25</b>\n'
+                                 '2️⃣ <code>Химия</code> <b>40</b>\n'
+                                 '3️⃣ <code>Англ.яз</code> <b>20/7</b>\n'
+                                 '4️⃣ <code>Рус.яз</code> <b>7</b>\n'
+                                 '5️⃣ <code>Литература</code> <b>7</b>\n'
+                                 '6️⃣ <code>Алгебра</code> <b>7</b>\n'
+                                 '7️⃣ <code>Физ-ра</code> <b>7</b>\n'
+                      },
+                '2': {'description': 'Вторник|9Б',
+                      'classes': '1️⃣ <code>Геометрия</code> <b>7</b>\n'
+                                 '2️⃣ <code>Англ.яз</code> <b>20/7</b>\n'
+                                 '3️⃣ <code>Рус.яз</code> <b>7</b>\n'
+                                 '4️⃣ <code>Рус.яз</code> <b>7</b>\n'
+                                 '5️⃣ <code>География</code> <b>7</b>\n'
+                                 '6️⃣ <code>Обществознание</code> <b></b>\n'
+                                 '7️⃣ <code>Физика</code> <b></b>\n'
+                                 '8️⃣ <code>Англ.яз</code> <b>Доп</b>\n'},
+                '3': {'description': 'Среда|9Б',
+                      'classes': '1️⃣ <code>Биология</code> <b>38</b>\n'
+                                 '2️⃣ <code>Информатика</code> <b>24/25</b>\n'
+                                 '3️⃣ <code>Химия</code> <b>40</b>\n'
+                                 '4️⃣ <code>Алгебра</code> <b>7</b>\n'
+                                 '5️⃣ <code>Фр/исп.яз</code> <b>4/2</b>\n'
+                                 '6️⃣ <code>География</code> <b>7</b>\n'
+                                 '7️⃣ <code>История</code> <b>7</b>\n'
+                                 '8️⃣ <code>Родная литература</code> <b>7</b>\n'},
+                '4': {'description': 'Четверг|9Б',
+                      'classes': '1️⃣ <code>Физ-ра</code> <b>Зал</b>\n'
+                                 '2️⃣ <code>Биология</code> <b>38</b>\n'
+                                 '3️⃣ <code>Англ.яз</code> <b>20/7</b>\n'
+                                 '4️⃣ <code>Англ.яз</code> <b>20/7</b>\n'
+                                 '5️⃣ <code>Алгебра</code> <b>7</b>\n'
+                                 '6️⃣ <code>Физика</code> <b>39</b>\n'
+                                 '7️⃣ <code>Программирование</code> <b>25</b>\n'
+                                 '8️⃣ <code>Англ.яз</code> <b>-</b>\n'},
+                '5': {'description': 'Пятница|9Б',
+                      'classes': '1️⃣ <code>Алгебра</code> <b>7</b>\n'
+                                 '2️⃣ <code>Геометрия</code> <b>7</b>\n'
+                                 '3️⃣ <code>Родной рус.яз</code> <b>7</b>\n'
+                                 '4️⃣ <code>Фр/исп.яз</code> <b>4/2</b>\n'
+                                 '5️⃣ <code>МХК</code> <b>20/7</b>\n'
+                                 '6️⃣ <code>История</code> <b>7</b>\n'
+                                 '7️⃣ <code>Математика</code> <b></b>\n'
+                      }
+            }
+        },
+        'v': {
+            'None': {
+                '1': {'description': 'Понедельник|9В',
+                      'classes': '1️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '2️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '3️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '4️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '5️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '6️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '7️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '8️⃣ <code>WORK IN PROGRESS</code> <b>-</b>\n'
+                      },
+                '2': {'description': 'Вторник|9В',
+                      'classes': '1️⃣ <code>WORK IN PROGRESS>code> <b></b>\n'
+                                 '2️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '3️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '4️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '5️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '6️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '7️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '8️⃣ <code>WORK IN PROGRESS</code> <b>-</b>\n'},
+                '3': {'description': 'Среда|9В',
+                      'classes': '1️⃣ <code>WORK IN PROGRESS>code> <b></b>\n'
+                                 '2️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '3️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '4️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '5️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '6️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '7️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '8️⃣ <code>WORK IN PROGRESS</code> <b>-</b>\n'},
+                '4': {'description': 'Четверг|9В',
+                      'classes': '1️⃣ <code>WORK IN PROGRESS>code> <b></b>\n'
+                                 '2️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '3️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '4️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '5️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '6️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '7️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '8️⃣ <code>WORK IN PROGRESS</code> <b>-</b>\n'},
+                '5': {'description': 'Пятница|9В',
+                      'classes': '1️⃣ <code>WORK IN PROGRESS>code> <b></b>\n'
+                                 '2️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '3️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '4️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '5️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '6️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '7️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
+                                 '8️⃣ <code>WORK IN PROGRESS</code> <b>-</b>\n'}
+            }
+        }
+    },
     '10': {
         'med': {
             'None': {'1': {'description': 'Понедельник|10МЕД',
@@ -293,7 +446,7 @@ days = {
                              '4️⃣ <code>Информатика</code> <b>507</b>\n'
                              '5️⃣ <code>Информатика</code> <b>507</b>\n'
                              '6️⃣ <code>Физика</code> <b>204</b>\n'
-                             '7️⃣ <code>Инженер. черч.</code> <b></b>\n'
+                             '7️⃣ <code>Робототехника</code> <b>507</b>\n'
                              '<code>Здесь могла быть ваша реклама</code>'
 
                   },

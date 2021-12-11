@@ -1,10 +1,9 @@
-import random
-
 from aiogram import Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.handler import ctx_data
 from aiogram.types import Message, CallbackQuery
 
+from tgbot.handlers.admins.admin import greeting
 from tgbot.keyboards import nav_btns
 from tgbot.services.repository import Repo
 
@@ -30,10 +29,12 @@ async def user_start(m: Message, repo: Repo):
 async def main_menu(c: CallbackQuery, state: FSMContext):
     await state.reset_state()
     text = 'Главное меню'
-    rand = random.randint(1, 5)
-    if rand == 5:
-        text = text + '\nЕсли понравился бот и есть желание поддержать проект - /donut'
-    await c.message.edit_text(text, reply_markup=nav_btns.main_menu)
+    # rand = random.randint(1, 5)
+    # if rand == 5:
+    #     text = text + '\nЕсли понравился бот и есть желание поддержать проект - /donut'
+    # await c.message.edit_text(text, reply_markup=nav_btns.main_menu)
+    await c.message.edit_text(f'<b>Главное меню</b>\n{await greeting(c.from_user.id)}', reply_markup=nav_btns.main_menu,
+                              parse_mode='HTML')
 
 
 async def donut_info(message: Message):

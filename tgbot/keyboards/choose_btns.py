@@ -12,11 +12,19 @@ user_registration_cancel = InlineKeyboardButton(text='Назад', callback_data
 cancel_butt = InlineKeyboardButton(text='В главное меню', callback_data='go_main')
 # \____________________ CHOOSING CLASS, PROFILE, MATH ____________________/
 # choosing class
+class_5 = InlineKeyboardButton(text='5 класс', callback_data=classes.new(classes=5))
+class_6 = InlineKeyboardButton(text='6 класс', callback_data=classes.new(classes=6))
+class_7 = InlineKeyboardButton(text='7 класс', callback_data=classes.new(classes=7))
+class_8 = InlineKeyboardButton(text='8 класс', callback_data=classes.new(classes=8))
+class_9 = InlineKeyboardButton(text='9 класс', callback_data=classes.new(classes=9))
 class_10 = InlineKeyboardButton(text="10 класс", callback_data=classes.new(classes=10))
 class_11 = InlineKeyboardButton(text="11 класс", callback_data=classes.new(classes=11))
 class_all = InlineKeyboardButton(text='Все классы', callback_data=classes.new(classes='classes_all'))
-user_choose_class = InlineKeyboardMarkup(row_width=2).add(class_10, class_11, cancel_butt)
-broadcast_choose_class = InlineKeyboardMarkup(row_width=2).add(class_10, class_11, class_all, cancel_butt)
+broadcast_groups = InlineKeyboardButton(text="Рассылка в беседы", callback_data='group_broadcast')
+user_choose_class = InlineKeyboardMarkup(row_width=2).row(class_5, class_6).row(class_7, class_8).row(class_9,
+                                                                                                      class_10).row(
+    class_11).row(cancel_butt)
+broadcast_choose_class = InlineKeyboardMarkup(row_width=2).add(class_10, class_11, class_all).row(cancel_butt)
 
 # choosing profile for 11 class
 profile_fm = InlineKeyboardButton(text="Физмат", callback_data=profile.new(profile="fm"))
@@ -40,6 +48,11 @@ user_choose_profile_10 = InlineKeyboardMarkup(row_width=2).add(
 )
 broadcast_choose_profile_10 = InlineKeyboardMarkup(row_width=2).add(profile_med, profile_media, profile_akadem,
                                                                     profile_it, profile_all, cancel_butt)
+
+letter_a = InlineKeyboardButton(text="А", callback_data=profile.new(profile="a"))
+letter_b = InlineKeyboardButton(text="Б", callback_data=profile.new(profile="b"))
+letter_v = InlineKeyboardButton(text="В", callback_data=profile.new(profile="v"))
+user_choose_letter = InlineKeyboardMarkup(row_width=2).row(letter_a, letter_b, letter_v).row(cancel_butt)
 # choosing math level
 math_prof = InlineKeyboardButton(text='Профиль', callback_data=math.new(math='prof'))
 math_base = InlineKeyboardButton(text='База', callback_data=math.new(math='base'))
@@ -75,8 +88,14 @@ next_day = InlineKeyboardButton(text="🔜", callback_data=profile_other.new(pro
 
 
 def make_buttons():
-    markup_1 = InlineKeyboardMarkup(resize_keyboard=True,row_width=1)
+    markup_1 = InlineKeyboardMarkup(resize_keyboard=True, row_width=1)
     markup_1.row(profile_fm_other).row(profile_gum_other, profile_gum_base_other).row(
         profile_se_other, profile_se_base).row(profile_bh_other, profile_bh_base).row(prev_day, next_day).row(
         cancel_butt)
     return markup_1
+
+
+def make_buttons_y():
+    markup_2 = InlineKeyboardMarkup(resize_keyboard=True, row_width=2)
+    markup_2.row(letter_a, letter_b, letter_v).row(cancel_butt)
+    return markup_2

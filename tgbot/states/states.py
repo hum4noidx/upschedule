@@ -22,3 +22,7 @@ class Broadcast(StatesGroup):
     data = State()
     confirm = State()
     final = State()
+
+
+class RemindGroup(StatesGroup):
+    SetTime = State()
