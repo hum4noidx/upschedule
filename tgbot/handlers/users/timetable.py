@@ -10,7 +10,7 @@ from aiogram.types import CallbackQuery
 
 from tgbot.handlers.users.user_main import user_usage
 from tgbot.keyboards import nav_btns, choose_btns
-from tgbot.keyboards.choose_btns import week, profile, classes, math, profile_other, make_buttons, make_buttons_y
+from tgbot.keyboards.choose_btns import week, profile, classes, math, profile_other, make_buttons
 from tgbot.keyboards.nav_btns import recent_schedule
 from tgbot.schedule import days
 from tgbot.states.states import Timetable
@@ -69,8 +69,10 @@ async def timetable_choose_profile(c: CallbackQuery, callback_data: typing.Dict[
     elif int(callback_data['classes']) == 10:
         await c.message.edit_text('Выбери профиль', reply_markup=choose_btns.user_choose_profile_10)
         await Timetable.next()
+    elif int(callback_data['classes']) == 9:
+        await c.message.edit_text('Выбери букву класса', reply_markup=choose_btns.user_choose_letter)
+        await Timetable.next()
     else:
-        # await c.message.edit_text('Выбери букву класса', reply_markup=choose_btns.user_choose_letter)
         await c.answer('COMING SOON!', show_alert=True)
 
 

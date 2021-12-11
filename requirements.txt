@@ -1,5 +1,6 @@
-aiogram
+aiogram~=2.17
 aioredis
-asyncpg
+asyncpg~=0.25.0
 aiogram_broadcaster
 aiogram_dialog
+APScheduler~=3.8.1

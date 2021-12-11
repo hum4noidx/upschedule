@@ -169,4 +169,17 @@ class Repo:
         data = ([uid['user_id'] for uid in ids])
         return data
 
+    #  ======================== COMPLIMENTS ========================
+
+    # async def db_get_compliments(self):
+    #     result = await self.conn.fetch('SELECT compliment, com_owner, theme FROM compliments')
+    #     compliments = ([compliment['compliment'] for compliment in result])
+    #     return compliments
+    async def add_compliment(self, compliment, full_name):
+        await self.conn.execute('INSERT INTO compliments (compliment, com_owner) Values($1,$2)', compliment, full_name)
+
+    async def add_compliment_subscription(self, user_id, full_name):
+        await self.conn.execute(
+            'INSERT INTO user_compliments (user_id, full_name) Values ($1, $2) ON CONFLICT (user_id) DO NOTHING ',
+            user_id, full_name)
 #  ======================== SCHEDULE DATABASE ATTEMPTS ========================

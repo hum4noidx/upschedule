@@ -98,3 +98,4 @@ def make_buttons():
 def make_buttons_y():
     markup_2 = InlineKeyboardMarkup(resize_keyboard=True, row_width=2)
     markup_2.row(letter_a, letter_b, letter_v).row(cancel_butt)
+    return markup_2

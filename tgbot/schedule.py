@@ -104,7 +104,7 @@ days = {
         'v': {
             'None': {
                 '1': {'description': 'Понедельник|9В',
-                      'classes': '1️⃣ <codeWORK IN PROGRESS>code> <b></b>\n'
+                      'classes': '1️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
                                  '2️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
                                  '3️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
                                  '4️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
@@ -114,7 +114,7 @@ days = {
                                  '8️⃣ <code>WORK IN PROGRESS</code> <b>-</b>\n'
                       },
                 '2': {'description': 'Вторник|9В',
-                      'classes': '1️⃣ <codeWORK IN PROGRESS>code> <b></b>\n'
+                      'classes': '1️⃣ <code>WORK IN PROGRESS>code> <b></b>\n'
                                  '2️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
                                  '3️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
                                  '4️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
@@ -123,7 +123,7 @@ days = {
                                  '7️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
                                  '8️⃣ <code>WORK IN PROGRESS</code> <b>-</b>\n'},
                 '3': {'description': 'Среда|9В',
-                      'classes': '1️⃣ <codeWORK IN PROGRESS>code> <b></b>\n'
+                      'classes': '1️⃣ <code>WORK IN PROGRESS>code> <b></b>\n'
                                  '2️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
                                  '3️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
                                  '4️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
@@ -132,7 +132,7 @@ days = {
                                  '7️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
                                  '8️⃣ <code>WORK IN PROGRESS</code> <b>-</b>\n'},
                 '4': {'description': 'Четверг|9В',
-                      'classes': '1️⃣ <codeWORK IN PROGRESS>code> <b></b>\n'
+                      'classes': '1️⃣ <code>WORK IN PROGRESS>code> <b></b>\n'
                                  '2️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
                                  '3️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
                                  '4️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
@@ -141,7 +141,7 @@ days = {
                                  '7️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
                                  '8️⃣ <code>WORK IN PROGRESS</code> <b>-</b>\n'},
                 '5': {'description': 'Пятница|9В',
-                      'classes': '1️⃣ <codeWORK IN PROGRESS>code> <b></b>\n'
+                      'classes': '1️⃣ <code>WORK IN PROGRESS>code> <b></b>\n'
                                  '2️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
                                  '3️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
                                  '4️⃣ <code>WORK IN PROGRESS</code> <b></b>\n'
