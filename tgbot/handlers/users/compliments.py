@@ -1,4 +1,5 @@
 from aiogram import Dispatcher
+from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.handler import ctx_data
 from aiogram.types import CallbackQuery, Message
 
@@ -18,21 +19,23 @@ async def compliments_subscribe(c: CallbackQuery):
     await repo.add_compliment_subscription(c.from_user.id, c.from_user.full_name)
 
 
-async def add_compliment(c: CallbackQuery):
+async def add_compliment(c: CallbackQuery, state: FSMContext):
     await c.message.edit_text('Если у тебя есть парочка комплиментов или фраз, можешь смело их добавлять',
                               reply_markup=nav_btns.back_to_mm)
+    await state.set_state('compliment')
 
 
-async def compliment_handler(m: Message):
+async def compliment_handler(m: Message, state: FSMContext):
     compl = m.text
     data = ctx_data.get()
     repo = data.get("repo")
     await repo.add_compliment(compl, m.from_user.full_name)
     await m.answer('Успешно', reply_markup=nav_btns.back_to_mm)
+    await state.reset_state()
 
 
 def register_compliments(dp: Dispatcher):
     dp.register_callback_query_handler(compliments_info, text="compliments_subscription", state='*')
     dp.register_callback_query_handler(compliments_subscribe, text='turn_compliments', state='*')
     dp.register_callback_query_handler(add_compliment, text='add_compliment', state='*')
-    dp.register_message_handler(compliment_handler, state='*')
+    dp.register_message_handler(compliment_handler, state='compliment')

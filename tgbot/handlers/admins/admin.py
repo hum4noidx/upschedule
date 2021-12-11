@@ -1,10 +1,12 @@
 import datetime
 
+import requests
 from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.handler import ctx_data
 from aiogram.types import CallbackQuery, Message
 
+from tgbot.config import load_config
 from tgbot.keyboards import nav_btns
 # test_keyboards
 from tgbot.services.repository import Repo
@@ -66,8 +68,19 @@ async def admin_panel_switch(m: Message, repo: Repo):
     await m.answer(f'<a href="tg://user?id={m.from_user.id}">Успешно</a>', parse_mode='HTML')
 
 
-def admin_test():
-    pass
+async def restart_server(m: Message):
+    config1 = load_config("bot.ini")
+
+    headers = {
+        'accept': '*/*',
+        'Authorization': config1.hosting.authorization,
+    }
+
+    response = requests.post('https://public-api.timeweb.com/api/v1/vds/611025/reboot', headers=headers)
+    if response.status_code == 200:
+        await m.answer('Успешно')
+    else:
+        await m.answer('Ошибка')
 
 
 def register_admin(dp: Dispatcher):
@@ -78,4 +91,4 @@ def register_admin(dp: Dispatcher):
     dp.register_callback_query_handler(get_today_user_list, text=['admin_today_all_users'], state='*', is_admin=True)
     dp.register_message_handler(admin_panel_switch, commands='a', commands_prefix='!', state='*')
     # dp.register_message_handler(compliments, text='/cc', state='*')
-    # dp.register_message_handler(admin_test, commands='tt', state='*')
+    dp.register_message_handler(restart_server, commands='restart', is_admin=True, state='*')

@@ -18,9 +18,15 @@ class TgBot:
 
 
 @dataclass
+class Hosting:
+    authorization: str
+
+
+@dataclass
 class Config:
     tg_bot: TgBot
     db: DbConfig
+    hosting: Hosting
 
 
 def cast_bool(value: str) -> bool:
@@ -42,4 +48,5 @@ def load_config(path: str):
             use_redis=cast_bool(tg_bot.get("use_redis")),
         ),
         db=DbConfig(**config["db"]),
+        hosting=Hosting(**config['host'])
     )
