@@ -10,10 +10,8 @@ class Repo:
     async def add_user(self, user_id, full_name):
         """Store user in DB, ignore duplicates"""
         await self.conn.execute(
-            'INSERT INTO users_new (user_id, full_name) VALUES ($1, $2)'
-            'ON CONFLICT (user_id) DO UPDATE SET uses=users_new.uses+1',
-            user_id, full_name)
-        return
+            'INSERT INTO users_new(user_id, full_name) SELECT $1, $2 WHERE NOT(SELECT TRUE FROM users_new WHERE '
+            'user_id=$1)', user_id, full_name)
 
     async def schedule_user_usage(self, user_id):
         await self.conn.execute(
