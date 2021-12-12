@@ -37,7 +37,7 @@ async def broadcast_start(msg: Message, state: FSMContext):
     user_class = user_data['broadcast_class']
     user_profile = user_data['broadcast_profile']
     user_math = user_data['broadcast_math']
-
+    # print(user_data)
     # getting id's from Db
 
     # getting ALL user_id's to broadcast
@@ -49,13 +49,13 @@ async def broadcast_start(msg: Message, state: FSMContext):
         if user_profile == 'class_all':
             users = await repo.broadcast_get_class_ids(int(user_class))
             # Берем список айдишников для одного класса
-        elif user_profile != 'class_all' and user_math == 'all':
+        elif user_profile != 'class_all' and user_math == 'all' or user_math is None:
             users = await repo.broadcast_get_profile_ids(user_profile)
             # Берем айдишники для класса и профиля, математика не учитывается
         elif user_profile != 'prof_all' and user_math != 'all':
             users = await repo.broadcast_get_first_ids(user_class, user_profile, user_math)
             # Берем айдишники для класса, профиля и математики
-
+    # TODO: сделать нормальную фильтрацию
     await state.finish()
     await MessageBroadcaster(users, msg).run()
     await msg.answer('📨 Рассылка успешна', reply_markup=nav_btns.back_to_mm)
