@@ -4,3 +4,6 @@ asyncpg~=0.25.0
 aiogram_broadcaster
 aiogram_dialog
 APScheduler~=3.8.1
+requests~=2.26.0
+xlrd~=1.2.0
+pandas
