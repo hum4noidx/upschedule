@@ -10,8 +10,7 @@ class Repo:
     async def add_user(self, user_id, full_name):
         """Store user in DB, ignore duplicates"""
         await self.conn.execute(
-            'INSERT INTO main_passport(user_id, full_name) SELECT $1, $2 WHERE NOT(SELECT TRUE FROM main_passport '
-            'WHERE '
+            'INSERT INTO main_passport(user_id, full_name) SELECT $1, $2 WHERE NOT(SELECT TRUE FROM main_passport WHERE '
             'user_id=$1)', user_id, full_name)
 
     async def schedule_user_usage(self, user_id):
@@ -126,8 +125,8 @@ class Repo:
         await self.conn.execute(
             'UPDATE main_passport SET vip = true WHERE id = $1', user_id
         )
-        # status = await self.conn.fetchrow('SELECT vip FROM main_passport Where id = $1', user_id)
-        # return status['vip']
+        status = await self.conn.fetchrow('SELECT vip FROM main_passport Where id = $1', user_id)
+        return status['vip']
 
     async def get_user_name(self, user_id):
         name = await self.conn.fetchrow(

@@ -37,9 +37,7 @@ async def broadcast_start(msg: Message, state: FSMContext):
     user_class = user_data['broadcast_class']
     user_profile = user_data['broadcast_profile']
     user_math = user_data['broadcast_math']
-
     # getting id's from Db
-
     # getting ALL user_id's to broadcast
     if user_class == 'classes_all':
         users = await repo.get_user_ids()
