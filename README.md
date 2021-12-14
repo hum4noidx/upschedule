@@ -1,7 +1,8 @@
 # 1208 BOT
-![1208bot](https://b.radikal.ru/b26/2112/a9/00288387fe79.png "1208bot")
-## _Multifunctional Telegram Bot for School_
 
+![1208bot](https://b.radikal.ru/b26/2112/a9/00288387fe79.png "1208bot")
+
+## _Multifunctional Telegram Bot for School_
 
 ## Features
 

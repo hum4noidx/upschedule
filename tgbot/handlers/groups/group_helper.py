@@ -89,10 +89,41 @@ async def remind_set_time(m: Message, state: FSMContext):
     await m.answer(f'<a href="tg://user?id={user_id}">Напоминаю</a>\n{text}', parse_mode='HTML')
 
 
+# ======================================GROUP ADMINISTRATION =========================================================
+async def kick_user(m: Message):
+    user_id = m.reply_to_message.from_user.id
+    name = m.reply_to_message.from_user.full_name
+    name_admin = m.from_user.full_name
+    user_id_admin = m.from_user.id
+    await m.bot.kick_chat_member(chat_id=m.chat.id, user_id=user_id)
+    await m.bot.unban_chat_member(chat_id=m.chat.id, user_id=user_id)
+    await m.answer(
+        f'<a href="tg://user?id={user_id_admin}">{name_admin}</a> кикнул <a href="tg://user?id={user_id}">{name}</a>',
+        parse_mode='HTML')
+
+
+async def stickers_switch(m: Message):
+    permissions_on = {'can_send_other_messages': True,
+                      'can_send_messages': True}
+    permissions_off = {'can_send_other_messages': False,
+                       'can_send_messages': True}
+    if m.get_args() == '1':
+        permissions = permissions_on
+        status = '✅'
+    else:
+        permissions = permissions_off
+        status = '❌'
+    await m.bot.set_chat_permissions(chat_id=m.chat.id, permissions=permissions)
+    await m.answer(f'Использование стикеров: {status}')
+
+
 def register_groups(dp: Dispatcher):
     dp.register_message_handler(on_user_left, content_types=types.ContentTypes.LEFT_CHAT_MEMBER)
     dp.register_message_handler(on_user_join, content_types=types.ContentTypes.NEW_CHAT_MEMBERS)
-    dp.register_message_handler(reg_group, commands=['reg'])
-    dp.register_message_handler(remind_group, commands=['remind'])
+    dp.register_message_handler(reg_group, commands=['reg'], chat_type=types.ChatType.GROUP)
+    dp.register_message_handler(remind_group, commands=['remind'], chat_type=types.ChatType.GROUP)
     dp.register_message_handler(remind_set_time, state=RemindGroup.SetTime)
     dp.register_callback_query_handler(broadcast_choose_groups, text="group_broadcast", state="*")
+    dp.register_message_handler(kick_user, commands=['kick'], commands_prefix='!', is_admin=True,
+                                chat_type=types.ChatType.GROUP)
+    dp.register_message_handler(stickers_switch, commands=['stick'], is_admin=True)

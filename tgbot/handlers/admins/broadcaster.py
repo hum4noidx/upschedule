@@ -71,13 +71,16 @@ async def broadcast_choose_profile(c: CallbackQuery, callback_data: typing.Dict[
     if callback_data['classes'] == '11':
         await c.message.edit_text('Профиль:', reply_markup=choose_btns.broadcast_choose_profile_11)
         await Broadcast.choose_math.set()
+    elif callback_data['classes'] == '10':
+        await Broadcast.choose_math.set()
+        await c.message.edit_text('Профиль:', reply_markup=choose_btns.broadcast_choose_profile_10)
     elif callback_data['classes'] == 'classes_all':
         await state.update_data(broadcast_profile=None, broadcast_math=None)
         await Broadcast.final.set()
         await broadcast_get_message(c, state)
-    elif callback_data['classes'] == '10':
+    else:
         await Broadcast.choose_math.set()
-        await c.message.edit_text('Профиль:', reply_markup=choose_btns.broadcast_choose_profile_10)
+        await c.message.edit_text('Буква класса:', reply_markup=choose_btns.broadcast_choose_letter)
 
 
 async def broadcast_choose_math(c: CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):

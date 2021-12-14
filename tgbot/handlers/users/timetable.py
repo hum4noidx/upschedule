@@ -18,7 +18,7 @@ from tgbot.states.states import Timetable
 
 async def timetable_make(c: CallbackQuery, state: FSMContext, user_class,
                          user_profile, user_math, user_date):
-    ignore_classes = [5, 6, 7, 8, 9]
+    ignore_classes = [5, 6, 7, 9]
     if user_class == '11':
         markup = make_buttons()
         await state.update_data(user_class=user_class, user_profile=user_profile, user_math=user_math,
@@ -70,6 +70,9 @@ async def timetable_choose_profile(c: CallbackQuery, callback_data: typing.Dict[
         await c.message.edit_text('Выбери профиль', reply_markup=choose_btns.user_choose_profile_10)
         await Timetable.next()
     elif int(callback_data['classes']) == 9:
+        await c.message.edit_text('Выбери букву класса', reply_markup=choose_btns.user_choose_letter)
+        await Timetable.next()
+    elif int(callback_data['classes']) == 8:
         await c.message.edit_text('Выбери букву класса', reply_markup=choose_btns.user_choose_letter)
         await Timetable.next()
     else:

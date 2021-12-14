@@ -17,8 +17,7 @@ async def user_usage(user_id):
 async def user_start(m: Message, repo: Repo):
     await repo.add_user(m.from_user.id, m.from_user.full_name)
     await m.answer(f'<b>Hello, {m.from_user.full_name}!</b>\n'
-                   f'<u>Это многофункциональный школьный бот</u>\n'
-                   f'<b>Одни из возможностей:</b>\n'
+                   f'<u>Это многофункциональный бот для школы.</u>\n'
                    f'При добавлении в группы автоматически удаляет сообщения о вступлении и выходе участников('
                    f'требуются права администратора)\n\n'
                    f'Для удобства пользования рекомендуется сразу выбрать класс и профиль.\n'
@@ -43,8 +42,19 @@ async def donut_info(message: Message):
                          'Если он действительно полезный - поддержи его работу.', reply_markup=nav_btns.donut)
 
 
+async def user_feedback(c: CallbackQuery):
+    await c.message.edit_text('Вопросы, замечания, предложения')
+
+
+async def show_help_info(m: Message):
+    await m.answer(f'<b>Информация</b>\n'
+                   f'Исходный код - <a href="https://github.com/hum4noidx/1208bot">ссылка</a>\n'
+                   f'По всем вопросам - <a href="tg://user?id=713870562">сюда</a>', parse_mode='HTML')
+
+
 def register_user(dp: Dispatcher):
     dp.register_message_handler(user_start, commands=['start'], state='*')
     dp.register_message_handler(donut_info, commands='donut', state='*')
+    dp.register_message_handler(show_help_info, commands=['help'], state='*')
 
 # TODO: переписать названия функций на нормальный язык

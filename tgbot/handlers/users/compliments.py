@@ -29,10 +29,15 @@ async def compliment_handler(m: Message, state: FSMContext):
     compl = m.text
     data = ctx_data.get()
     repo = data.get("repo")
-    await repo.add_compliment(compl, m.from_user.full_name)
-    await m.answer('Успешно', reply_markup=nav_btns.back_to_mm)
+    if m.from_user.id == 557375661:
+        await m.answer('Твоя мама тоже', reply_markup=nav_btns.back_to_mm)
+    else:
+        await repo.add_compliment(compl, m.from_user.full_name)
+        await m.answer('Успешно', reply_markup=nav_btns.back_to_mm)
     await state.reset_state()
 
+
+# TODO: подтверждение добавления комплимента администратором
 
 def register_compliments(dp: Dispatcher):
     dp.register_callback_query_handler(compliments_info, text="compliments_subscription", state='*')
