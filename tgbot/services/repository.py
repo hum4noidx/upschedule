@@ -99,7 +99,8 @@ class Repo:
         data = ([uid['user_id'] for uid in ids])
         return data
 
-    async def broadcast_get_first_ids(self, user_class, user_profile, user_math):
+    async def broadcast_get_first_ids(self, user_class, user_profile, user_math1):
+        user_math = str(user_math1)
         ids = await self.conn.fetch(
             'Select user_id From users_new Where user_class = $1 And user_prof = $2 And user_math = $3',
             user_class, user_profile, user_math)

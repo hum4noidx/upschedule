@@ -1,5 +1,4 @@
 import typing
-from asyncio import sleep
 
 from aiogram import Dispatcher, types
 from aiogram.dispatcher import FSMContext
@@ -24,13 +23,14 @@ from tgbot.states.states import Broadcast
 # 9. ask for confirmation and do broadcast
 
 
-async def broadcast_get_message(c: CallbackQuery):
-    await c.message.edit_text('Введите текст для рассылки:', reply_markup=nav_btns.back_to_mm)
+async def broadcast_get_message(c: CallbackQuery, state: FSMContext):
+    await c.message.edit_text('✏️ Введите текст для рассылки:', reply_markup=nav_btns.back_to_mm)
 
 
-async def start_broadcast(msg: Message, state: FSMContext):
+async def broadcast_start(msg: Message, state: FSMContext):
     data = ctx_data.get()
     repo = data.get("repo")
+    m_id = await state.get_data()
     # collecting data
     users = None
     user_data = await state.get_data()
@@ -55,13 +55,13 @@ async def start_broadcast(msg: Message, state: FSMContext):
         elif user_profile != 'prof_all' and user_math != 'all':
             users = await repo.broadcast_get_first_ids(user_class, user_profile, user_math)
             # Берем айдишники для класса, профиля и математики. Полноценная рассылка, получается..
-
     await state.finish()
     await MessageBroadcaster(users, msg).run()
+    await msg.answer('📨 Рассылка успешна', reply_markup=nav_btns.back_to_mm)
 
 
 async def broadcast_choose_class(c: CallbackQuery):
-    await c.message.edit_text('Получатели рассылки:', reply_markup=choose_btns.broadcast_choose_class)
+    await c.message.edit_text('📃 Получатели рассылки:', reply_markup=choose_btns.broadcast_choose_class)
     await Broadcast.choose_profile.set()
 
 
@@ -70,14 +70,16 @@ async def broadcast_choose_profile(c: CallbackQuery, callback_data: typing.Dict[
     if callback_data['classes'] == '11':
         await c.message.edit_text('Профиль:', reply_markup=choose_btns.broadcast_choose_profile_11)
         await Broadcast.choose_math.set()
-    elif callback_data['classes'] == 'classes_all':
-        await state.update_data(broadcast_profile=None, broadcast_math=None)
-        print('Рассылка для всех')
-        await Broadcast.final.set()
-        await broadcast_get_message(c)
     elif callback_data['classes'] == '10':
         await Broadcast.choose_math.set()
         await c.message.edit_text('Профиль:', reply_markup=choose_btns.broadcast_choose_profile_10)
+    elif callback_data['classes'] == 'classes_all':
+        await state.update_data(broadcast_profile=None, broadcast_math=None)
+        await Broadcast.final.set()
+        await broadcast_get_message(c, state)
+    else:
+        await Broadcast.choose_math.set()
+        await c.message.edit_text('Буква класса:', reply_markup=choose_btns.broadcast_choose_letter)
 
 
 async def broadcast_choose_math(c: CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
@@ -92,13 +94,13 @@ async def broadcast_choose_math(c: CallbackQuery, callback_data: typing.Dict[str
         else:
             await state.update_data(broadcast_math=None)
         await Broadcast.final.set()
-        await broadcast_get_message(c)
+        await broadcast_get_message(c, state)
 
 
 async def broadcast_data_collect(c: CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
     await state.update_data(broadcast_math=callback_data['math'])
     await Broadcast.final.set()
-    await broadcast_get_message(c)
+    await broadcast_get_message(c, state)
 
 
 def register_broadcast(dp: Dispatcher):
@@ -108,7 +110,7 @@ def register_broadcast(dp: Dispatcher):
     dp.register_callback_query_handler(broadcast_choose_math, profile.filter(), state=Broadcast.choose_math)
     dp.register_callback_query_handler(broadcast_data_collect, math.filter(), state=Broadcast.confirm)
     dp.register_callback_query_handler(broadcast_get_message, state=Broadcast.confirm)
-    dp.register_message_handler(start_broadcast, state=Broadcast.final,
+    dp.register_message_handler(broadcast_start, state=Broadcast.final,
                                 content_types=types.ContentTypes.ANY)
 
 # TODO: мб сделать планировщик рассылки?..
