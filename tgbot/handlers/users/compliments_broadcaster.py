@@ -17,8 +17,8 @@ async def get_compliments():
                                  database=config1.db.database,
                                  host=config1.db.host)
     result = await conn.fetch('SELECT compliment, com_owner, theme FROM compliments')
-    compliments = ([compliment['compliment'] for compliment in result])
-    return compliments
+    compliments_raw = ([compliment['compliment'] for compliment in result])
+    return compliments_raw
 
 
 async def get_ids():
@@ -29,21 +29,21 @@ async def get_ids():
                                  database=config1.db.database,
                                  host=config1.db.host)
     result = await conn.fetch('SELECT user_id FROM user_compliments')
-    ids = ([id['user_id'] for id in result])
+    ids = ([uid['user_id'] for uid in result])
     return ids
 
 
 async def compliments(dp: Dispatcher):
-    compliment = await get_compliments()
+    compliments = await get_compliments()
     ids = await get_ids()
-    for id in ids:
-        compl = random.choice(compliment)
-        await dp.bot.send_message(chat_id=id, text=compl)
+    for uid in ids:
+        compliment = random.choice(compliments)
+        await dp.bot.send_message(chat_id=uid, text=compliment)
 
 
 def schedule_jobs(dp: Dispatcher, scheduler):
-    # pass
-    scheduler.add_job(compliments, 'cron', day_of_week='mon-fri', hour=8, args=(dp,))
-    scheduler.add_job(compliments, 'cron', day_of_week='mon-fri', hour=12, args=(dp,))
+    pass
+    # scheduler.add_job(compliments, 'cron', day_of_week='mon-fri', hour=8, args=(dp,))
+    # scheduler.add_job(compliments, 'cron', day_of_week='mon-fri', hour=12, args=(dp,))
 
     # scheduler.add_job(compliments, 'interval', seconds=5, args=(dp,))

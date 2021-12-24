@@ -18,20 +18,17 @@ from tgbot.states.states import Timetable
 
 async def timetable_make(c: CallbackQuery, state: FSMContext, user_class,
                          user_profile, user_math, user_date):
-    ignore_classes = [5, 6, 7, 9]
     if user_class == '11':
         markup = make_buttons()
         await state.update_data(user_class=user_class, user_profile=user_profile, user_math=user_math,
                                 user_date=user_date)
-    # elif user_class == '9':
-    #     markup = make_buttons_y()
     else:
         markup = nav_btns.back_to_mm
     try:  # собираем расписание по переданным данным
         await c.message.edit_text(
             f"{days.get(user_class).get(user_profile).get(user_math).get(user_date).get('description')}\n\n"
             f"{days.get(user_class).get(user_profile).get(user_math).get(user_date).get('classes')}",
-            parse_mode='HTML', reply_markup=markup)
+            reply_markup=markup)
         await state.set_state('other_schedule')
         await user_usage(c.from_user.id)
     except AttributeError:
@@ -143,7 +140,7 @@ async def timetable_other(c: CallbackQuery, callback_data: typing.Dict[str, str]
         await timetable_make(c, state, user_class, user_profile, user_math, user_date)
     except KeyError:
         await c.answer(
-            'Ошибка!\nСкорее всего, это произошло из-за того, что вы долго оставались в этом меню.\n'
+            'Ошибка!\nСкорее всего, это произошло из-за того, что вы слишком долго оставались в этом меню.\n'
             'Вернитесь в главное меню', show_alert=True)
 
 

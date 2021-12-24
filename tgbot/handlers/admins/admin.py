@@ -36,8 +36,9 @@ async def greeting(user_id):
 async def main_menu_admin(c: CallbackQuery, state: FSMContext):
     await state.reset_state()
     await c.answer()
-    await c.message.edit_text(f'<b>Главное меню</b>\n{await greeting(c.from_user.id)}',
-                              reply_markup=nav_btns.admin_main_menu, parse_mode='HTML')
+    await c.message.edit_text(f'<b>Главное меню</b>\n{await greeting(c.from_user.id)}\n'
+                              f'<a href="https://t.me/news_1208bot/7">Closed Access</a>',
+                              reply_markup=nav_btns.admin_main_menu, parse_mode='HTML', disable_web_page_preview=True)
 
 
 async def get_user_list(c: CallbackQuery, repo: Repo):
@@ -53,8 +54,8 @@ async def get_user_info(message: types.message, repo: Repo):
     info = message.get_args()
     try:
         await message.answer(await repo.user_info(info), parse_mode='HTML', reply_markup=nav_btns.back_to_mm)
-    except:
-        await message.answer('Ошибка')
+    except ValueError:
+        await message.answer('<b>Ошибка!</b>\nИспользование: /i {id пользователя}')
 
 
 async def add_vip_user(m: Message, repo: Repo):
@@ -83,6 +84,16 @@ async def restart_server(m: Message):
         await m.answer('Ошибка')
 
 
+async def admin_access(m: Message):
+    await m.answer('Привет!..', reply_markup=nav_btns.start)
+
+
+async def leave_all(m: Message):
+    chats = []
+    for chat in chats:
+        await m.bot.leave_chat(chat)
+
+
 def register_admin(dp: Dispatcher):
     dp.register_callback_query_handler(get_user_list, text=['admin_all_users'], is_admin=True,
                                        state='*')
@@ -92,3 +103,5 @@ def register_admin(dp: Dispatcher):
     dp.register_message_handler(admin_panel_switch, commands='a', commands_prefix='!', state='*')
     # dp.register_message_handler(compliments, text='/cc', state='*')
     dp.register_message_handler(restart_server, commands='restart', is_admin=True, state='*')
+    dp.register_message_handler(admin_access, commands=['admin'], is_admin=True, state='*')
+    dp.register_message_handler(admin_access, commands=['admin'], is_vip=True, state='*')
