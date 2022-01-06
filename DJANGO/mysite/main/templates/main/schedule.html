@@ -1,0 +1,47 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Расписание уроков{% endblock%}
+
+{% block content %}
+<div class="schedule">
+
+    <table class="table table-stripped table-dark">
+        <thead>
+        <tr class="">
+            <th scope="row" id="day">День</th>
+            <th id="number">Номер</th>
+            <th>Урок</th>
+            <th>Кабинет</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for lesson in schedule %}
+        <tr class="">
+            <td>{{lesson.lsn_date}}</td>
+            <td id="number">{{lesson.lsn_number}}</td>
+            <td>{{lesson.lsn_text}}</td>
+            <td>{{lesson.lsn_class}}</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+    <input class="btn btn-danger shadow-sm" type=button value="Previous Page" onClick="javascript:history.go(-1);">
+</div>
+<script type="text/javascript">
+    const table = document.querySelector('table');
+
+    let headerCell = null;
+
+    for (let row of table.rows) {
+        const firstCell = row.cells[0];
+
+        if (headerCell === null || firstCell.innerText !== headerCell.innerText) {
+            headerCell = firstCell;
+        } else {
+            headerCell.rowSpan++;
+            firstCell.remove();
+        }
+    }
+</script>
+{% endblock%}

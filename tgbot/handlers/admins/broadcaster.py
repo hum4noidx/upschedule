@@ -30,7 +30,7 @@ async def broadcast_get_message(c: CallbackQuery, state: FSMContext):
 async def broadcast_start(msg: Message, state: FSMContext):
     data = ctx_data.get()
     repo = data.get("repo")
-    m_id = await state.get_data()  # TODO fix this
+    m_id = await state.get_data()
     # collecting data
     users = None
     user_data = await state.get_data()
@@ -55,7 +55,7 @@ async def broadcast_start(msg: Message, state: FSMContext):
         elif user_profile != 'prof_all' and user_math != 'all':
             users = await repo.broadcast_get_first_ids(user_class, user_profile, user_math)
             # Берем айдишники для класса, профиля и математики
-    # await msg.bot.delete_message(chat_id=msg.chat.id, message_id=m_id)
+
     await state.finish()
     await MessageBroadcaster(users, msg).run()
     await msg.answer('📨 Рассылка успешна', reply_markup=nav_btns.back_to_mm)

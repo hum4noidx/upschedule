@@ -1,0 +1,19 @@
+body {
+    background: #2c2c2c !important;
+    color: #fff;
+}
+
+@media screen and (max-width: 980px) {
+    .schedule {
+        justify-content: center;
+        margin-top: 10px;
+    }
+
+    td {
+        word-break: break-word;
+    }
+
+    .grades {
+
+    }
+}

@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Список профилей</title>
+</head>
+<body>
+<h1>РАСПИСАНИЕ</h1>
+{% if timetable_list %}
+{% for profile in timetable_list %}
+<a href="{% url 'timetables:timetable' profile.lesson_profile %}">{{profile.lesson_profile}}</a>
+{% endfor %}
+{% else %}
+<p>Расписания нет</p>
+{% endif %}
+
+</body>
+</html>

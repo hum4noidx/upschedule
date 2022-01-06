@@ -77,7 +77,7 @@ async def main():
 
     # start
     try:
-        scheduler.start()
+        # scheduler.start()
         await dp.start_polling()
     finally:
         await dp.storage.close()

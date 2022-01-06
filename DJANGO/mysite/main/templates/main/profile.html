@@ -1,0 +1,24 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Профили{% endblock%}
+
+{% block content %}
+
+<div class="profiles">
+    {% if profiles %}
+    <h1>{{profiles.first.grade_id}} класс</h1>
+    <h2>Профили</h2>
+    <div class="btn-group-vertical">
+        {% for profile in profiles %}
+        <a class="btn btn-warning shadow-sm mb-3" href="{% url 'main:days' profile.grade_id profile.profile_db %}">{{profile.profile}}</a>
+        {% endfor %}
+        <input class="btn btn-danger shadow-sm" type=button value="Previous Page" onClick="javascript:history.go(-1);">
+    </div>
+    {%else%}
+    <h2>Пусто</h2>
+    {% endif %}
+
+</div>
+
+
+{% endblock%}

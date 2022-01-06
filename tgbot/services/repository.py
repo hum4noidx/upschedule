@@ -12,6 +12,8 @@ class Repo:
         await self.conn.execute(
             'INSERT INTO users_new(user_id, full_name) SELECT $1, $2 WHERE NOT(SELECT TRUE FROM users_new WHERE '
             'user_id=$1)', user_id, full_name)
+        # await self.conn.execute(
+        #     'INSERT INTO users_new(user_id, full_name) VALUES($1,$2) ON CONFLICT DO Nothing', user_id, full_name)
 
     async def schedule_user_usage(self, user_id):
         await self.conn.execute(
@@ -123,15 +125,17 @@ class Repo:
 
     async def add_vip_user(self, user_id):
         await self.conn.execute(
-            'UPDATE users_new SET vip = true WHERE id = $1', user_id
+            'UPDATE users SET vip = true WHERE id = $1 and vip = False', user_id
         )
-        # status = await self.conn.fetchrow('SELECT vip FROM users_new Where id = $1', user_id)
-        # return status['vip']
+        status = await self.conn.fetchrow('SELECT vip FROM users_new Where id = $1', user_id)
+        return status['vip']
 
     async def get_user_name(self, user_id):
         name = await self.conn.fetchrow(
             'SELECT full_name FROM users_new WHERE  user_id=$1', user_id
         )
+        if name is None:
+            name = None
         return name['full_name']
 
     async def admin_switch(self, user_id):

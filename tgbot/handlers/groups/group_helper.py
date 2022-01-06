@@ -28,7 +28,7 @@ async def reg_group(m: Message, repo: Repo):
     try:
         await repo.add_group(chat_id, group_name)
         await m.reply(f'Успешно ✅\nID группы - <code>{chat_id}</code>', parse_mode='HTML')
-    except:  # TODO
+    except:
         await m.reply('❌ Ошибка')
 
 

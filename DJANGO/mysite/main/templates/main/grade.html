@@ -1,0 +1,18 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Классы{% endblock%}
+
+{% block content %}
+<div class="grades">
+    <h1>Классы</h1>
+    <hr>
+    <div class="btn-group">
+        {% for grade in grades %}
+        <a class="btn btn-warning shadow-sm mb-1" href="{% url 'main:profile' grade.id %}">{{grade.grade}}</a>
+        {% endfor %}
+    </div>
+
+</div>
+
+
+{% endblock%}

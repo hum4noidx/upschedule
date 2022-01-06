@@ -1,0 +1,11 @@
+{% extends 'main/base.html' %}
+{% block title %}
+Главная страница
+{% endblock%}
+
+{% block content %}
+<h1>Главная страница</h1>
+<p>Привет!</p>
+<p>Все пошло немного не по плану..</p>
+<a href="{% url 'main:grade'%}">*тык*</a>
+{% endblock%}

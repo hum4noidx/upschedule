@@ -1,0 +1,62 @@
+{% load static %}
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <title>Список классов</title>
+    <link rel="stylesheet" href="{% static '/css/styles.css'%}" type="text/css">
+</head>
+<body>
+{% if timetable_list %}
+<div class="main_table">
+    <h1>Расписание</h1>
+
+    <!--        <tr>-->
+    <!--            <th>День</th>-->
+    <!--            <th>Номер</th>-->
+    <!--            <th>Урок</th>-->
+    <!--            <th>Кабинет</th>-->
+    <!--        </tr>-->
+    <!--        <tr>-->
+    <!--            <th>Класс</th>-->
+    <!--            <th>Профиль</th>-->
+    <!--            <th>Математика</th>-->
+    <!--        </tr>-->
+    <!--        </thead>-->
+    <!--        <tbody>-->
+    {% for lesson in timetable_list %}
+    <a href="{% url 'timetables:grade' lesson.lesson_grade %}">{{lesson.lesson_grade}}</a>
+    <!--        <p>{{lesson.lesson_grade}}</p>-->
+
+    <!--        <tr>-->
+    <!--            <td>{{lesson.lesson_date}}</td>-->
+    <!--            <td>{{lesson.lesson_number}}</td>-->
+    <!--            <td>{{lesson.lesson_text}}</td>-->
+    <!--            <td>{{lesson.classroom}}</td>-->
+    <!--        </tr>-->
+
+    {% endfor %}
+
+
+</div>
+
+<script type="text/javascript">
+    const table = document.querySelector('table');
+
+    let headerCell = null;
+
+    for (let row of table.rows) {
+        const firstCell = row.cells[0];
+
+        if (headerCell === null || firstCell.innerText !== headerCell.innerText) {
+            headerCell = firstCell;
+        } else {
+            headerCell.rowSpan++;
+            firstCell.remove();
+        }
+    }
+</script>
+{% else %}
+<p>Расписания нет</p>
+{% endif %}
+</body>
+</html>
