@@ -4,21 +4,40 @@
 
 {% block content %}
 
-<div class="profiles">
+<div class="profiles vh-100">
     {% if profiles %}
     <h1>{{profiles.first.grade_id}} класс</h1>
     <h2>Профили</h2>
     <div class="btn-group-vertical">
+        {% if profiles.first.grade_id == 11%}
         {% for profile in profiles %}
-        <a class="btn btn-warning shadow-sm mb-3" href="{% url 'main:days' profile.grade_id profile.profile_db %}">{{profile.profile}}</a>
+        <a class="btn btn-warning mb-3 nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+           aria-haspopup="true" aria-expanded="false">{{profile.profile}}</a>
+        <div class="dropdown-menu" style="">
+            {% if profile.profile_db == 'fm'%}
+            <a class="dropdown-item" href="{% url 'main:days' profile.grade_id profile.profile_db 'prof' %}">Профиль</a>
+            {% else %}
+            <a class="dropdown-item" href="{% url 'main:days' profile.grade_id profile.profile_db 'prof' %}">Профиль</a>
+            <a class="dropdown-item" href="{% url 'main:days' profile.grade_id profile.profile_db 'base' %}">База</a>
+            {% endif%}
+        </div>
         {% endfor %}
-        <input class="btn btn-danger shadow-sm" type=button value="Previous Page" onClick="javascript:history.go(-1);">
+        {%else%}
+        {% for profile in profiles %}
+        <a class="btn btn-warning mb-3" href="{% url 'main:days' profile.grade_id profile.profile_db 'None' %}">{{profile.profile}}</a>
+        {% endfor %}
+        {% endif %}
+        <input class="btn btn-danger shadow-sm" type=button value="Previous Page"
+               onClick="javascript:history.go(-1);">
     </div>
     {%else%}
     <h2>Пусто</h2>
+    <input class="btn btn-danger shadow-sm" type=button value="Previous Page"
+           onClick="javascript:history.go(-1);">
     {% endif %}
-
 </div>
-
+<a class="btn btn-warning shadow-sm mb-3" data-bs-toggle="collapse" href="#target{{profile.id}}"
+   data-bs-target="#target{{profile.id}}">{{profile.profile}}</a>
+<div class="collapse target" id="target{{profile.id}}"></div>
 
 {% endblock%}

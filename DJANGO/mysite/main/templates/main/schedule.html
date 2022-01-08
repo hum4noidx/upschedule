@@ -3,13 +3,13 @@
 {% block title %}Расписание уроков{% endblock%}
 
 {% block content %}
-<div class="schedule">
+<div class="schedule vh-100">
 
     <table class="table table-stripped table-dark">
         <thead>
-        <tr class="">
+        <tr class="table-primary">
             <th scope="row" id="day">День</th>
-            <th id="number">Номер</th>
+            <th>Номер</th>
             <th>Урок</th>
             <th>Кабинет</th>
         </tr>
@@ -18,7 +18,7 @@
         {% for lesson in schedule %}
         <tr class="">
             <td>{{lesson.lsn_date}}</td>
-            <td id="number">{{lesson.lsn_number}}</td>
+            <td>{{lesson.lsn_number}}</td>
             <td>{{lesson.lsn_text}}</td>
             <td>{{lesson.lsn_class}}</td>
         </tr>

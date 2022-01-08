@@ -49,7 +49,7 @@ class Days(ListView):
     #     return Profile.objects.values().filter(grade_id=self.kwargs['pk'])
 
 
-def days(request, pk, prof):
+def days(request, pk, prof, math):
     days_list = {
         1: 'Понедельник',
         2: 'Вторник',
@@ -61,12 +61,14 @@ def days(request, pk, prof):
     profile = Profile.objects.values().filter(profile_db=prof)
     return render(request, 'main/days.html', {'days': days_list,
                                               'grade': pk,
-                                              'profile': profile})
+                                              'profile': profile,
+                                              'math': math})
 
 
-def schedule(request, pk, prof, day):
+def schedule(request, pk, prof, math, day):
     print(pk, prof, day)
-    schedule = Schedule.objects.all().filter(lsn_grade=pk).filter(lsn_profile=prof).filter(lsn_date=day).order_by(
+    schedule = Schedule.objects.all().filter(lsn_grade=pk).filter(lsn_profile=prof).filter(lsn_math=math).filter(
+        lsn_date=day).order_by(
         'lsn_date', 'lsn_number')
     return render(request, 'main/schedule.html', {'schedule': schedule})
 
