@@ -25,8 +25,7 @@ news_link = InlineKeyboardButton('Ссылка', url='https://t.me/news_1208bot/
 start = InlineKeyboardMarkup(row_width=1).add(start_button)
 donut = InlineKeyboardMarkup(row_width=1).add(donut_link)
 back_to_mm = InlineKeyboardMarkup(row_width=1).add(cancel_button)
-main_menu = InlineKeyboardMarkup(resize_keyboard=True, row_width=1).add(schedule_button, register_button,
-                                                                        compliments_subscription, today_button)
+main_menu = InlineKeyboardMarkup(resize_keyboard=True, row_width=1).add(schedule_button, register_button, today_button)
 main_menu_vip = InlineKeyboardMarkup(resize_keyboard=True, row_width=2).add(schedule_button).row(settings_button).row(
     today_button, tomorrow_button)
 admin_main_menu = InlineKeyboardMarkup(resize_keyboard=True, row_width=2).add(schedule_button, settings_button).row(
@@ -34,7 +33,7 @@ admin_main_menu = InlineKeyboardMarkup(resize_keyboard=True, row_width=2).add(sc
 admin_users_list = InlineKeyboardMarkup(row_width=1).add(today_users, cancel_button)
 user_confirm_register = InlineKeyboardMarkup(row_width=2).add(go_register, cancel_register)
 user_settings = InlineKeyboardMarkup(resize_keyboard=True, row_width=2).add(change_name_button).row(
-    register_button).row(compliments_subscription).row(cancel_button)
+    register_button).row(cancel_button)
 compliments = InlineKeyboardMarkup(resize_keyboard=True, row_width=2).add(turn_compliments, add_compliment,
                                                                           cancel_button)
 compliments_add = InlineKeyboardMarkup(resize_keyboard=True, row_width=2).row(add_compliment, cancel_button)

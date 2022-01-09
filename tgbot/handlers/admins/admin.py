@@ -37,7 +37,7 @@ async def main_menu_admin(c: CallbackQuery, state: FSMContext):
     await state.reset_state()
     await c.answer()
     await c.message.edit_text(f'<b>Главное меню</b>\n{await greeting(c.from_user.id)}\n'
-                              f'<a href="https://t.me/news_1208bot/7">Closed Access</a>',
+                              f'<a href="https://t.me/upschedulebot">Rebranding</a>',
                               reply_markup=nav_btns.admin_main_menu, parse_mode='HTML', disable_web_page_preview=True)
 
 
