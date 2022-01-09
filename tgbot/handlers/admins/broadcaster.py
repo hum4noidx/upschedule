@@ -30,7 +30,7 @@ async def broadcast_get_message(c: CallbackQuery, state: FSMContext):
 async def broadcast_start(msg: Message, state: FSMContext):
     data = ctx_data.get()
     repo = data.get("repo")
-    m_id = await state.get_data()
+    m_id = await state.get_data()  # TODO fix this
     # collecting data
     users = None
     user_data = await state.get_data()

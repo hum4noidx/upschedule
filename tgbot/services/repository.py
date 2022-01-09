@@ -123,10 +123,10 @@ class Repo:
 
     async def add_vip_user(self, user_id):
         await self.conn.execute(
-            'UPDATE users SET vip = true WHERE id = $1 and vip = False', user_id
+            'UPDATE users_new SET vip = true WHERE id = $1', user_id
         )
-        status = await self.conn.fetchrow('SELECT vip FROM users_new Where id = $1', user_id)
-        return status['vip']
+        # status = await self.conn.fetchrow('SELECT vip FROM users_new Where id = $1', user_id)
+        # return status['vip']
 
     async def get_user_name(self, user_id):
         name = await self.conn.fetchrow(
