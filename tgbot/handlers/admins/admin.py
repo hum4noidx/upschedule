@@ -81,6 +81,7 @@ async def restart_server(m: Message):
     if response.status_code == 200:
         await m.answer('Успешно')
     else:
+        print(response.status_code)
         await m.answer('Ошибка')
 
 
