@@ -180,4 +180,18 @@ class Repo:
     #     await self.conn.execute(
     #         'INSERT INTO user_compliments (user_id, full_name) Values ($1, $2) ON CONFLICT (user_id) DO NOTHING ',
     #         user_id, full_name)
-#  ======================== SCHEDULE DATABASE ATTEMPTS ========================
+    #  ======================== SCHEDULE DATABASE ATTEMPTS ========================
+    async def get_schedule(self, grade, profile, math, date):
+        raw_schedule = await self.conn.fetch(
+            'SELECT main_schedule.lsn_number, main_discipline.lsn_name '
+            'FROM main_schedule LEFT JOIN main_discipline ON main_schedule.lsn_text_id = main_discipline.id '
+            'WHERE (main_schedule.lsn_grade=$1 AND main_schedule.lsn_profile = $2 '
+            'AND main_schedule.lsn_math = $3 AND main_schedule.lsn_date = $4) '
+            'ORDER BY main_schedule.lsn_number', grade, profile, math, date)
+        schedule = []
+        for lesson in raw_schedule:
+            text = [f'{lesson["lsn_number"]} {lesson["lsn_name"]}']
+            textpath = '\n'.join(text)
+            schedule.append(textpath)
+        text = '\n'.join(schedule)
+        return text
