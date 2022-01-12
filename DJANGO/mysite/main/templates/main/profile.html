@@ -11,7 +11,7 @@
     <div class="btn-group-vertical">
         {% if profiles.first.grade_id == 11%}
         {% for profile in profiles %}
-        <a class="btn btn-warning mb-3 nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
+        <a class="btn btn-primary mb-3 nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#" role="button"
            aria-haspopup="true" aria-expanded="false">{{profile.profile}}</a>
         <div class="dropdown-menu" style="">
             {% if profile.profile_db == 'fm'%}
@@ -24,11 +24,10 @@
         {% endfor %}
         {%else%}
         {% for profile in profiles %}
-        <a class="btn btn-warning mb-3" href="{% url 'main:days' profile.grade_id profile.profile_db 'None' %}">{{profile.profile}}</a>
+        <a class="btn btn-primary mb-3" href="{% url 'main:days' profile.grade_id profile.profile_db 'None' %}">{{profile.profile}}</a>
         {% endfor %}
         {% endif %}
-        <input class="btn btn-danger shadow-sm" type=button value="Previous Page"
-               onClick="javascript:history.go(-1);">
+        <a href="javascript:history.go(-1);" class="btn btn-warning shadow-sm mb-1">🔙</a>
     </div>
     {%else%}
     <h2>Пусто</h2>
@@ -36,7 +35,7 @@
            onClick="javascript:history.go(-1);">
     {% endif %}
 </div>
-<a class="btn btn-warning shadow-sm mb-3" data-bs-toggle="collapse" href="#target{{profile.id}}"
+<a class="btn btn-primary shadow-sm mb-3" data-bs-toggle="collapse" href="#target{{profile.id}}"
    data-bs-target="#target{{profile.id}}">{{profile.profile}}</a>
 <div class="collapse target" id="target{{profile.id}}"></div>
 

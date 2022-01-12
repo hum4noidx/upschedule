@@ -8,10 +8,12 @@
     <hr>
     <div class="btn-group">
         {% for grade in grades %}
-        <a class="btn btn-warning shadow-sm mb-1" href="{% url 'main:profile' grade.id %}">{{grade.grade}}</a>
+        <a class="btn btn-primary shadow-sm mb-1" href="{% url 'main:profile' grade.id %}">{{grade.grade}}</a>
         {% endfor %}
+        <a href="javascript:history.go(-1);" class="btn btn-warning shadow-sm mb-1">🔙</a>
+        <!--        <input class="btn btn-warning shadow-sm" type=button value="🔙" onClick="javascript:history.go(-1);">-->
     </div>
-    <input class="btn btn-danger shadow-sm" type=button value="Previous Page" onClick="javascript:history.go(-1);">
+
 </div>
 
 

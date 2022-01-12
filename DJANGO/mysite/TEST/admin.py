@@ -1,7 +1,5 @@
 from django.contrib import admin
 
-from .models import Timetable, Lecturer, Lesson
-
 
 # class ChoiceInline(admin.StackedInline):
 #     model = Choice
@@ -44,8 +42,7 @@ class TeacherAdmin(admin.ModelAdmin):
     list_filter = ['specialization']
     search_fields = ['name']
 
-
 # admin.site.register(Question, QuestionAdmin)
-admin.site.register(Timetable, TimetableAdmin)
-admin.site.register(Lecturer, TeacherAdmin)
-admin.site.register(Lesson, LessonAdmin)
+# admin.site.register(Timetable, TimetableAdmin)
+# admin.site.register(Lecturer, TeacherAdmin)
+# admin.site.register(Lesson, LessonAdmin)

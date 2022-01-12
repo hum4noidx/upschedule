@@ -10,10 +10,10 @@
 
     <div class="d-flex flex-column d-inline-flex">
         {% for value in days.items%}
-        <a class="btn btn-warning shadow-sm mb-3"
+        <a class="btn btn-primary shadow-sm mb-3"
            href="{% url 'main:schedule' grade profile.first.profile_db math value.0 %}">{{value.1}}</a>
         {% endfor %}
-        <input class="btn btn-danger shadow-sm" type=button value="Previous Page" onClick="javascript:history.go(-1);">
+        <a href="javascript:history.go(-1);" class="btn btn-warning shadow-sm mb-1">🔙</a>
     </div>
     {% endif %}
 </div>
