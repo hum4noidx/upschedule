@@ -12,12 +12,13 @@ from tgbot.handlers.users.user_main import user_usage
 from tgbot.keyboards import nav_btns, choose_btns
 from tgbot.keyboards.choose_btns import week, profile, classes, math, profile_other, make_buttons
 from tgbot.keyboards.nav_btns import recent_schedule
-from tgbot.schedule import days
 from tgbot.states.states import Timetable
 
 
 async def timetable_make(c: CallbackQuery, state: FSMContext, user_class,
                          user_profile, user_math, user_date):
+    data = ctx_data.get()
+    repo = data.get("repo")
     if user_class == '11':
         markup = make_buttons()
         await state.update_data(user_class=user_class, user_profile=user_profile, user_math=user_math,
@@ -26,8 +27,7 @@ async def timetable_make(c: CallbackQuery, state: FSMContext, user_class,
         markup = nav_btns.back_to_mm
     try:  # собираем расписание по переданным данным
         await c.message.edit_text(
-            f"{days.get(user_class).get(user_profile).get(user_math).get(user_date).get('description')}\n\n"
-            f"{days.get(user_class).get(user_profile).get(user_math).get(user_date).get('classes')}",
+            f'<pre>{await repo.get_schedule(int(user_class), user_profile, user_math, int(user_date))}</pre>',
             reply_markup=markup)
         await state.set_state('other_schedule')
         await user_usage(c.from_user.id)

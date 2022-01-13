@@ -1,5 +1,7 @@
 from typing import List
 
+from prettytable import PrettyTable
+
 
 class Repo:
 
@@ -10,7 +12,8 @@ class Repo:
     async def add_user(self, user_id, full_name):
         """Store user in DB, ignore duplicates"""
         await self.conn.execute(
-            'INSERT INTO main_passport(user_id, full_name) SELECT $1, $2 WHERE NOT(SELECT TRUE FROM main_passport WHERE '
+            'INSERT INTO main_passport(user_id, full_name) SELECT $1, $2 WHERE NOT(SELECT TRUE FROM main_passport '
+            'WHERE '
             'user_id=$1)', user_id, full_name)
 
     async def schedule_user_usage(self, user_id):
@@ -169,29 +172,54 @@ class Repo:
         data = ([uid['user_id'] for uid in ids])
         return data
 
-    #  ======================== COMPLIMENTS ========================
+    #  ______________________ COMPLIMENTS ______________________
 
-    # async def db_get_compliments(self): result = await self.conn.fetch('SELECT compliment, com_owner, theme FROM
-    # compliments') compliments = ([compliment['compliment'] for compliment in result]) return compliments async
-    # def add_compliment(self, compliment, full_name): await self.conn.execute('INSERT INTO compliments (compliment,
-    # com_owner) Values($1,$2)', compliment, full_name)
+    # async def db_get_compliments(self):
+    # result = await self.conn.fetch('SELECT compliment, com_owner, theme FROM compliments')
+    # compliments = ([compliment['compliment']
+    # for compliment in result]) return compliments
+    # async def add_compliment(self, compliment, full_name):
+    # await self.conn.execute('INSERT INTO compliments (compliment,com_owner) Values($1,$2)', compliment, full_name)
     #
     # async def add_compliment_subscription(self, user_id, full_name):
     #     await self.conn.execute(
     #         'INSERT INTO user_compliments (user_id, full_name) Values ($1, $2) ON CONFLICT (user_id) DO NOTHING ',
     #         user_id, full_name)
-    #  ======================== SCHEDULE DATABASE ATTEMPTS ========================
+
+    #  ______________________ SCHEDULE DATABASE ______________________
     async def get_schedule(self, grade, profile, math, date):
-        raw_schedule = await self.conn.fetch(
-            'SELECT main_schedule.lsn_number, main_discipline.lsn_name '
-            'FROM main_schedule LEFT JOIN main_discipline ON main_schedule.lsn_text_id = main_discipline.id '
-            'WHERE (main_schedule.lsn_grade=$1 AND main_schedule.lsn_profile = $2 '
-            'AND main_schedule.lsn_math = $3 AND main_schedule.lsn_date = $4) '
-            'ORDER BY main_schedule.lsn_number', grade, profile, math, date)
-        schedule = []
-        for lesson in raw_schedule:
-            text = [f'{lesson["lsn_number"]} {lesson["lsn_name"]}']
-            textpath = '\n'.join(text)
-            schedule.append(textpath)
-        text = '\n'.join(schedule)
-        return text
+        #  ======================== META ========================
+        x = {'fm': 'Физмат', 'gum': 'Гуманитарий', 'se': 'Соцэконом', 'bh': 'Биохим', 'prof': 'Профиль',
+             'basic': 'База'}
+        y = {'1': 'Понедельник', '2': 'Вторник', '3': 'Среда', '4': 'Четверг', '5': 'Пятница', '6': 'Субота',
+             '7': 'Воскресенье', }
+
+        def multiple_replace(target_str, replace_values):
+            for i, j in replace_values.items():
+                target_str = target_str.replace(i, j)
+            return target_str
+
+        udate = multiple_replace(str(date), y)
+        meta = f'{grade}|{profile}|{math}|{udate}'  # Получаем данные из кнопки и строим шапку таблицы
+        my_str = multiple_replace(meta, x)
+        meta = my_str
+
+        #  ======================== DATA ========================
+        if int(date) == 6 or int(date) == 7:
+            schedule = meta + '\nТут пусто'
+        else:
+            raw_schedule = await self.conn.fetch(
+                'SELECT main_schedule.lsn_number, main_discipline.lsn_name, main_schedule.lsn_class '
+                'FROM main_schedule LEFT JOIN main_discipline ON main_schedule.lsn_text_id = main_discipline.id '
+                'WHERE (main_schedule.lsn_grade=$1 AND main_schedule.lsn_profile = $2 '
+                'AND main_schedule.lsn_math = $3 AND main_schedule.lsn_date = $4) '
+                'ORDER BY main_schedule.lsn_number', grade, profile, math, date)
+            # Создаем таблицу
+            schedule = PrettyTable()
+            schedule.title = meta
+            schedule.field_names = ["№", "Урок", "Кабинет"]
+            schedule.align = "l"
+
+            for lesson in raw_schedule:  # Заполняем таблицу данными
+                schedule.add_row([lesson["lsn_number"], lesson["lsn_name"], lesson["lsn_class"]])
+        return schedule

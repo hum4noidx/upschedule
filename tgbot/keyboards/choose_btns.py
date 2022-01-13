@@ -58,7 +58,7 @@ broadcast_choose_letter = InlineKeyboardMarkup(row_width=2).add(letter_a, letter
 
 # choosing math level
 math_prof = InlineKeyboardButton(text='Профиль', callback_data=math.new(math='prof'))
-math_base = InlineKeyboardButton(text='База', callback_data=math.new(math='base'))
+math_base = InlineKeyboardButton(text='База', callback_data=math.new(math='basic'))
 math_all = InlineKeyboardButton(text='Всему профилю', callback_data=math.new(math='all'))
 user_choose_math = InlineKeyboardMarkup(row_width=2).add(math_prof, math_base, cancel_butt)
 broadcast_choose_math = InlineKeyboardMarkup(row_width=2).add(math_prof, math_base, math_all, cancel_butt)
@@ -77,15 +77,15 @@ profile_fm_other = InlineKeyboardButton(text='Физмат',
 profile_gum_other = InlineKeyboardButton(text="Гуманитарий(П)",
                                          callback_data=profile_other.new(profile="gum", math='prof', day='None'))
 profile_gum_base_other = InlineKeyboardButton(text="Гуманитарий(Б)",
-                                              callback_data=profile_other.new(profile="gum", math='base', day='None'))
+                                              callback_data=profile_other.new(profile="gum", math='basic', day='None'))
 profile_se_other = InlineKeyboardButton(text="Соцэконом(П)",
                                         callback_data=profile_other.new(profile="se", math='prof', day='None'))
 profile_se_base = InlineKeyboardButton(text="Соцэконом(Б)",
-                                       callback_data=profile_other.new(profile="se", math='base', day='None'))
+                                       callback_data=profile_other.new(profile="se", math='basic', day='None'))
 profile_bh_other = InlineKeyboardButton(text="Биохим(П)",
                                         callback_data=profile_other.new(profile="bh", math='prof', day='None'))
 profile_bh_base = InlineKeyboardButton(text="Биохим(Б)",
-                                       callback_data=profile_other.new(profile="bh", math='base', day='None'))
+                                       callback_data=profile_other.new(profile="bh", math='basic', day='None'))
 prev_day = InlineKeyboardButton(text="🔚", callback_data=profile_other.new(profile='None', math='None', day='prev'))
 next_day = InlineKeyboardButton(text="🔜", callback_data=profile_other.new(profile='None', math='None', day='next'))
 
