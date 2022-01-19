@@ -189,10 +189,10 @@ class Repo:
     #  ______________________ SCHEDULE DATABASE ______________________
     async def get_schedule(self, grade, profile, math, date):
         #  ======================== META ========================
-        x = {'fm': 'Физмат', 'gum': 'Гуманитарий', 'se': 'Соцэконом', 'bh': 'Биохим', 'prof': 'Профиль',
+        x = {'fm': 'Физмат', 'gum': 'ГУМ', 'se': 'СОЦ', 'bh': 'Биохим', 'prof': 'Профиль',
              'basic': 'База'}
-        y = {'1': 'Понедельник', '2': 'Вторник', '3': 'Среда', '4': 'Четверг', '5': 'Пятница', '6': 'Субота',
-             '7': 'Воскресенье', }
+        y = {'1': 'Пн', '2': 'Вт', '3': 'Срд', '4': 'Чтв', '5': 'Птн', '6': 'Сб',
+             '7': 'Вск', }
 
         def multiple_replace(target_str, replace_values):
             for i, j in replace_values.items():
@@ -217,7 +217,7 @@ class Repo:
             # Создаем таблицу
             schedule = PrettyTable()
             schedule.title = meta
-            schedule.field_names = ["№", "Урок", "Кабинет"]
+            schedule.field_names = ["№", "Урок", "Каб."]
             schedule.align = "l"
 
             for lesson in raw_schedule:  # Заполняем таблицу данными

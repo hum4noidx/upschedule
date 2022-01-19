@@ -15,6 +15,7 @@ class TgBot:
     token: str
     admin_id: int
     use_redis: bool
+    lang: str
 
 
 @dataclass
@@ -46,6 +47,7 @@ def load_config(path: str):
             token=tg_bot["token"],
             admin_id=int(tg_bot["admin_id"]),
             use_redis=cast_bool(tg_bot.get("use_redis")),
+            lang=tg_bot["bot_language"],
         ),
         db=DbConfig(**config["db"]),
         hosting=Hosting(**config['host'])
