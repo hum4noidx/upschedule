@@ -1,0 +1,47 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Расписание уроков{% endblock%}
+
+{% block content %}
+<div class="schedule vh-100">
+
+    <table class="table table-stripped table-dark">
+        <thead>
+        <tr class="table-primary">
+            <th scope="row" id="day">День</th>
+            <th>Номер</th>
+            <th>Урок</th>
+            <th>Кабинет</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for lesson in schedule %}
+        <tr class="">
+            <td>{{lesson.lsn_date}}</td>
+            <td>{{lesson.lsn_number}}</td>
+            <td>{{lesson.lsn_text}}</td>
+            <td>{{lesson.lsn_class}}</td>
+        </tr>
+
+        {% endfor %}
+
+    </table>
+    <a href="javascript:history.go(-1);" class="btn btn-warning shadow-sm mb-1">🔙</a>
+</div>
+<script type="text/javascript">
+    const table = document.querySelector('table');
+
+    let headerCell = null;
+
+    for (let row of table.rows) {
+        const firstCell = row.cells[0];
+
+        if (headerCell === null || firstCell.innerText !== headerCell.innerText) {
+            headerCell = firstCell;
+        } else {
+            headerCell.rowSpan++;
+            firstCell.remove();
+        }
+    }
+</script>
+{% endblock%}

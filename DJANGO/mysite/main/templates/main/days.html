@@ -1,0 +1,21 @@
+{% extends 'main/base.html' %}
+
+{% block title %}День недели{% endblock%}
+
+{% block content %}
+<div class="schedule vh-100">
+    {% if days %}
+    <h1>Дни недели</h1>
+    <h2>{{grade}} класс <span class="badge badge-info bg-primary">{{profile.first.profile}}</span></h2>
+
+    <div class="d-flex flex-column d-inline-flex">
+        {% for value in days.items%}
+        <a class="btn btn-primary shadow-sm mb-3"
+           href="{% url 'main:schedule' grade profile.first.profile_db math value.0 %}">{{value.1}}</a>
+        {% endfor %}
+        <a href="javascript:history.go(-1);" class="btn btn-warning shadow-sm mb-1">🔙</a>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock%}

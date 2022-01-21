@@ -1,0 +1,18 @@
+body {
+    background: #122a35;
+    color: white;
+}
+
+tr {
+    text-align: center
+}
+
+h1 {
+    color: yellow;
+    text-align: center;
+}
+
+.main_table {
+    display: flex;
+    justify-content: space-around;
+}

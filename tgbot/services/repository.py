@@ -135,6 +135,8 @@ class Repo:
         name = await self.conn.fetchrow(
             'SELECT full_name FROM main_passport WHERE  user_id=$1', user_id
         )
+        if name is None:
+            name = None
         return name['full_name']
 
     async def admin_switch(self, user_id):

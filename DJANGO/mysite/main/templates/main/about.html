@@ -1,0 +1,43 @@
+{% extends 'main/base.html' %}
+{% block title %}
+Хто я?
+{% endblock%}
+
+{% block content %}
+<div class="">
+    <div class="text-center mt-3">
+        <h1 class="text-center">Начнем с начала</h1>
+        <p>
+            Первоначально был лишь один простенький бот в телеграме, который выдавал расписание для одного класса и был
+            достаточно туповат
+        </p>
+        <p>Время шло и он обрастал новыми функциями(рассылка новостей, регистрация с созданием профиля ученика для
+            дальнейшего уменьшения времени на открытие расписания и многие другие)</p>
+    </div>
+    <div class="content text-center">
+        <h1 class="mb-3">Что сейчас?</h1>
+        <div class="card-deck d-flex justify-content-around">
+            <div class="card border-primary mb-3">
+                <div class="card-body">
+                    <h4 class="card-title">Охват</h4>
+                    <p class="card-text">База расписания бота охватывает классы с <b>8</b> по <b>11</b> включительно</p>
+                </div>
+            </div>
+            <div class="card border-secondary mb-3">
+                <div class="card-body">
+                    <h4 class="card-title">Пользователи</h4>
+                    <p class="card-text">На текущий момент зарегистрировано всего 60 пользователей, из них активны как
+                        минимум 20 <br><small class="text-muted">(хотелось бы больше)</small></p>
+                </div>
+            </div>
+            <div class="card border-danger mb-3">
+                <div class="card-body">
+                    <h4 class="card-title">Функционал</h4>
+                    <p class="card-text">От менеджера групп, который может остановить любой конфликт одной командой, до
+                        личного мотиватора</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock%}
