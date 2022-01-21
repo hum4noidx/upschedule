@@ -1,3 +1,4 @@
+import asyncio
 import random
 
 import asyncpg
@@ -39,6 +40,7 @@ async def compliments(dp: Dispatcher):
     for id in ids:
         compl = random.choice(compliment)
         await dp.bot.send_message(chat_id=id, text=compl)
+        await asyncio.sleep(0.3)
 
 
 def schedule_jobs(dp: Dispatcher, scheduler):
