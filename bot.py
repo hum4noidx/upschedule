@@ -71,7 +71,7 @@ async def main():
     register_user_reg(dp)
     register_user_settings(dp)
     register_groups(dp)
-    register_compliments(dp)
+    # register_compliments(dp)
     # register_dialog(dp)
     schedule_jobs(dp, scheduler)
 
