@@ -57,6 +57,12 @@ class Passport(models.Model):
     admin = models.BooleanField()
 
 
+class Material(models.Model):
+    title = models.CharField(max_length=60, null=True)
+    text = models.TextField(null=True)
+    type = models.CharField(max_length=60)
+
+
 class Discipline(models.Model):
     lsn_name = models.CharField(max_length=50)
 
@@ -80,21 +86,6 @@ class Teacher(models.Model):
         return self.name
 
 
-class Schedule(models.Model):
-    lsn_number = models.IntegerField(choices=lsn_numbers)
-    lsn_text = models.ForeignKey(Discipline, on_delete=models.CASCADE)
-    lsn_class = models.CharField('Кабинет', max_length=15)
-    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
-    lsn_date = models.IntegerField('День недели', choices=lsn_dates)
-    lsn_grade = models.IntegerField('Класс', choices=lsn_grades)
-    lsn_profile = models.CharField('Профиль', choices=lsn_profiles, max_length=200)
-    lsn_math = models.CharField('Математика', choices=lsn_maths, max_length=15)
-
-    class Meta:
-        verbose_name = 'График'
-        verbose_name_plural = 'Графики'
-
-
 class Grade(models.Model):
     grade = models.IntegerField('Класс', choices=lsn_numbers)
 
@@ -103,7 +94,7 @@ class Grade(models.Model):
         verbose_name_plural = 'Классы'
 
     def __str__(self):
-        return f'{self.grade} класс'
+        return self.grade
 
 
 class Profile(models.Model):
@@ -117,3 +108,18 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'{self.profile} профиль'
+
+
+class Schedule(models.Model):
+    lsn_number = models.IntegerField(choices=lsn_numbers)
+    lsn_text = models.ForeignKey(Discipline, on_delete=models.CASCADE)
+    lsn_class = models.CharField('Кабинет', max_length=15)
+    teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    lsn_date = models.IntegerField('День недели', choices=lsn_dates)
+    lsn_grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
+    lsn_profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    lsn_math = models.CharField('Математика', choices=lsn_maths, max_length=15)
+
+    class Meta:
+        verbose_name = 'График'
+        verbose_name_plural = 'Графики'
