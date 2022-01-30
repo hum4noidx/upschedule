@@ -40,8 +40,9 @@ class Repo:
     # ______________________ REGISTRATION ______________________
     async def register_user(self, user_class, user_prof, user_math, userid):
         await self.conn.execute(
-            'UPDATE main_passport SET (user_class, user_prof, user_math) = ($1, $2, $3) WHERE user_id =$4',
-            user_class, user_prof, user_math, userid
+            'UPDATE main_passport SET (user_class, user_prof, user_math, registered) = ($1, $2, $3, $4) '
+            'WHERE user_id =$5',
+            user_class, user_prof, user_math, True, userid
         )
 
     # user_data for recent_schedule
@@ -135,8 +136,6 @@ class Repo:
         name = await self.conn.fetchrow(
             'SELECT full_name FROM main_passport WHERE  user_id=$1', user_id
         )
-        if name is None:
-            name = None
         return name['full_name']
 
     async def admin_switch(self, user_id):

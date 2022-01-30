@@ -10,7 +10,7 @@ urlpatterns = [
                   path('about-us', views.about, name='about'),
                   path('schedule/', views.grades, name='grade'),
                   path('schedule/<int:pk>/', views.ProfileListlView.as_view(), name='profile'),
-                  path('schedule/<int:pk>/<str:prof>/<str:math>/', views.days, name='days'),
-                  path('schedule/<int:pk>/<str:prof>/<str:math>/<int:day>', views.schedule, name='schedule'),
+                  path('schedule/<int:pk>/<int:prof>/<str:math>/', views.days, name='days'),
+                  path('schedule/<int:pk>/<int:prof>/<str:math>/<int:day>', views.schedule, name='schedule'),
 
               ] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

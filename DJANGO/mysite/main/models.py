@@ -47,16 +47,6 @@ lsn_maths = (
 # Some stuff
 
 
-class Passport(models.Model):
-    user_id = models.IntegerField()
-    uses = models.IntegerField()
-    user_class = models.IntegerField()
-    user_prof = models.CharField(max_length=10)
-    user_math = models.CharField(max_length=10)
-    vip = models.BooleanField()
-    admin = models.BooleanField()
-
-
 class Material(models.Model):
     title = models.CharField(max_length=60, null=True)
     text = models.TextField(null=True)
@@ -107,7 +97,29 @@ class Profile(models.Model):
         verbose_name_plural = 'Профили'
 
     def __str__(self):
-        return f'{self.profile} профиль'
+        return self.profile_db
+
+
+class Math(models.Model):
+    math = models.CharField('Математика', max_length=50)
+
+    class Meta:
+        verbose_name = 'Математика'
+
+    def __str__(self):
+        return self.math
+
+
+class Passport(models.Model):
+    user_id = models.IntegerField()
+    uses = models.IntegerField()
+    user_class = models.IntegerField(null=True)
+    full_name = models.CharField(max_length=60, null=True)
+    user_prof = models.CharField(max_length=10, null=True)
+    user_math = models.CharField(max_length=10, null=True)
+    vip = models.BooleanField()
+    admin = models.BooleanField()
+    last_seen = models.DateTimeField(null=True)
 
 
 class Schedule(models.Model):
@@ -116,8 +128,8 @@ class Schedule(models.Model):
     lsn_class = models.CharField('Кабинет', max_length=15)
     teacher = models.ForeignKey(Teacher, on_delete=models.CASCADE)
     lsn_date = models.IntegerField('День недели', choices=lsn_dates)
-    lsn_grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
-    lsn_profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    lsn_grade = models.IntegerField('Класс', choices=lsn_grades)
+    lsn_profile = models.CharField('Профиль', choices=lsn_profiles, max_length=200)
     lsn_math = models.CharField('Математика', choices=lsn_maths, max_length=15)
 
     class Meta:

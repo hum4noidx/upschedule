@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Discipline, Teacher, Schedule, Profile
+from .models import Discipline, Teacher, Schedule
 
 
 class LessonAdmin(admin.ModelAdmin):
@@ -19,7 +19,6 @@ class ScheduleAdmin(admin.ModelAdmin):
     list_display = ('lsn_number', 'lsn_text', 'lsn_class', 'teacher', 'lsn_date')
     list_filter = ['lsn_grade', 'lsn_profile', 'lsn_math', 'lsn_date', 'teacher']
     search_fields = ['lsn_text', 'teacher']
-    ordering = ('lsn_number',)
 
 
 class TeacherAdmin(admin.ModelAdmin):
@@ -32,16 +31,7 @@ class TeacherAdmin(admin.ModelAdmin):
     search_fields = ['name']
 
 
-class ProfileAdmin(admin.ModelAdmin):
-    fieldsets = [
-        (None, {'fields': ['profile', 'profile_db', 'grade']}),
-    ]
-    list_display = ('profile', 'profile_db', 'grade')
-    list_filter = ['profile', 'grade']
-    search_fields = ['profile']
-
-
+# admin.site.register(Question, QuestionAdmin)
 admin.site.register(Schedule, ScheduleAdmin)
 admin.site.register(Teacher, TeacherAdmin)
 admin.site.register(Discipline, LessonAdmin)
-admin.site.register(Profile, ProfileAdmin)

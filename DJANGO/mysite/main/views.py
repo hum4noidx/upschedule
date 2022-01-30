@@ -59,10 +59,10 @@ def days(request, pk, prof, math):
 
     }
     profile = Profile.objects.values().filter(profile_db=prof)
-    return render(request, 'main/days.html', {'days': days_list,
-                                              'grade': pk,
+    return render(request, 'main/days.html', {'grade': pk,
                                               'profile': profile,
-                                              'math': math})
+                                              'math': math,
+                                              'days': days_list})
 
 
 def schedule(request, pk, prof, math, day):

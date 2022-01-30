@@ -13,10 +13,11 @@ from tgbot.handlers.admins.admin import register_admin
 from tgbot.handlers.admins.broadcaster import register_broadcast
 from tgbot.handlers.filter import register_level_filter
 from tgbot.handlers.groups.group_helper import register_groups
-from tgbot.handlers.user_settings import register_user_settings
+from tgbot.handlers.users.compliments import register_compliments
 from tgbot.handlers.users.compliments_broadcaster import schedule_jobs
 from tgbot.handlers.users.timetable import register_timetable
 from tgbot.handlers.users.user_main import register_user
+from tgbot.handlers.users.user_settings import register_user_settings
 from tgbot.handlers.users.users_register import register_user_reg
 from tgbot.handlers.vips.vip import register_vip
 # from tgbot.keyboards.test_keyboards import register_dialog
@@ -71,13 +72,13 @@ async def main():
     register_user_reg(dp)
     register_user_settings(dp)
     register_groups(dp)
-    # register_compliments(dp)
+    register_compliments(dp)
     # register_dialog(dp)
     schedule_jobs(dp, scheduler)
 
     # start
     try:
-        # scheduler.start()
+        scheduler.start()
         await dp.start_polling()
     finally:
         await dp.storage.close()

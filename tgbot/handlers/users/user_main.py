@@ -16,12 +16,10 @@ async def user_usage(user_id):
 
 async def user_start(m: Message, repo: Repo):
     await repo.add_user(m.from_user.id, m.from_user.full_name)
-    await m.answer(f'<b>Hello, {m.from_user.full_name}!</b>\n'
+    await m.answer(f'<b>Привет, {m.from_user.full_name}!</b>\n'
                    f'<u>Это многофункциональный бот для школы.</u>\n'
                    f'При добавлении в группы автоматически удаляет сообщения о вступлении и выходе участников('
-                   f'требуются права администратора)\n\n'
-                   f'Для удобства пользования рекомендуется сразу выбрать класс и профиль.\n'
-                   f'Для этого нажми кнопку \'Регистрация\'',
+                   f'требуются права администратора)',
                    parse_mode="HTML", reply_markup=nav_btns.start)
 
 
@@ -39,7 +37,7 @@ async def donut_info(message: Message):
 
 
 async def user_feedback(c: CallbackQuery):
-    await c.message.edit_text('Вопросы, замечания, предложения')
+    await c.message.edit_text('Вопросы, замечания, предложения')  # TODO: доделать
 
 
 async def show_help_info(m: Message):

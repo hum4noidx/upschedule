@@ -133,3 +133,5 @@ bot.ini
 /DJANGO/venv1/
 /schedule.xlsx
 /~$schedule.xlsx
+/DJANGO/mysite/main/migrations/
+

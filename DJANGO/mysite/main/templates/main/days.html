@@ -11,7 +11,7 @@
     <div class="d-flex flex-column d-inline-flex">
         {% for value in days.items%}
         <a class="btn btn-primary shadow-sm mb-3"
-           href="{% url 'main:schedule' grade profile.first.profile_db math value.0 %}">{{value.1}}</a>
+           href="{% url 'main:schedule' grade profile.first.id math value.0 %}">{{value.1}}</a>
         {% endfor %}
         <a href="javascript:history.go(-1);" class="btn btn-warning shadow-sm mb-1">🔙</a>
     </div>

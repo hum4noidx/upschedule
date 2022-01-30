@@ -15,16 +15,16 @@
            aria-haspopup="true" aria-expanded="false">{{profile.profile}}</a>
         <div class="dropdown-menu" style="">
             {% if profile.profile_db == 'fm'%}
-            <a class="dropdown-item" href="{% url 'main:days' profile.grade_id profile.profile_db 'prof' %}">Профиль</a>
+            <a class="dropdown-item" href="{% url 'main:days' profile.grade_id profile.id '1' %}">Профиль</a>
             {% else %}
-            <a class="dropdown-item" href="{% url 'main:days' profile.grade_id profile.profile_db 'prof' %}">Профиль</a>
-            <a class="dropdown-item" href="{% url 'main:days' profile.grade_id profile.profile_db 'base' %}">База</a>
+            <a class="dropdown-item" href="{% url 'main:days' profile.grade_id profile.id '1' %}">Профиль</a>
+            <a class="dropdown-item" href="{% url 'main:days' profile.grade_id profile.id '2' %}">База</a>
             {% endif%}
         </div>
         {% endfor %}
         {%else%}
         {% for profile in profiles %}
-        <a class="btn btn-primary mb-3" href="{% url 'main:days' profile.grade_id profile.profile_db 'None' %}">{{profile.profile}}</a>
+        <a class="btn btn-primary mb-3" href="{% url 'main:days' profile.grade_id profile.id 'None' %}">{{profile.profile}}</a>
         {% endfor %}
         {% endif %}
         <a href="javascript:history.go(-1);" class="btn btn-warning shadow-sm mb-1">🔙</a>
