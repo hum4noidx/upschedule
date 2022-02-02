@@ -28,11 +28,8 @@ async def on_user_left(message: types.Message):
 async def reg_group(m: Message, repo: Repo):
     chat_id = m.chat.id
     group_name = m.chat.title
-    try:
-        await repo.add_group(chat_id, group_name)
-        await m.reply(f'Успешно ✅\nID группы - <code>{chat_id}</code>', parse_mode='HTML')
-    except:  # TODO
-        await m.reply('❌ Ошибка')
+    await repo.add_group(chat_id, group_name)
+    await m.reply(f'Успешно ✅\nID группы - <code>{chat_id}</code>', parse_mode='HTML')
 
 
 async def add_buttons():
@@ -210,7 +207,7 @@ async def stickers_switch(m: Message):
 def register_groups(dp: Dispatcher):
     dp.register_message_handler(on_user_left, content_types=types.ContentTypes.LEFT_CHAT_MEMBER)
     dp.register_message_handler(on_user_join, content_types=types.ContentTypes.NEW_CHAT_MEMBERS)
-    dp.register_message_handler(reg_group, commands=['reg'], chat_type=types.ChatType.GROUP)
+    dp.register_message_handler(reg_group, commands=['reg'])
     dp.register_message_handler(remind_group, commands=['remind'], chat_type=types.ChatType.GROUP)
     dp.register_message_handler(remind_set_time, state=RemindGroup.SetTime)
     dp.register_callback_query_handler(broadcast_choose_groups, text="group_broadcast", state="*")

@@ -27,7 +27,7 @@ async def main_menu(c: CallbackQuery, state: FSMContext):
     await state.reset_state()
     await c.message.edit_text(f'<b>Главное меню</b>\n{await greeting(c.from_user.id)}\n'
                               f'<a href="https://t.me/upschedulebot">Rebranding</a>',
-                              reply_markup=nav_btns.main_menu, parse_mode='HTML')
+                              reply_markup=nav_btns.main_menu, disable_web_page_preview=True, parse_mode='HTML')
 
 
 async def donut_info(message: Message):

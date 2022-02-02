@@ -48,9 +48,11 @@ lsn_maths = (
 
 
 class Material(models.Model):
-    title = models.CharField(max_length=60, null=True)
-    text = models.TextField(null=True)
-    type = models.CharField(max_length=60)
+    title = models.CharField('Заголовок', max_length=60, null=True)
+    text = models.TextField('Текст', null=True, blank=True, )
+    url = models.URLField('Ссылка', null=True, )
+    type = models.CharField('Тип', max_length=60, null=True, blank=True, )
+    tag = models.CharField('Тег', max_length=20, null=True, blank=True, )
 
 
 class Discipline(models.Model):
@@ -74,6 +76,11 @@ class Teacher(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Group(models.Model):
+    chat_id = models.BigIntegerField(unique=True)
+    group_name = models.CharField(max_length=255, null=True, blank=True, )
 
 
 class Grade(models.Model):
@@ -111,14 +118,15 @@ class Math(models.Model):
 
 
 class Passport(models.Model):
-    user_id = models.IntegerField()
-    uses = models.IntegerField()
-    user_class = models.IntegerField(null=True)
-    full_name = models.CharField(max_length=60, null=True)
-    user_prof = models.CharField(max_length=10, null=True)
-    user_math = models.CharField(max_length=10, null=True)
-    vip = models.BooleanField()
-    admin = models.BooleanField()
+    user_id = models.IntegerField(unique=True)
+    uses = models.IntegerField('Использований', default=1)
+    user_class = models.IntegerField('Класс', null=True)
+    full_name = models.CharField('Имя', max_length=60, null=True)
+    user_prof = models.CharField('Профиль', max_length=10, null=True)
+    user_math = models.CharField('Математика', max_length=10, null=True)
+    vip = models.BooleanField(default=False, null=True)
+    admin = models.BooleanField(default=False, null=True)
+    registered = models.BooleanField('Зарегистрирован', default=False, null=True)
     last_seen = models.DateTimeField(null=True)
 
 

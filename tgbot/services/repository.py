@@ -12,13 +12,14 @@ class Repo:
     async def add_user(self, user_id, full_name):
         """Store user in DB, ignore duplicates"""
         await self.conn.execute(
-            'INSERT INTO main_passport(user_id, full_name) SELECT $1, $2 WHERE NOT(SELECT TRUE FROM main_passport '
-            'WHERE '
-            'user_id=$1)', user_id, full_name)
+            'INSERT INTO main_passport(user_id, full_name) VALUES($1,$2) '
+            'ON CONFLICT(user_id) DO UPDATE SET uses=main_passport.uses+1 WHERE main_passport.user_id=$1',
+            user_id, full_name)
+        return
 
     async def schedule_user_usage(self, user_id):
         await self.conn.execute(
-            'UPDATE main_passport SET (uses, last_seen) = (uses + 1, localtimestamp(0)::timestamp) '
+            'UPDATE main_passport SET (uses, last_seen) = (uses + 1, now()) '
             'WHERE user_id = $1', user_id)
 
     async def show_user_info(self, user_id):
@@ -68,12 +69,13 @@ class Repo:
         return data
 
     # ______________________ GROUPS ______________________
-    # async def add_group(self, group_id, group_name):
-    #     await self.conn.execute(
-    #         'INSERT INTO groups (chat_id, group_name) VALUES ($1, $2)'
-    #         'ON CONFLICT (chat_id) DO UPDATE SET group_name = $2',
-    #         group_id, group_name)
-    #     return
+    async def add_group(self, group_id, group_name):
+        await self.conn.execute(
+            'INSERT INTO main_group (chat_id, group_name) VALUES ($1, $2)'
+            'ON CONFLICT (chat_id) DO UPDATE SET group_name = $2',
+            group_id, group_name)
+        return
+
     #
     # async def get_groups(self):
     #     groups = dict(await self.conn.fetch('SELECT group_name, chat_id FROM groups'))
