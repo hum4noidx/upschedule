@@ -39,11 +39,12 @@ class Repo:
         await self.conn.execute('Update main_passport Set full_name = $1 Where user_id = $2', name, user_id)
 
     # ______________________ REGISTRATION ______________________
-    async def register_user(self, user_class, user_prof, user_math, userid):
+    async def register_user(self, user_school, user_class, user_prof, user_math, userid):
         await self.conn.execute(
-            'UPDATE main_passport SET (user_class, user_prof, user_math, registered) = ($1, $2, $3, $4) '
-            'WHERE user_id =$5',
-            user_class, user_prof, user_math, True, userid
+            'UPDATE main_passport SET (school_id, user_class_id, user_prof_id, user_math_id, registered) = ($1, $2, '
+            '$3, $4, $5) '
+            'WHERE user_id =$6',
+            user_school, user_class, user_prof, user_math, True, userid
         )
 
     # user_data for recent_schedule
@@ -226,3 +227,24 @@ class Repo:
             for lesson in raw_schedule:  # Заполняем таблицу данными
                 schedule.add_row([lesson["lsn_number"], lesson["lsn_name"], lesson["lsn_class"]])
         return schedule
+
+    async def get_schools(self):
+        data = dict(await self.conn.fetch('SELECT name, id FROM main_school'))
+        data = list(data.items())
+        return data
+
+    async def get_grades(self, school_id):
+        data = dict(
+            await self.conn.fetch('SELECT grade, short_name FROM main_grade WHERE school_id = $1', int(school_id)))
+        data = list(data.items())
+        return data
+
+    async def get_profiles(self, grade_id):
+        data = dict(await self.conn.fetch('SELECT profile, id FROM main_profile WHERE grade_id = $1', int(grade_id)))
+        data = list(data.items())
+        return data
+
+    async def get_maths(self, ):
+        data = dict(await self.conn.fetch('SELECT math, id FROM main_math', ))
+        data = list(data.items())
+        return data

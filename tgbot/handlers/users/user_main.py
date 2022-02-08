@@ -1,3 +1,6 @@
+import logging
+import typing
+
 from aiogram import Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.handler import ctx_data
@@ -5,6 +8,7 @@ from aiogram.types import Message, CallbackQuery
 
 from tgbot.handlers.admins.admin import greeting
 from tgbot.keyboards import nav_btns
+from tgbot.keyboards.choose_btns import make_buttons_class, classes
 from tgbot.services.repository import Repo
 
 
@@ -15,7 +19,7 @@ async def user_usage(user_id):
 
 
 async def user_start(m: Message, repo: Repo):
-    await repo.add_user(m.from_user.id, m.from_user.full_name)
+    # await repo.add_user(m.from_user.id, m.from_user.full_name)
     await m.answer(f'<b>Привет, {m.from_user.full_name}!</b>\n'
                    f'<u>Это многофункциональный бот для школы.</u>\n'
                    f'При добавлении в группы автоматически удаляет сообщения о вступлении и выходе участников('
@@ -46,9 +50,20 @@ async def show_help_info(m: Message):
                    f'По всем вопросам - <a href="tg://user?id=713870562">сюда</a>', parse_mode='HTML')
 
 
+async def test(m: Message, **kwargs):
+    await m.answer('т', reply_markup=await make_buttons_class())
+
+
+async def test1(c: CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
+    logging.debug(f'Текст {callback_data}')
+    await c.answer()
+
+
 def register_user(dp: Dispatcher):
     dp.register_message_handler(user_start, commands=['start'], state='*')
     dp.register_message_handler(donut_info, commands='donut', state='*')
     dp.register_message_handler(show_help_info, commands=['help'], state='*')
+    dp.register_message_handler(test, commands=['y'], state='*')
+    dp.register_callback_query_handler(test1, classes.filter(), state='*')
 
 # TODO: переписать названия функций на нормальный язык

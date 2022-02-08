@@ -30,7 +30,8 @@ async def user_end_registration(c: CallbackQuery, state: FSMContext, callback_da
 
 
 async def user_register(c: CallbackQuery):
-    await c.message.edit_text('ℹ️Регистрация предоставляет доступ к расписанию на сегодняшний и завтрашний день[VIP].\n'
+    await c.message.edit_text('ℹ️Регистрация предоставляет доступ к функционалу расписания на сегодняшний и '
+                              'завтрашний день[VIP].\n '
                               '❗Без нее эти функции работать не будут.❗',
                               reply_markup=nav_btns.user_confirm_register)
     await Register.choose_class.set()

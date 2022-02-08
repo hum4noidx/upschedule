@@ -22,7 +22,7 @@ turn_compliments = InlineKeyboardButton('Включить', callback_data='turn_
 add_compliment = InlineKeyboardButton('Добавить', callback_data='add_compliment')
 news_link = InlineKeyboardButton('Ссылка', url='https://t.me/news_1208bot/7')
 
-start = InlineKeyboardMarkup(row_width=1).add(start_button)
+start = InlineKeyboardMarkup(row_width=1).add(register_button)
 donut = InlineKeyboardMarkup(row_width=1).add(donut_link)
 back_to_mm = InlineKeyboardMarkup(row_width=1).add(cancel_button)
 main_menu = InlineKeyboardMarkup(resize_keyboard=True, row_width=1).add(schedule_button, register_button, today_button)
