@@ -4,7 +4,8 @@ import logging
 import asyncpg
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
-from aiogram.contrib.fsm_storage.redis import RedisStorage
+from aiogram.contrib.fsm_storage.redis import RedisStorage2
+from aiogram_dialog import DialogRegistry
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
 from tgbot.config import load_config
@@ -21,6 +22,7 @@ from tgbot.handlers.users.user_settings import register_user_settings
 from tgbot.handlers.users.users_register import register_user_reg
 from tgbot.handlers.vips.vip import register_vip
 # from tgbot.keyboards.test_keyboards import register_dialog
+from tgbot.keyboards.dialogs_test import dialog, dialogs
 from tgbot.middlewares.db import DbMiddleware
 from tgbot.middlewares.role import RoleMiddleware
 
@@ -42,7 +44,7 @@ async def main():
     config = load_config("bot.ini")
 
     if config.tg_bot.use_redis:
-        storage = RedisStorage()
+        storage = RedisStorage2()
     else:
         storage = MemoryStorage()
     pool = await create_pool(
@@ -62,6 +64,7 @@ async def main():
     dp.filters_factory.bind(AdminFilter)
     dp.filters_factory.bind(VIPFilter)
     scheduler = AsyncIOScheduler()
+    registry = DialogRegistry(dp)
 
     register_level_filter(dp)
     register_admin(dp)
@@ -75,6 +78,8 @@ async def main():
     register_compliments(dp)
     # register_dialog(dp)
     schedule_jobs(dp, scheduler)
+    dialogs(dp)
+    registry.register(dialog)
 
     # start
     try:
