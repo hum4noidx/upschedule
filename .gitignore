@@ -135,3 +135,5 @@ bot.ini
 /~$schedule.xlsx
 /DJANGO/mysite/main/migrations/
 
+/DJANGO/mysite/static/grappelli/
+/DJANGO/mysite/static/admin/
