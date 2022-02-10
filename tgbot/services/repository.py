@@ -40,17 +40,19 @@ class Repo:
 
     # ______________________ REGISTRATION ______________________
     async def register_user(self, user_school, user_class, user_prof, user_math, userid):
-        await self.conn.execute(
+        result = await self.conn.execute(
             'UPDATE main_passport SET (school_id, user_class_id, user_prof_id, user_math_id, registered) = ($1, $2, '
             '$3, $4, $5) '
             'WHERE user_id =$6',
             user_school, user_class, user_prof, user_math, True, userid
         )
+        print(result[-1])
+        return result
 
     # user_data for recent_schedule
     async def get_timetable(self, userid):
         user_profile = await self.conn.fetchrow(
-            'SELECT user_class, user_prof, user_math FROM main_passport WHERE user_id = $1', userid
+            'SELECT user_class_id, user_prof_id, user_math_id FROM main_passport WHERE user_id = $1', userid
         )
         return dict(user_profile)
 
@@ -213,10 +215,10 @@ class Repo:
             schedule = meta + '\nТут пусто'
         else:
             raw_schedule = await self.conn.fetch(
-                'SELECT main_schedule.lsn_number, main_discipline.lsn_name, main_schedule.lsn_class '
+                'SELECT main_schedule.lsn_number, main_discipline.lsn_name, main_schedule.lsn_class_id '
                 'FROM main_schedule LEFT JOIN main_discipline ON main_schedule.lsn_text_id = main_discipline.id '
-                'WHERE (main_schedule.lsn_grade=$1 AND main_schedule.lsn_profile = $2 '
-                'AND main_schedule.lsn_math = $3 AND main_schedule.lsn_date = $4) '
+                'WHERE (main_schedule.lsn_grade_id=$1 AND main_schedule.lsn_profile_id = $2 '
+                'AND main_schedule.lsn_math_id = $3 AND main_schedule.lsn_date_id = $4) '
                 'ORDER BY main_schedule.lsn_number', grade, profile, math, date)
             # Создаем таблицу
             schedule = PrettyTable()

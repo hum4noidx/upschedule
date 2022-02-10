@@ -32,7 +32,7 @@ async def user_end_registration(c: CallbackQuery, state: FSMContext, callback_da
 async def user_register(c: CallbackQuery):
     await c.message.edit_text('ℹ️Регистрация предоставляет доступ к функционалу расписания на сегодняшний и '
                               'завтрашний день[VIP].\n '
-                              '❗Без нее эти функции работать не будут.❗',
+                              'Без нее эти функции работать не будут!',
                               reply_markup=nav_btns.user_confirm_register)
     await Register.choose_class.set()
     await c.answer()
@@ -75,7 +75,7 @@ async def user_register_math(c: CallbackQuery, callback_data: typing.Dict[str, s
 
 
 def register_user_reg(dp: Dispatcher):
-    dp.register_callback_query_handler(user_register, text=['user_register'], state="*")
+    # dp.register_callback_query_handler(user_register, text=['user_register'], state="*")
     dp.register_callback_query_handler(user_register_class, text=['reg.class'],
                                        state=Register.choose_class)
     dp.register_callback_query_handler(user_register_profile, classes.filter(),
