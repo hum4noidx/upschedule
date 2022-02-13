@@ -26,3 +26,17 @@ class Broadcast(StatesGroup):
 
 class RemindGroup(StatesGroup):
     SetTime = State()
+
+
+class MainSG(StatesGroup):
+    greeting = State()
+    main_menu = State()
+
+
+class RegSG(StatesGroup):
+    greeting = State()
+    school = State()
+    grade = State()
+    profile = State()
+    math = State()
+    finish = State()

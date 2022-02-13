@@ -250,3 +250,8 @@ class Repo:
         data = dict(await self.conn.fetch('SELECT math, id FROM main_math', ))
         data = list(data.items())
         return data
+
+    async def check_registered(self, user_id):
+        result = await self.conn.fetchrow('SELECT registered FROM main_passport WHERE user_id=$1', user_id)
+        print(result['registered'])
+        return result['registered']
