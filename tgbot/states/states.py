@@ -10,9 +10,18 @@ class Register(StatesGroup):
 
 
 class Timetable(StatesGroup):
+    choose_class = State()
     choose_profile = State()
     choose_math = State()
     choose_day = State()
+
+
+class Timetablenew(StatesGroup):
+    choose_class = State()
+    choose_profile = State()
+    choose_math = State()
+    choose_day = State()
+    show_timetable = State()
 
 
 class Broadcast(StatesGroup):

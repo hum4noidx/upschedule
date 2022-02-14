@@ -55,7 +55,6 @@ async def on_math_selected(c: CallbackQuery, widget: Any, manager: DialogManager
 
 
 dialog_reg = Dialog(
-
     Window(
         Format("Из какой ты школы?"),
         Group(
@@ -68,7 +67,7 @@ dialog_reg = Dialog(
             ),
             width=1
         ),
-        getter=Getter.get_data1,
+        getter=Getter.get_schools,
         state=RegSG.school,
 
     ),
@@ -86,7 +85,7 @@ dialog_reg = Dialog(
         ),
         Back(Const("Назад")),
         state=RegSG.grade,
-        getter=Getter.get_data2,
+        getter=Getter.get_grades,
 
     ),
     Window(
@@ -103,7 +102,7 @@ dialog_reg = Dialog(
         ),
         Back(Const("Назад")),
         state=RegSG.profile,
-        getter=Getter.get_data3,
+        getter=Getter.get_profiles,
 
     ),
     Window(
@@ -120,7 +119,7 @@ dialog_reg = Dialog(
         ),
         Back(Const("Назад")),
         state=RegSG.math,
-        getter=Getter.get_data4,
+        getter=Getter.get_maths,
 
     ),
     Window(
@@ -133,7 +132,6 @@ dialog_reg = Dialog(
 
 
 async def start(c: CallbackQuery, dialog_manager: DialogManager):
-    # it is important to reset stack because user wants to restart everything
     await dialog_manager.start(RegSG.school, mode=StartMode.RESET_STACK)
 
 

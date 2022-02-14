@@ -18,6 +18,7 @@ from tgbot.handlers.users.compliments import register_compliments
 from tgbot.handlers.users.compliments_broadcaster import schedule_jobs
 # from tgbot.keyboards.test_keyboards import register_dialog
 from tgbot.handlers.users.dialogs.registration import dialog_reg, dialogs
+from tgbot.handlers.users.dialogs.timetable import dialog_timetable
 from tgbot.handlers.users.timetable import register_timetable
 from tgbot.handlers.users.user_main import register_user, dialog_main
 from tgbot.handlers.users.user_settings import register_user_settings
@@ -44,7 +45,7 @@ async def main():
     config = load_config("bot.ini")
 
     if config.tg_bot.use_redis:
-        storage = RedisStorage2()
+        storage = RedisStorage2(host='87.249.53.148')
     else:
         storage = MemoryStorage()
     pool = await create_pool(
@@ -81,6 +82,7 @@ async def main():
     dialogs(dp)
     registry.register(dialog_main)
     registry.register(dialog_reg)
+    registry.register(dialog_timetable)
 
     # start
     try:

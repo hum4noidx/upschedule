@@ -46,7 +46,6 @@ class Repo:
             'WHERE user_id =$6',
             user_school, user_class, user_prof, user_math, True, userid
         )
-        print(result[-1])
         return result
 
     # user_data for recent_schedule
@@ -228,7 +227,7 @@ class Repo:
 
             for lesson in raw_schedule:  # Заполняем таблицу данными
                 schedule.add_row([lesson["lsn_number"], lesson["lsn_name"], lesson["lsn_class"]])
-        return schedule
+        return str(schedule)
 
     async def get_schools(self):
         data = dict(await self.conn.fetch('SELECT name, id FROM main_school'))
@@ -253,5 +252,13 @@ class Repo:
 
     async def check_registered(self, user_id):
         result = await self.conn.fetchrow('SELECT registered FROM main_passport WHERE user_id=$1', user_id)
-        print(result['registered'])
         return result['registered']
+
+    async def db_get_user_school(self, user_id):
+        result = await self.conn.fetchrow('SELECT school_id FROM main_passport WHERE user_id=$1', user_id)
+        return result['school_id']
+
+    async def get_days(self):
+        data = dict(await self.conn.fetch('SELECT day,id FROM main_date', ))
+        data = list(data.items())
+        return data
