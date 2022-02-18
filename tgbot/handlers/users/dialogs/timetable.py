@@ -9,7 +9,7 @@ from aiogram_dialog.widgets.text import Format
 
 from tgbot.handlers.users.dialogs.getters import Getter
 from tgbot.handlers.users.dialogs.registration import on_grade_selected, on_profile_selected
-from tgbot.states.states import Timetablenew
+from tgbot.states.states import Timetablenew, FastTimetable
 
 
 async def on_math_selected(c: CallbackQuery, widget: Any, manager: DialogManager, item_id: str):
@@ -123,4 +123,23 @@ dialog_timetable = Dialog(
 
     ),
 
+)
+fast_timetable = Dialog(
+    Window(
+        Format('<pre>{timetable}</pre>'),
+        Select(
+            Format('{item[0]}'),
+            id='btn',
+            item_id_getter=operator.itemgetter(1),
+            items='btns',
+            on_click=timetable_show
+        ),
+        Group(
+            Back(Format("🔙 Назад")),
+            Cancel(Format('🔝 В главное меню')),
+            width=2,
+        ),
+        state=FastTimetable.main,
+        getter=Getter.fast_timetable_getter
+    ),
 )

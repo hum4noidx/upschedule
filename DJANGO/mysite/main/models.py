@@ -49,7 +49,7 @@ class Classroom(models.Model):
 class Grade(models.Model):
     grade = models.IntegerField('Класс', '')
     school = models.ForeignKey(School, on_delete=models.CASCADE)
-    short_name = models.CharField(max_length=15, )
+    grade_short = models.CharField(max_length=15, default='None')
 
     class Meta:
         verbose_name = 'Класс'
@@ -63,6 +63,7 @@ class Profile(models.Model):
     grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
     profile = models.CharField('Профиль', max_length=50)
     profile_db = models.CharField('Имя для бота', max_length=30)
+    profile_short = models.CharField(max_length=15, default='None')
 
     class Meta:
         verbose_name = 'Профиль'
@@ -74,6 +75,7 @@ class Profile(models.Model):
 
 class Math(models.Model):
     math = models.CharField('Математика', max_length=50)
+    math_short = models.CharField(max_length=15, default='None')
 
     class Meta:
         verbose_name = 'Математика'
@@ -109,6 +111,7 @@ class Teacher(models.Model):
 
 class Date(models.Model):
     day = models.CharField('День недели', max_length=15)
+    date_short = models.CharField(max_length=15, default='None')
 
     class Meta:
         verbose_name = 'День недели'

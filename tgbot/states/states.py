@@ -24,6 +24,10 @@ class Timetablenew(StatesGroup):
     show_timetable = State()
 
 
+class FastTimetable(StatesGroup):
+    main = State()
+
+
 class Broadcast(StatesGroup):
     choose_class = State()
     choose_profile = State()

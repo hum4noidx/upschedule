@@ -6,31 +6,35 @@ from aiogram_dialog import DialogManager
 from tgbot.handlers.admins.admin import greeting
 
 
+async def current_date():
+    today = datetime.now()
+    wd = date.weekday(today)
+    days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
+    day = days[wd]
+    next_wd = wd + 1
+    if next_wd == 7:
+        next_wd -= 7
+    next_date = days[next_wd]
+    return day, next_date
+
+
 class Getter:
     async def check_exists(dialog_manager: DialogManager, **kwargs):
         user_id = dialog_manager.event.from_user.id
-        name = dialog_manager.event.from_user.full_name
         data = ctx_data.get()
         repo = data.get("repo")
         exists = await repo.check_registered(user_id)
         name = await greeting(user_id)
         school = await repo.db_get_user_school(user_id)
         dialog_manager.current_context().dialog_data["school"] = school
-        today = datetime.now()
-        wd = date.weekday(today)
-        days = ["Пн", "Вт", "Срд", "Чтв", "Пт", "Сб", "Вск"]
-        day = days[wd]
-        next_wd = wd + 1
-        if next_wd == 7:
-            next_wd -= 7
-        next_date = days[next_wd]
+        date = await current_date()
         return {
             "registered": exists,
             'not_registered': not exists,
             'name': name,
             'user_id': user_id,
-            'date': day,
-            'next_date': next_date,
+            'date': date[0],
+            'next_date': date[1],
             'school': school
         }
 
@@ -97,4 +101,32 @@ class Getter:
         timetable = dialog_manager.current_context().dialog_data.get("timetable", None)
         return {
             'timetable': timetable,
+        }
+
+    async def fast_timetable_getter(dialog_manager: DialogManager, **kwargs):
+        user_id = dialog_manager.event.from_user.id
+        chosen_date = dialog_manager.current_context().start_data['date']
+
+        today = datetime.now()
+        wd = date.weekday(today) + 1
+
+        if chosen_date == 'now':
+            user_date = wd
+        else:
+            user_date = wd + 1
+
+        data = ctx_data.get()
+        repo = data.get("repo")
+
+        user_data = await repo.get_timetable(user_id)
+        user_class = user_data['user_class_id']
+        user_profile = user_data['user_prof_id']
+        user_math = user_data['user_math_id']
+        timetable = await repo.get_schedule(int(user_class), int(user_profile), int(user_math), int(user_date))
+        c_date = await current_date()
+
+        return {
+            'timetable': timetable,
+            'date': c_date[0],
+            'next_date': c_date[1],
         }

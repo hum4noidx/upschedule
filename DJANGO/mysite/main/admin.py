@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Discipline, Teacher, Schedule, Passport, Material, School, Profile, Grade, Math, Classroom
+from .models import Discipline, Teacher, Schedule, Passport, Material, School, Grade
 
 
 class LessonAdmin(admin.ModelAdmin):
@@ -128,11 +128,11 @@ admin.site.register(Passport, PassportAdmin)
 admin.site.register(Material, MaterialAdmin)
 admin.site.register(School, SchoolAdmin)
 admin.site.register(Grade, GradeAdmin)
-admin.site.register(Profile, ProfileAdmin)
-admin.site.register(Math, MathAdmin)
-admin.site.register(Classroom, ClassroomAdmin)
-admin.site.register(School, SchoolAdmin)
-admin.site.register(Grade, GradeAdmin)
-admin.site.register(Profile, ProfileAdmin)
-admin.site.register(Math, MathAdmin)
-admin.site.register(Classroom, ClassroomAdmin)
+# admin.site.register(Profile, ProfileAdmin)
+# admin.site.register(Math, MathAdmin)
+# admin.site.register(Classroom, ClassroomAdmin)
+# admin.site.register(School, SchoolAdmin)
+# admin.site.register(Grade, GradeAdmin)
+# admin.site.register(Profile, ProfileAdmin)
+# admin.site.register(Math, MathAdmin)
+# admin.site.register(Classroom, ClassroomAdmin)

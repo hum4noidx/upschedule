@@ -14,7 +14,7 @@ from tgbot.handlers.users.dialogs.getters import Getter
 from tgbot.handlers.users.dialogs.registration import name_handler
 from tgbot.keyboards import nav_btns
 from tgbot.keyboards.choose_btns import make_buttons_class, classes
-from tgbot.states.states import MainSG, RegSG, Timetablenew
+from tgbot.states.states import MainSG, RegSG, Timetablenew, FastTimetable
 
 
 async def user_usage(user_id):
@@ -34,8 +34,8 @@ dialog_main = Dialog(
         Group(
             Start(Const('Расписание'), id='utimetable', state=Timetablenew.choose_class),
             Button(Format('Настройки'), id='settings', ),
-            Button(Format('Сегодня [{date}]'), id='now', ),
-            Button(Format('Завтра [{next_date}]'), id='next_day', ),
+            Start(Format('Сегодня [{date}]'), id='now', data={'date': 'now'}, state=FastTimetable.main),  # TODO :
+            Start(Format('Завтра [{next_date}]'), id='next_day', data={'date': 'next_day'}, state=FastTimetable.main),
             when='registered'
         ),
         Format('Необходима регистрация', when='not_registered'),
