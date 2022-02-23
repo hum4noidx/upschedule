@@ -1,3 +1,4 @@
+import logging
 from datetime import datetime, date
 
 from aiogram.dispatcher.handler import ctx_data
@@ -83,6 +84,7 @@ class Getter:
         data = ctx_data.get()
         repo = data.get("repo")
         days = await repo.get_days()
+        logging.info(days)
         return {
             'days': days,
         }
@@ -106,7 +108,7 @@ class Getter:
     async def fast_timetable_getter(dialog_manager: DialogManager, **kwargs):
         user_id = dialog_manager.event.from_user.id
         chosen_date = dialog_manager.current_context().start_data['date']
-
+        user_date_chosen = dialog_manager.current_context().dialog_data.get('user_date', None)
         today = datetime.now()
         wd = date.weekday(today) + 1
 
@@ -114,7 +116,8 @@ class Getter:
             user_date = wd
         else:
             user_date = wd + 1
-
+        if user_date_chosen:
+            user_date = user_date_chosen
         data = ctx_data.get()
         repo = data.get("repo")
 
@@ -122,11 +125,22 @@ class Getter:
         user_class = user_data['user_class_id']
         user_profile = user_data['user_prof_id']
         user_math = user_data['user_math_id']
+
+        dialog_manager.current_context().dialog_data['user_class'] = user_class
+        dialog_manager.current_context().dialog_data['user_profile'] = user_profile
+        dialog_manager.current_context().dialog_data['user_math'] = user_math
+        dialog_manager.current_context().dialog_data['user_date'] = user_date
+
         timetable = await repo.get_schedule(int(user_class), int(user_profile), int(user_math), int(user_date))
         c_date = await current_date()
 
+        dates = {'⏮️': 'prev_date', '⏭️': 'next_date'}
+        dates = list(dates.items())
+        extended = dialog_manager.current_context().dialog_data.get('profile_extended', None)
         return {
             'timetable': timetable,
             'date': c_date[0],
             'next_date': c_date[1],
+            'days': dates,
+            'extended': extended,
         }

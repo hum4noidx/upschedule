@@ -4,7 +4,7 @@ from typing import Any
 from aiogram.dispatcher.handler import ctx_data
 from aiogram.types import CallbackQuery
 from aiogram_dialog import Dialog, DialogManager, Window
-from aiogram_dialog.widgets.kbd import Select, Group, Back, Cancel
+from aiogram_dialog.widgets.kbd import Select, Group, Back, Cancel, Button
 from aiogram_dialog.widgets.text import Format
 
 from tgbot.handlers.users.dialogs.getters import Getter
@@ -18,16 +18,42 @@ async def on_math_selected(c: CallbackQuery, widget: Any, manager: DialogManager
 
 
 async def timetable_show(c: CallbackQuery, widget: Any, manager: DialogManager, item_id: str):
-    school = manager.current_context().dialog_data.get("school", None)
     grade = int(manager.current_context().dialog_data.get("grade", None))
     profile = int(manager.current_context().dialog_data.get("profile", None))
     math = int(manager.current_context().dialog_data['math'])
     date = manager.current_context().dialog_data["day"] = int(item_id)
     data = ctx_data.get()
     repo = data.get("repo")
-    await manager.dialog().next()
     schedule = await repo.get_schedule(grade, profile, math, date)
     manager.current_context().dialog_data["timetable"] = schedule
+    await repo.schedule_user_usage(manager.event.from_user.id)
+    await manager.dialog().next()
+
+
+async def fast_timetable_show(c: CallbackQuery, widget: Any, manager: DialogManager, item_id: str):
+    pass
+
+
+async def fast_timetable_date(c: CallbackQuery, widget: Any, manager: DialogManager, item_id: str):
+    user_date = manager.current_context().dialog_data['user_date']
+    if item_id:
+        chosen_date = item_id
+        if chosen_date == 'prev_date':
+            user_date = user_date - 1
+        elif chosen_date == 'next_date':
+            user_date = user_date + 1
+
+        if user_date == 8:
+            user_date -= 7
+        elif user_date == 0:
+            user_date += 7
+
+    manager.current_context().dialog_data['user_date'] = user_date
+
+
+async def change_profile_visibility(c: CallbackQuery, widget: Any, manager: DialogManager):
+    extended = not manager.current_context().dialog_data.get('profile_extended', None)
+    manager.current_context().dialog_data['profile_extended'] = extended
 
 
 dialog_timetable = Dialog(
@@ -127,15 +153,28 @@ dialog_timetable = Dialog(
 fast_timetable = Dialog(
     Window(
         Format('<pre>{timetable}</pre>'),
-        Select(
-            Format('{item[0]}'),
-            id='btn',
-            item_id_getter=operator.itemgetter(1),
-            items='btns',
-            on_click=timetable_show
+
+        Group(
+            Button(Format('TEST'), id='none', ),
+            Button(Format('TEST'), id='none1', ),
+            when='extended'
         ),
         Group(
-            Back(Format("🔙 Назад")),
+            Button(Format('Профили'), id='btn_profiles', on_click=change_profile_visibility),
+        ),
+        Group(
+            Select(
+                Format('{item[0]}'),
+                id='day1',
+                item_id_getter=operator.itemgetter(1),
+                items='days',
+                on_click=fast_timetable_date,
+
+            ),
+            width=2
+        ),
+        Group(
+
             Cancel(Format('🔝 В главное меню')),
             width=2,
         ),

@@ -46,7 +46,7 @@ class Repo:
             'WHERE user_id =$6',
             user_school, user_class, user_prof, user_math, True, userid
         )
-        return result
+        return result[-1]
 
     # user_data for recent_schedule
     async def get_timetable(self, userid):

@@ -26,6 +26,8 @@ class Timetablenew(StatesGroup):
 
 class FastTimetable(StatesGroup):
     main = State()
+    second = State()
+    third = State()
 
 
 class Broadcast(StatesGroup):
