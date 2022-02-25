@@ -56,21 +56,7 @@ class Grade(models.Model):
         verbose_name_plural = 'Классы'
 
     def __str__(self):
-        return self.short_name
-
-
-class Profile(models.Model):
-    grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
-    profile = models.CharField('Профиль', max_length=50)
-    profile_db = models.CharField('Имя для бота', max_length=30)
-    profile_short = models.CharField(max_length=15, default='None')
-
-    class Meta:
-        verbose_name = 'Профиль'
-        verbose_name_plural = 'Профили'
-
-    def __str__(self):
-        return self.profile_db
+        return self.grade_short
 
 
 class Math(models.Model):
@@ -83,6 +69,21 @@ class Math(models.Model):
 
     def __str__(self):
         return self.math
+
+
+class Profile(models.Model):
+    grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
+    profile = models.CharField('Профиль', max_length=50)
+    math = models.ForeignKey(Math, on_delete=models.CASCADE, null=True, default=3)
+    profile_db = models.CharField('Имя для бота', max_length=30)
+    profile_short = models.CharField(max_length=15, default='None')
+
+    class Meta:
+        verbose_name = 'Профиль'
+        verbose_name_plural = 'Профили'
+
+    def __str__(self):
+        return self.profile_db
 
 
 class Discipline(models.Model):

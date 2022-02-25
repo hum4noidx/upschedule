@@ -39,12 +39,12 @@ class Repo:
         await self.conn.execute('Update main_passport Set full_name = $1 Where user_id = $2', name, user_id)
 
     # ______________________ REGISTRATION ______________________
-    async def register_user(self, user_school, user_class, user_prof, user_math, userid):
+    async def register_user(self, user_school, user_class, user_prof, userid):
         result = await self.conn.execute(
-            'UPDATE main_passport SET (school_id, user_class_id, user_prof_id, user_math_id, registered) = ($1, $2, '
-            '$3, $4, $5) '
-            'WHERE user_id =$6',
-            user_school, user_class, user_prof, user_math, True, userid
+            'UPDATE main_passport SET (school_id, user_class_id, user_prof_id, registered) = ($1, $2, '
+            '$3, $4) '
+            'WHERE user_id =$5',
+            user_school, user_class, user_prof, True, userid
         )
         return result[-1]
 
@@ -193,34 +193,35 @@ class Repo:
     #         user_id, full_name)
 
     #  ______________________ SCHEDULE DATABASE ______________________
-    async def get_schedule(self, grade, profile, math, date):
+    async def get_schedule(self, grade, profile, date):
         #  ======================== META ========================
         raw_meta = await self.conn.fetch(
-            'SELECT main_grade.grade_short, main_profile.profile_short, main_math.math_short, main_date.date_short '
-            'FROM  main_grade,main_profile,main_math,main_date '
-            'WHERE main_grade.id = $1 AND main_profile.id = $2 AND main_math.id = $3 AND main_date.id = $4',
-            grade, profile, math, date
+            'SELECT main_grade.grade_short, main_profile.profile_db, main_date.date_short '
+            'FROM  main_grade,main_profile,main_date '
+            'WHERE main_grade.id = $1 AND main_profile.id = $2 AND main_date.id = $3',
+            grade, profile, date
         )
         meta = str()
         for meta1 in raw_meta:
-            meta = f"{meta1['grade_short']}|{meta1['profile_short']}|{meta1['math_short']}|{meta1['date_short']}"
+            meta = f"{meta1['grade_short']}|{meta1['profile_db']}|{meta1['date_short']}"
         #  ======================== DATA ========================
         if int(date) == 6 or int(date) == 7:
             schedule = meta + '\nТут пусто'
         else:
             raw_schedule = await self.conn.fetch(
-                'SELECT main_schedule.lsn_number, main_discipline.lsn_name, main_schedule.lsn_class_id '
+                'SELECT main_schedule.lsn_number, main_discipline.lsn_name, main_classroom.number '
                 'FROM main_schedule LEFT JOIN main_discipline ON main_schedule.lsn_text_id = main_discipline.id '
+                'LEFT JOIN main_classroom ON main_schedule.lsn_class_id = main_classroom.id '
                 'WHERE (main_schedule.lsn_grade_id=$1 AND main_schedule.lsn_profile_id = $2 '
-                'AND main_schedule.lsn_math_id = $3 AND main_schedule.lsn_date_id = $4) '
-                'ORDER BY main_schedule.lsn_number', grade, profile, math, date)
+                'AND main_schedule.lsn_date_id = $3) '
+                'ORDER BY main_schedule.lsn_number', grade, profile, date)
             # Создаем таблицу
             schedule = PrettyTable()
             schedule.title = meta
             schedule.field_names = ["№", "Урок", "Каб."]
             schedule.align = "l"
             for lesson in raw_schedule:  # Заполняем таблицу данными
-                schedule.add_row([lesson["lsn_number"], lesson["lsn_name"], lesson["lsn_class"]])
+                schedule.add_row([lesson["lsn_number"], lesson["lsn_name"], lesson["number"]])
         return str(schedule)
 
     async def get_schools(self):
@@ -238,7 +239,7 @@ class Repo:
         return data
 
     async def get_profiles(self, grade_id):
-        data = dict(await self.conn.fetch('SELECT profile, id '
+        data = dict(await self.conn.fetch('SELECT profile_db, id '
                                           'FROM main_profile '
                                           'WHERE grade_id = $1 ORDER BY id', int(grade_id)))
         data = list(data.items())

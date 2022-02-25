@@ -19,7 +19,7 @@ class Timetable(StatesGroup):
 class Timetablenew(StatesGroup):
     choose_class = State()
     choose_profile = State()
-    choose_math = State()
+    # choose_math = State()
     choose_day = State()
     show_timetable = State()
 
@@ -53,5 +53,10 @@ class RegSG(StatesGroup):
     school = State()
     grade = State()
     profile = State()
-    math = State()
+    # math = State()
     finish = State()
+
+
+class UserSettings(StatesGroup):
+    profile = State()
+    change_name = State()

@@ -19,7 +19,7 @@ from tgbot.handlers.users.compliments_broadcaster import schedule_jobs
 # from tgbot.keyboards.test_keyboards import register_dialog
 from tgbot.handlers.users.dialogs.main_dialog import dialog_main, register_user
 from tgbot.handlers.users.dialogs.registration import dialog_reg, dialogs
-from tgbot.handlers.users.dialogs.timetable import dialog_timetable, fast_timetable
+from tgbot.handlers.users.dialogs.timetable import dialog_timetable, dialog_fast_timetable
 from tgbot.handlers.users.timetable import register_timetable
 from tgbot.handlers.users.user_settings import register_user_settings
 from tgbot.handlers.users.users_register import register_user_reg
@@ -83,7 +83,7 @@ async def main():
     registry.register(dialog_main)
     registry.register(dialog_reg)
     registry.register(dialog_timetable)
-    registry.register(fast_timetable)
+    registry.register(dialog_fast_timetable)
 
     # start
     try:

@@ -34,7 +34,14 @@ async def on_grade_selected(c: CallbackQuery, widget: Any, manager: DialogManage
 
 async def on_profile_selected(c: CallbackQuery, widget: Any, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["profile"] = item_id
+    school = int(manager.current_context().dialog_data['school'])
+    grade = int(manager.current_context().dialog_data['grade'])
+    profile = int(manager.current_context().dialog_data['profile'])
+    user_id = int(manager.current_context().dialog_data['user_id'])
     await manager.dialog().next()
+    data = ctx_data.get()
+    repo = data.get("repo")
+    await repo.register_user(school, grade, profile, user_id)
 
 
 async def on_register_start(c: CallbackQuery, widget: Any, manager: DialogManager):
@@ -43,15 +50,6 @@ async def on_register_start(c: CallbackQuery, widget: Any, manager: DialogManage
 
 async def on_math_selected(c: CallbackQuery, widget: Any, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["math"] = item_id
-    school = int(manager.current_context().dialog_data['school'])
-    grade = int(manager.current_context().dialog_data['grade'])
-    profile = int(manager.current_context().dialog_data['profile'])
-    math = int(manager.current_context().dialog_data['math'])
-    user_id = int(manager.current_context().dialog_data['user_id'])
-    await manager.dialog().next()
-    data = ctx_data.get()
-    repo = data.get("repo")
-    await repo.register_user(school, grade, profile, math, user_id)
 
 
 dialog_reg = Dialog(
@@ -105,23 +103,23 @@ dialog_reg = Dialog(
         getter=Getter.get_profiles,
 
     ),
-    Window(
-        Format("Уровень математики:"),
-        Group(
-            Select(
-                Format('{item[0]}'),
-                id='profile',
-                item_id_getter=operator.itemgetter(1),
-                items='maths',
-                on_click=on_math_selected
-            ),
-            width=2
-        ),
-        Back(Const("Назад")),
-        state=RegSG.math,
-        getter=Getter.get_maths,
-
-    ),
+    # Window(
+    #     Format("Уровень математики:"),
+    #     Group(
+    #         Select(
+    #             Format('{item[0]}'),
+    #             id='profile',
+    #             item_id_getter=operator.itemgetter(1),
+    #             items='maths',
+    #             on_click=on_math_selected
+    #         ),
+    #         width=2
+    #     ),
+    #     Back(Const("Назад")),
+    #     state=RegSG.math,
+    #     getter=Getter.get_maths,
+    #
+    # ),
     Window(
         Format('Успешная регистрация'),
         Cancel(Const('Главное меню')),

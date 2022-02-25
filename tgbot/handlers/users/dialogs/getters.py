@@ -121,26 +121,39 @@ class Getter:
         data = ctx_data.get()
         repo = data.get("repo")
 
+        extended = dialog_manager.current_context().dialog_data.get('profile_extended', None)
         user_data = await repo.get_timetable(user_id)
         user_class = user_data['user_class_id']
-        user_profile = user_data['user_prof_id']
-        user_math = user_data['user_math_id']
+        if extended:
+            user_profile = dialog_manager.current_context().dialog_data.get('user_profile', None)
+        else:
+            user_profile = user_data['user_prof_id']
 
         dialog_manager.current_context().dialog_data['user_class'] = user_class
         dialog_manager.current_context().dialog_data['user_profile'] = user_profile
-        dialog_manager.current_context().dialog_data['user_math'] = user_math
         dialog_manager.current_context().dialog_data['user_date'] = user_date
 
-        timetable = await repo.get_schedule(int(user_class), int(user_profile), int(user_math), int(user_date))
+        timetable = await repo.get_schedule(int(user_class), int(user_profile), int(user_date))
         c_date = await current_date()
 
         dates = {'⏮️': 'prev_date', '⏭️': 'next_date'}
+        profiles = await repo.get_profiles(user_class)
         dates = list(dates.items())
-        extended = dialog_manager.current_context().dialog_data.get('profile_extended', None)
+
         return {
             'timetable': timetable,
             'date': c_date[0],
             'next_date': c_date[1],
             'days': dates,
             'extended': extended,
+            'profiles': profiles
+        }
+
+    async def settings_getter(dialog_manager: DialogManager, **kwargs):
+        data = ctx_data.get()
+        repo = data.get("repo")
+        settings = await repo.show_user_info(dialog_manager.event.from_user.id)
+
+        return {
+            'settings': settings
         }
