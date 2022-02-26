@@ -13,7 +13,7 @@
         <a class="btn btn-primary shadow-sm mb-3"
            href="{% url 'main:schedule' grade profile.first.id math value.0 %}">{{value.1}}</a>
         {% endfor %}
-        <a href="javascript:history.go(-1);" class="btn btn-warning shadow-sm mb-1">🔙</a>
+        <a class="btn btn-warning shadow-sm mb-1" href="javascript:history.go(-1);">🔙</a>
     </div>
     {% endif %}
 </div>

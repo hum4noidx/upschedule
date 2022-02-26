@@ -1,4 +1,3 @@
-import logging
 import operator
 from typing import Any
 
@@ -19,20 +18,16 @@ async def on_profile_selected_1(c: CallbackQuery, widget: Any, manager: DialogMa
 
 
 async def timetable_show(c: CallbackQuery, widget: Any, manager: DialogManager, item_id: str):
-    grade = int(manager.current_context().dialog_data.get("grade", None))
-    profile = int(manager.current_context().dialog_data.get("profile", None))
-    # math = int(manager.current_context().dialog_data['math'])
+    some_data = manager.current_context().dialog_data
     date = manager.current_context().dialog_data["day"] = int(item_id)
-    data = ctx_data.get()
-    repo = data.get("repo")
-    schedule = await repo.get_schedule(grade, profile, date)
+    db = ctx_data.get().get('repo')
+    schedule = await db.get_schedule(int(some_data['grade']), int(some_data['profile']), date)
     manager.current_context().dialog_data["timetable"] = schedule
-    await repo.schedule_user_usage(manager.event.from_user.id)
+    await db.schedule_user_usage(manager.event.from_user.id)
     await manager.dialog().next()
 
 
 async def fast_timetable_profile(c: CallbackQuery, widget: Any, manager: DialogManager, item_id: str):
-    logging.info(item_id)
     user_profile = item_id
     manager.current_context().dialog_data['user_profile'] = user_profile
 

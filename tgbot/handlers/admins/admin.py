@@ -77,6 +77,7 @@ async def restart_server(m: Message):
         'Authorization': config1.hosting.authorization,
     }
 
+
 async def add_vip_user(m: Message, repo: Repo):
     info = m.get_args()
     await m.answer(f"Статус обновлен. Текущий статус - {await repo.add_vip_user(int(info))}")

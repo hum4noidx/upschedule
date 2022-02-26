@@ -16,6 +16,11 @@ class Timetable(StatesGroup):
     choose_day = State()
 
 
+class UserSettings(StatesGroup):
+    profile = State()
+    change_name = State()
+
+
 class Timetablenew(StatesGroup):
     choose_class = State()
     choose_profile = State()
@@ -55,8 +60,3 @@ class RegSG(StatesGroup):
     profile = State()
     # math = State()
     finish = State()
-
-
-class UserSettings(StatesGroup):
-    profile = State()
-    change_name = State()

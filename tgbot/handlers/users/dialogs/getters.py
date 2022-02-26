@@ -1,4 +1,3 @@
-import logging
 from datetime import datetime, date
 
 from aiogram.dispatcher.handler import ctx_data
@@ -22,11 +21,10 @@ async def current_date():
 class Getter:
     async def check_exists(dialog_manager: DialogManager, **kwargs):
         user_id = dialog_manager.event.from_user.id
-        data = ctx_data.get()
-        repo = data.get("repo")
-        exists = await repo.check_registered(user_id)
+        db = ctx_data.get().get('repo')
+        exists = await db.check_registered(user_id)
         name = await greeting(user_id)
-        school = await repo.db_get_user_school(user_id)
+        school = await db.db_get_user_school(user_id)
         dialog_manager.current_context().dialog_data["school"] = school
         date = await current_date()
         return {
@@ -40,19 +38,17 @@ class Getter:
         }
 
     async def get_schools(dialog_manager: DialogManager, **kwargs):
-        data = ctx_data.get()
-        repo = data.get("repo")
-        schools = await repo.get_schools()
+        db = ctx_data.get().get('repo')
+        schools = await db.get_schools()
 
         return {
             "schools": schools,
         }
 
     async def get_grades(dialog_manager: DialogManager, **kwargs):
-        school = dialog_manager.current_context().dialog_data.get("school", None)
-        data = ctx_data.get()
-        repo = data.get("repo")
-        grades = await repo.get_grades(school)
+        school = int(dialog_manager.current_context().dialog_data.get("school", None))
+        db = ctx_data.get().get('repo')
+        grades = await db.reg_get_grades(school)
 
         return {
             "name": dialog_manager.current_context().dialog_data.get("name", ""),
@@ -61,9 +57,8 @@ class Getter:
 
     async def get_profiles(dialog_manager: DialogManager, **kwargs):
         grade = dialog_manager.current_context().dialog_data.get("grade", None)
-        data = ctx_data.get()
-        repo = data.get("repo")
-        profiles = await repo.get_profiles(grade)
+        db = ctx_data.get().get('repo')
+        profiles = await db.get_profiles(grade)
 
         return {
             "name": dialog_manager.current_context().dialog_data.get("name", ""),
@@ -71,9 +66,8 @@ class Getter:
         }
 
     async def get_maths(dialog_manager: DialogManager, **kwargs):
-        data = ctx_data.get()
-        repo = data.get("repo")
-        math = await repo.get_maths()
+        db = ctx_data.get().get('repo')
+        math = await db.get_maths()
 
         return {
             "name": dialog_manager.current_context().dialog_data.get("name", ""),
@@ -81,20 +75,17 @@ class Getter:
         }
 
     async def get_days(dialog_manager: DialogManager, **kwargs):
-        data = ctx_data.get()
-        repo = data.get("repo")
-        days = await repo.get_days()
-        logging.info(days)
+        db = ctx_data.get().get('repo')
+        days = await db.get_days()
+
         return {
             'days': days,
         }
 
     async def get_user_grades(dialog_manager: DialogManager, **kwargs):
         user_id = dialog_manager.event.from_user.id
-        data = ctx_data.get()
-        repo = data.get("repo")
-        school = await repo.db_get_user_school(user_id)
-        grades = await repo.get_grades(school)
+        db = ctx_data.get().get('repo')
+        grades = await db.get_grades(user_id)
         return {
             'grades': grades,
         }
@@ -118,11 +109,10 @@ class Getter:
             user_date = wd + 1
         if user_date_chosen:
             user_date = user_date_chosen
-        data = ctx_data.get()
-        repo = data.get("repo")
 
+        db = ctx_data.get().get('repo')
         extended = dialog_manager.current_context().dialog_data.get('profile_extended', None)
-        user_data = await repo.get_timetable(user_id)
+        user_data = await db.get_timetable(user_id)
         user_class = user_data['user_class_id']
         if extended:
             user_profile = dialog_manager.current_context().dialog_data.get('user_profile', None)
@@ -133,11 +123,11 @@ class Getter:
         dialog_manager.current_context().dialog_data['user_profile'] = user_profile
         dialog_manager.current_context().dialog_data['user_date'] = user_date
 
-        timetable = await repo.get_schedule(int(user_class), int(user_profile), int(user_date))
+        timetable = await db.get_schedule(int(user_class), int(user_profile), int(user_date))
         c_date = await current_date()
 
         dates = {'⏮️': 'prev_date', '⏭️': 'next_date'}
-        profiles = await repo.get_profiles(user_class)
+        profiles = await db.get_profiles(user_class)
         dates = list(dates.items())
 
         return {
@@ -150,10 +140,9 @@ class Getter:
         }
 
     async def settings_getter(dialog_manager: DialogManager, **kwargs):
-        data = ctx_data.get()
-        repo = data.get("repo")
-        settings = await repo.show_user_info(dialog_manager.event.from_user.id)
-
+        db = ctx_data.get().get('repo')
+        # repo = data.get("repo")
+        settings = await db.show_user_info(dialog_manager.event.from_user.id)
         return {
             'settings': settings
         }

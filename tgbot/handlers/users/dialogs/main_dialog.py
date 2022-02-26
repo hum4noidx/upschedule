@@ -6,7 +6,7 @@ from aiogram_dialog.widgets.text import Const, Format
 
 from tgbot.handlers.users.dialogs.getters import Getter
 from tgbot.handlers.users.dialogs.registration import name_handler
-from tgbot.states.states import MainSG, RegSG, Timetablenew, FastTimetable
+from tgbot.states.states import MainSG, RegSG, Timetablenew, FastTimetable, UserSettings
 
 dialog_main = Dialog(
     Window(
@@ -18,12 +18,13 @@ dialog_main = Dialog(
         Format('<b>Главное меню</b>\n{name}', when='registered'),
         Group(
             Start(Const('Расписание'), id='utimetable', state=Timetablenew.choose_class),
-            Button(Format('Настройки'), id='settings', ),
+            Start(Const('Настройки'), id='usettings', state=UserSettings.profile),
             Start(Format('Сегодня [{date}]'), id='now', data={'date': 'now'}, state=FastTimetable.main),  # TODO :
             Start(Format('Завтра [{next_date}]'), id='next_day', data={'date': 'next_day'}, state=FastTimetable.main),
             when='registered'
         ),
-        Format('Необходима регистрация', when='not_registered'),
+        Format('Бот обновился. Теперь регистрация обязательна', when='not_registered'),
+        # Format('Необходима регистрация', when='not_registered'),
         Group(
             Start(Const('Регистрация'), id='register', state=RegSG.school, when='not_registered'),
         ),
@@ -40,3 +41,4 @@ async def start(c: CallbackQuery, dialog_manager: DialogManager):
 
 def register_user(dp: Dispatcher):
     dp.register_message_handler(start, commands=['start'], state='*')
+    dp.register_callback_query_handler(start, text='go_main', state='*')

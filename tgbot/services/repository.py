@@ -23,17 +23,19 @@ class Repo:
             'WHERE user_id = $1', user_id)
 
     async def show_user_info(self, user_id):
-        user_data = dict(await self.conn.fetchrow('SELECT full_name, uses, user_class, user_math, user_prof, vip '
-                                                  'from main_passport Where user_id = $1', user_id))
+        user_data = dict(await self.conn.fetchrow(
+            'SELECT main_passport.full_name, main_passport.uses, main_grade.grade_short, '
+            'main_profile.profile_db, main_passport.vip '
+            'FROM main_passport '
+            'LEFT JOIN main_grade ON main_passport.user_class_id = main_grade.id '
+            'LEFT JOIN main_profile ON main_passport.user_prof_id = main_profile.id '
+            'WHERE main_passport.user_id = $1', user_id))
         msg = (f"Имя - {user_data['full_name']}\n"
                f"Жмякал на кнопки - {user_data['uses']} раз\n"
-               f"Класс - {user_data['user_class']}\n"
-               f"Профиль - {user_data['user_prof']}\n"
-               f"Математика - {user_data['user_math']}\n"
+               f"Класс - {user_data['grade_short']}\n"
+               f"Профиль - {user_data['profile_db']}\n"
                f"VIP - {user_data['vip']}")
-        message = msg.replace('prof', 'Профиль').replace('base', 'База').replace('fm', 'Физмат').replace(
-            'bh', 'Биохим').replace('se', 'Соцэконом').replace('gum', 'Гуманитарий')
-        return message
+        return msg
 
     async def user_change_name(self, user_id, name):
         await self.conn.execute('Update main_passport Set full_name = $1 Where user_id = $2', name, user_id)
@@ -230,7 +232,15 @@ class Repo:
         data = list(data.items())
         return data
 
-    async def get_grades(self, school_id):
+    async def get_grades(self, user_id):
+        data = dict(
+            await self.conn.fetch('SELECT grade, grade_short '
+                                  'FROM main_grade '
+                                  'WHERE school_id = (SELECT school_id FROM main_passport WHERE user_id=$1)', user_id))
+        data = list(data.items())
+        return data
+
+    async def reg_get_grades(self, school_id):
         data = dict(
             await self.conn.fetch('SELECT grade, grade_short '
                                   'FROM main_grade '

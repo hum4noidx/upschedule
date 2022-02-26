@@ -12,14 +12,13 @@ from tgbot.config import load_config
 from tgbot.filters.role import RoleFilter, AdminFilter, VIPFilter
 from tgbot.handlers.admins.admin import register_admin
 from tgbot.handlers.admins.broadcaster import register_broadcast
-from tgbot.handlers.filter import register_level_filter
 from tgbot.handlers.groups.group_helper import register_groups
 from tgbot.handlers.users.compliments import register_compliments
 from tgbot.handlers.users.compliments_broadcaster import schedule_jobs
-# from tgbot.keyboards.test_keyboards import register_dialog
 from tgbot.handlers.users.dialogs.main_dialog import dialog_main, register_user
 from tgbot.handlers.users.dialogs.registration import dialog_reg, dialogs
 from tgbot.handlers.users.dialogs.timetable import dialog_timetable, dialog_fast_timetable
+from tgbot.handlers.users.dialogs.user_settings import dialog_user_settings
 from tgbot.handlers.users.timetable import register_timetable
 from tgbot.handlers.users.user_settings import register_user_settings
 from tgbot.handlers.users.users_register import register_user_reg
@@ -67,7 +66,6 @@ async def main():
     scheduler = AsyncIOScheduler()
     registry = DialogRegistry(dp)
 
-    register_level_filter(dp)
     register_admin(dp)
     register_vip(dp)
     register_user(dp)
@@ -77,10 +75,11 @@ async def main():
     register_user_settings(dp)
     register_groups(dp)
     register_compliments(dp)
-    # register_dialog(dp)
     schedule_jobs(dp, scheduler)
     dialogs(dp)
     registry.register(dialog_main)
+    registry.register(dialog_user_settings)
+
     registry.register(dialog_reg)
     registry.register(dialog_timetable)
     registry.register(dialog_fast_timetable)
