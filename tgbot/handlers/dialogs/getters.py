@@ -27,6 +27,7 @@ class Getter:
         school = await db.db_get_user_school(user_id)
         dialog_manager.current_context().dialog_data["school"] = school
         date = await current_date()
+        admin = await db.get_admins(user_id)
         return {
             "registered": exists,
             'not_registered': not exists,
@@ -34,7 +35,8 @@ class Getter:
             'user_id': user_id,
             'date': date[0],
             'next_date': date[1],
-            'school': school
+            'school': school,
+            'admin': admin
         }
 
     async def get_schools(dialog_manager: DialogManager, **kwargs):
@@ -63,6 +65,7 @@ class Getter:
         return {
             "name": dialog_manager.current_context().dialog_data.get("name", ""),
             "profiles": profiles,
+            'grade': grade,
         }
 
     async def get_maths(dialog_manager: DialogManager, **kwargs):
@@ -102,17 +105,21 @@ class Getter:
         user_date_chosen = dialog_manager.current_context().dialog_data.get('user_date', None)
         today = datetime.now()
         wd = date.weekday(today) + 1
-
         if chosen_date == 'now':
             user_date = wd
         else:
             user_date = wd + 1
+        if user_date == 8:
+            user_date -= 7
+        elif user_date == 0:
+            user_date += 7
         if user_date_chosen:
             user_date = user_date_chosen
 
         db = ctx_data.get().get('repo')
         extended = dialog_manager.current_context().dialog_data.get('profile_extended', None)
         user_data = await db.get_timetable(user_id)
+        await db.schedule_user_usage(dialog_manager.event.from_user.id)
         user_class = user_data['user_class_id']
         if extended:
             user_profile = dialog_manager.current_context().dialog_data.get('user_profile', None)
@@ -145,4 +152,18 @@ class Getter:
         settings = await db.show_user_info(dialog_manager.event.from_user.id)
         return {
             'settings': settings
+        }
+
+    async def get_users_count(dialog_manager: DialogManager, **kwargs):
+        db = ctx_data.get().get('repo')
+        count = await db.users_count()
+        return {
+            'count': count
+        }
+
+    async def get_users_list(dialog_manager: DialogManager, **kwargs):
+        users_list = dialog_manager.current_context().dialog_data.get('users_list', None)
+
+        return {
+            'users_list': users_list,
         }

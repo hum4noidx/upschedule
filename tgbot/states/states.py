@@ -60,3 +60,17 @@ class RegSG(StatesGroup):
     profile = State()
     # math = State()
     finish = State()
+
+
+class BroadcastSG(StatesGroup):
+    choose_class = State()
+    choose_profile = State()
+    choose_math = State()
+    data = State()
+    confirm = State()
+    final = State()
+
+
+class AdminPanelSG(StatesGroup):
+    main = State()
+    users_list = State()

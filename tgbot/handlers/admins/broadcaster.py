@@ -1,13 +1,12 @@
 import typing
 
-from aiogram import Dispatcher, types
+from aiogram import Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.dispatcher.handler import ctx_data
 from aiogram.types import CallbackQuery, Message
 from aiogram_broadcaster import MessageBroadcaster
 
 from tgbot.keyboards import choose_btns, nav_btns
-from tgbot.keyboards.choose_btns import classes, profile, math
 from tgbot.states.states import Broadcast
 
 
@@ -102,13 +101,13 @@ async def broadcast_data_collect(c: CallbackQuery, callback_data: typing.Dict[st
 
 
 def register_broadcast(dp: Dispatcher):
-    dp.register_callback_query_handler(broadcast_choose_class, text='broadcast', state='*')
-    dp.register_callback_query_handler(broadcast_choose_profile, classes.filter(),
-                                       state=Broadcast.choose_profile)
-    dp.register_callback_query_handler(broadcast_choose_math, profile.filter(), state=Broadcast.choose_math)
-    dp.register_callback_query_handler(broadcast_data_collect, math.filter(), state=Broadcast.confirm)
-    dp.register_callback_query_handler(broadcast_get_message, state=Broadcast.confirm)
-    dp.register_message_handler(broadcast_start, state=Broadcast.final,
-                                content_types=types.ContentTypes.ANY)
-
+    # dp.register_callback_query_handler(broadcast_choose_class, text='broadcast', state='*')
+    # dp.register_callback_query_handler(broadcast_choose_profile, classes.filter(),
+    #                                    state=Broadcast.choose_profile)
+    # dp.register_callback_query_handler(broadcast_choose_math, profile.filter(), state=Broadcast.choose_math)
+    # dp.register_callback_query_handler(broadcast_data_collect, math.filter(), state=Broadcast.confirm)
+    # dp.register_callback_query_handler(broadcast_get_message, state=Broadcast.confirm)
+    # dp.register_message_handler(broadcast_start, state=Broadcast.final,
+    #                             content_types=types.ContentTypes.ANY)
+    pass
 # TODO: мб сделать планировщик рассылки?..

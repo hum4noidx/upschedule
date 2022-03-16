@@ -1,12 +1,12 @@
 from aiogram import Dispatcher
 from aiogram.types import CallbackQuery
 from aiogram_dialog import DialogManager, StartMode, Dialog, Window
-from aiogram_dialog.widgets.kbd import Group, Start, Button
+from aiogram_dialog.widgets.kbd import Group, Start, Button, Row
 from aiogram_dialog.widgets.text import Const, Format
 
-from tgbot.handlers.users.dialogs.getters import Getter
-from tgbot.handlers.users.dialogs.registration import name_handler
-from tgbot.states.states import MainSG, RegSG, Timetablenew, FastTimetable, UserSettings
+from tgbot.handlers.dialogs.getters import Getter
+from tgbot.handlers.dialogs.registration import name_handler
+from tgbot.states.states import MainSG, RegSG, Timetablenew, FastTimetable, UserSettings, AdminPanelSG
 
 dialog_main = Dialog(
     Window(
@@ -18,8 +18,9 @@ dialog_main = Dialog(
         Format('<b>Главное меню</b>\n{name}', when='registered'),
         Group(
             Start(Const('Расписание'), id='utimetable', state=Timetablenew.choose_class),
-            Start(Const('Настройки'), id='usettings', state=UserSettings.profile),
-            Start(Format('Сегодня [{date}]'), id='now', data={'date': 'now'}, state=FastTimetable.main),  # TODO :
+            Row(Start(Const('Настройки'), id='usettings', state=UserSettings.profile),
+                Start(Const('Админка'), id='admin_panel', state=AdminPanelSG.main, when='admin'), ),
+            Start(Format('Сегодня [{date}]'), id='now', data={'date': 'now'}, state=FastTimetable.main),
             Start(Format('Завтра [{next_date}]'), id='next_day', data={'date': 'next_day'}, state=FastTimetable.main),
             when='registered'
         ),

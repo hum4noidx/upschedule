@@ -8,6 +8,7 @@ class DbConfig:
     password: str
     user: str
     database: str
+    redis_pass: str
 
 
 @dataclass

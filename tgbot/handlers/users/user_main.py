@@ -1,4 +1,3 @@
-import logging
 import typing
 
 from aiogram import Dispatcher
@@ -10,8 +9,8 @@ from aiogram_dialog.widgets.kbd import Group, Start, Button
 from aiogram_dialog.widgets.text import Const, Format
 
 from tgbot.handlers.admins.admin import greeting
-from tgbot.handlers.users.dialogs.getters import Getter
-from tgbot.handlers.users.dialogs.registration import name_handler
+from tgbot.handlers.dialogs.getters import Getter
+from tgbot.handlers.dialogs.registration import name_handler
 from tgbot.keyboards import nav_btns
 from tgbot.keyboards.choose_btns import make_buttons_class, classes
 from tgbot.states.states import MainSG, RegSG, FastTimetable
@@ -75,7 +74,6 @@ async def test(m: Message, **kwargs):
 
 
 async def test1(c: CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
-    logging.debug(f'Текст {callback_data}')
     await c.answer()
 
 

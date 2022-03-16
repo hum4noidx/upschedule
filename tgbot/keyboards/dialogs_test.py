@@ -90,7 +90,6 @@ async def name_handler(c: CallbackQuery, button: Button, manager: DialogManager)
 
 
 async def on_school_selected(c: CallbackQuery, widget: Any, manager: DialogManager, item_id: str):
-    logging.info(f'School selected: {item_id}')
     manager.current_context().dialog_data["school"] = item_id
     await manager.dialog().next()
 

@@ -12,13 +12,15 @@ from tgbot.config import load_config
 from tgbot.filters.role import RoleFilter, AdminFilter, VIPFilter
 from tgbot.handlers.admins.admin import register_admin
 from tgbot.handlers.admins.broadcaster import register_broadcast
+from tgbot.handlers.dialogs.admin_panel import dialog_admin
+from tgbot.handlers.dialogs.broadcaster import dialog_broadcaster
+from tgbot.handlers.dialogs.main_dialog import register_user, dialog_main
+from tgbot.handlers.dialogs.registration import dialog_reg, dialogs
+from tgbot.handlers.dialogs.timetable import dialog_timetable, dialog_fast_timetable
+from tgbot.handlers.dialogs.user_settings import dialog_user_settings
 from tgbot.handlers.groups.group_helper import register_groups
 from tgbot.handlers.users.compliments import register_compliments
 from tgbot.handlers.users.compliments_broadcaster import schedule_jobs
-from tgbot.handlers.users.dialogs.main_dialog import dialog_main, register_user
-from tgbot.handlers.users.dialogs.registration import dialog_reg, dialogs
-from tgbot.handlers.users.dialogs.timetable import dialog_timetable, dialog_fast_timetable
-from tgbot.handlers.users.dialogs.user_settings import dialog_user_settings
 from tgbot.handlers.users.timetable import register_timetable
 from tgbot.handlers.users.user_settings import register_user_settings
 from tgbot.handlers.users.users_register import register_user_reg
@@ -44,7 +46,7 @@ async def main():
     config = load_config("bot.ini")
 
     if config.tg_bot.use_redis:
-        storage = RedisStorage2(host='87.249.53.148')
+        storage = RedisStorage2(host='92.53.105.144', password=config.db.redis_pass)
     else:
         storage = MemoryStorage()
     pool = await create_pool(
@@ -79,10 +81,11 @@ async def main():
     dialogs(dp)
     registry.register(dialog_main)
     registry.register(dialog_user_settings)
-
+    registry.register(dialog_broadcaster)
     registry.register(dialog_reg)
     registry.register(dialog_timetable)
     registry.register(dialog_fast_timetable)
+    registry.register(dialog_admin)
 
     # start
     try:

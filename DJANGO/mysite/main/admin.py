@@ -33,7 +33,7 @@ class TeacherAdmin(admin.ModelAdmin):
 
 class PassportAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['user_id', 'uses', 'full_name', 'user_class', 'user_prof', 'user_math', 'vip', 'admin',
+        (None, {'fields': ['user_id', 'uses', 'full_name', 'user_class', 'user_prof', 'vip', 'admin',
                            'registered']}),
     ]
     list_display = ('id', 'user_id', 'full_name', 'user_class', 'user_prof', 'user_math', 'vip', 'admin', 'registered')

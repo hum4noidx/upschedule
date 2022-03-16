@@ -24,13 +24,14 @@ class Repo:
 
     async def show_user_info(self, user_id):
         user_data = dict(await self.conn.fetchrow(
-            'SELECT main_passport.full_name, main_passport.uses, main_grade.grade_short, '
+            'SELECT main_passport.id,main_passport.full_name, main_passport.uses, main_grade.grade_short, '
             'main_profile.profile_db, main_passport.vip '
             'FROM main_passport '
             'LEFT JOIN main_grade ON main_passport.user_class_id = main_grade.id '
             'LEFT JOIN main_profile ON main_passport.user_prof_id = main_profile.id '
             'WHERE main_passport.user_id = $1', user_id))
-        msg = (f"Имя - {user_data['full_name']}\n"
+        msg = (f"ID - {user_data['id']}\n"
+               f"Имя - {user_data['full_name']}\n"
                f"Жмякал на кнопки - {user_data['uses']} раз\n"
                f"Класс - {user_data['grade_short']}\n"
                f"Профиль - {user_data['profile_db']}\n"
@@ -58,12 +59,11 @@ class Repo:
         return dict(user_profile)
 
     # ______________________ ROLES ______________________
-    async def get_admins(self) -> List[int]:
-        admins = await self.conn.fetch(
-            'SELECT user_id FROM main_passport WHERE admin = True'
+    async def get_admins(self, user_id):
+        data = await self.conn.fetchrow(
+            'SELECT admin FROM main_passport WHERE user_id = $1', user_id
         )
-        data = ([admin['user_id'] for admin in admins])
-        return data
+        return data['admin']
 
     async def get_vips(self) -> List[int]:
         vips = await self.conn.fetch(
@@ -278,3 +278,7 @@ class Repo:
                                           'FROM main_date ORDER BY id', ))
         data = list(data.items())
         return data
+
+    async def users_count(self):
+        data = await self.conn.fetchrow('SELECT count(id) FROM main_passport')
+        return data['count']

@@ -7,8 +7,8 @@ from aiogram_dialog import Dialog, DialogManager, Window
 from aiogram_dialog.widgets.kbd import Select, Group, Back, Cancel, Button
 from aiogram_dialog.widgets.text import Format
 
-from tgbot.handlers.users.dialogs.getters import Getter
-from tgbot.handlers.users.dialogs.registration import on_grade_selected
+from tgbot.handlers.dialogs.getters import Getter
+from tgbot.handlers.dialogs.registration import on_grade_selected
 from tgbot.states.states import Timetablenew, FastTimetable
 
 
@@ -45,8 +45,9 @@ async def fast_timetable_date(c: CallbackQuery, widget: Any, manager: DialogMana
             user_date -= 7
         elif user_date == 0:
             user_date += 7
-
     manager.current_context().dialog_data['user_date'] = user_date
+    db = ctx_data.get().get('repo')
+    await db.schedule_user_usage(manager.event.from_user.id)
 
 
 async def change_profile_visibility(c: CallbackQuery, widget: Any, manager: DialogManager):
@@ -157,7 +158,6 @@ dialog_fast_timetable = Dialog(
             width=2
         ),
         Group(
-
             Cancel(Format('🔝 В главное меню')),
             width=2,
         ),
