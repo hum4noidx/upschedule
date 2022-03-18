@@ -167,3 +167,10 @@ class Getter:
         return {
             'users_list': users_list,
         }
+
+    async def get_users_today_list(dialog_manager: DialogManager, **kwargs):
+        users_list = dialog_manager.current_context().dialog_data.get("users_today_list", None)
+
+        return {
+            'users_today_list': users_list,
+        }

@@ -74,3 +74,4 @@ class BroadcastSG(StatesGroup):
 class AdminPanelSG(StatesGroup):
     main = State()
     users_list = State()
+    users_today_list = State()

@@ -14,6 +14,12 @@ async def on_click_users_list(c: CallbackQuery, button: Button, manager: DialogM
     await manager.dialog().next()
 
 
+async def on_click_users_today_list(c: CallbackQuery, button: Button, manager: DialogManager):
+    db = ctx_data.get().get('repo')
+    manager.current_context().dialog_data['users_today_list'] = f'<pre>{await db.list_all_today_users()}</pre>'
+    await manager.dialog().next()
+
+
 dialog_admin = Dialog(
     Window(
         Format('Админка'),
@@ -28,8 +34,15 @@ dialog_admin = Dialog(
     ),
     Window(
         Format('{users_list}'),
+        Button(Const('Сегодня'), id='users_today', on_click=on_click_users_today_list),
         Back(Const("Назад")),
         getter=Getter.get_users_list,
         state=AdminPanelSG.users_list
+    ),
+    Window(
+        Format('{users_today_list}'),
+        Back(Const("Назад")),
+        getter=Getter.get_users_today_list,
+        state=AdminPanelSG.users_today_list
     )
 )
