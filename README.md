@@ -1,6 +1,5 @@
-# 1208 BOT
+# Upschedule
 
-![1208bot](https://b.radikal.ru/b26/2112/a9/00288387fe79.png "1208bot")
 
 ## _Multifunctional Telegram Bot for School_
 
@@ -12,7 +11,7 @@
 
 ## Tech
 
-1208 BOT uses a number of open source projects to work properly:
+Upschedule uses a number of open source projects to work properly:
 
 - [Python] - interpreted high-level general-purpose programming language.
 - [PostgreSQL] - awesome database
@@ -66,7 +65,7 @@ host = 111.111.111.111
 Clone the project
 
 ```bash
-  git clone https://github.com/hum4noidx/1208bot
+  git clone https://github.com/hum4noidx/upschedule
 ```
 
 Go to the project directory
