@@ -21,6 +21,12 @@ async def name_handler(c: CallbackQuery, button: Button, manager: DialogManager)
     await manager.dialog().next()
 
 
+async def notification(c: CallbackQuery, button: Button, manager: DialogManager):
+    await c.answer(
+        'Из-за изменений в коде бота могут возникать ошибки при нажатии на кнопки предыдущих сообщений. '
+        '\nУдалите все предыдущие сообщения, пожалуйста', show_alert=True)
+
+
 async def on_school_selected(c: CallbackQuery, widget: Any, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["school"] = item_id
     manager.current_context().dialog_data["user_id"] = c.from_user.id

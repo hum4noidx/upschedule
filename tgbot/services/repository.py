@@ -282,3 +282,6 @@ class Repo:
     async def users_count(self):
         data = await self.conn.fetchrow('SELECT count(id) FROM main_passport')
         return data['count']
+
+    async def add_horoscope(self, sign, text):
+        await self.conn.execute('UPDATE horoscopes SET sign_text = $2 WHERE sign = $1', sign, text)

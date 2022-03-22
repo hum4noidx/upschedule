@@ -167,3 +167,5 @@ class Getter:
         return {
             'users_list': users_list,
         }
+
+    async def get_horoscope_signs(dialog_manager: DialogManager, **kwargs):

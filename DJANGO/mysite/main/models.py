@@ -134,6 +134,7 @@ class Passport(models.Model):
     vip = models.BooleanField(default=False, null=True)
     admin = models.BooleanField(default=False, null=True)
     last_seen = models.DateTimeField(null=True)
+    horoscope_sign = models.CharField('Знак зодиака', max_length=16, null=True, blank=True)
 
     class Meta:
         verbose_name = 'Пользователь'

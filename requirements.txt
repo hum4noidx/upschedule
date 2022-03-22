@@ -10,3 +10,4 @@ pandas
 prettytable~=3.0.0
 Django~=4.0
 openpyxl~=3.0.9
+aiohttp~=3.8.1

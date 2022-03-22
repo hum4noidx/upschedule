@@ -1,11 +1,12 @@
 from aiogram import Dispatcher
-from aiogram.types import CallbackQuery
+from aiogram.types import CallbackQuery, Message
 from aiogram_dialog import DialogManager, StartMode, Dialog, Window
 from aiogram_dialog.widgets.kbd import Group, Start, Button, Row
 from aiogram_dialog.widgets.text import Const, Format
 
 from tgbot.handlers.dialogs.getters import Getter
-from tgbot.handlers.dialogs.registration import name_handler
+from tgbot.handlers.dialogs.horoscope_parser import main
+from tgbot.handlers.dialogs.registration import name_handler, notification
 from tgbot.states.states import MainSG, RegSG, Timetablenew, FastTimetable, UserSettings, AdminPanelSG
 
 dialog_main = Dialog(
@@ -20,6 +21,7 @@ dialog_main = Dialog(
             Start(Const('Расписание'), id='utimetable', state=Timetablenew.choose_class),
             Row(Start(Const('Настройки'), id='usettings', state=UserSettings.profile),
                 Start(Const('Админка'), id='admin_panel', state=AdminPanelSG.main, when='admin'), ),
+            Button(Const('ГоРоСкОп'), id='notification', on_click=notification),
             Start(Format('Сегодня [{date}]'), id='now', data={'date': 'now'}, state=FastTimetable.main),
             Start(Format('Завтра [{next_date}]'), id='next_day', data={'date': 'next_day'}, state=FastTimetable.main),
             when='registered'
@@ -40,6 +42,11 @@ async def start(c: CallbackQuery, dialog_manager: DialogManager):
     await dialog_manager.start(MainSG.greeting, mode=StartMode.RESET_STACK)
 
 
+async def test(m: Message):
+    await main()
+
+
 def register_user(dp: Dispatcher):
     dp.register_message_handler(start, commands=['start'], state='*')
     dp.register_callback_query_handler(start, text='go_main', state='*')
+    dp.register_message_handler(test, commands=['test'], state='*')
