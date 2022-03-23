@@ -19,7 +19,7 @@ from tgbot.handlers.dialogs.horoscope_parser import schedule_jobs
 from tgbot.handlers.dialogs.main_dialog import register_user, dialog_main
 from tgbot.handlers.dialogs.registration import dialog_reg, dialogs
 from tgbot.handlers.dialogs.timetable import dialog_timetable, dialog_fast_timetable
-from tgbot.handlers.dialogs.user_settings import dialog_user_settings
+from tgbot.handlers.dialogs.user_settings import dialog_user_settings, dialog_subscriptions, dialog_horoscope_subscribe
 from tgbot.handlers.groups.group_helper import register_groups
 from tgbot.handlers.users.compliments import register_compliments
 from tgbot.handlers.users.timetable import register_timetable
@@ -66,7 +66,7 @@ async def main():
     dp.filters_factory.bind(RoleFilter)
     dp.filters_factory.bind(AdminFilter)
     dp.filters_factory.bind(VIPFilter)
-    scheduler = AsyncIOScheduler()
+    scheduler = AsyncIOScheduler(timezone='Europe/Moscow')
     registry = DialogRegistry(dp)
 
     register_admin(dp)
@@ -89,6 +89,8 @@ async def main():
     registry.register(dialog_fast_timetable)
     registry.register(dialog_admin)
     registry.register(horoscopes)
+    registry.register(dialog_subscriptions)
+    registry.register(dialog_horoscope_subscribe)
 
     # start
     try:

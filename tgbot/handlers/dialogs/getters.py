@@ -175,3 +175,25 @@ class Getter:
         return {
             'signs': signs
         }
+
+    async def get_horoscope_text(dialog_manager: DialogManager, **kwargs):
+        text = dialog_manager.current_context().dialog_data.get('horoscope_text', None)
+
+        return {
+            'text': text,
+
+        }
+
+    async def subscriptions_getter(dialog_manager: DialogManager, **kwargs):
+        db = ctx_data.get().get('repo')
+        subscriptions = await db.get_subscriptions(dialog_manager.event.from_user.id)
+        if subscriptions != 'None':
+            return {
+                'subscription_title': subscriptions['title_ru'],
+                'subscription_status': subscriptions['status']
+            }
+        else:
+            return {
+                'subscription_title': 'None',
+                'subscription_status': 'None'
+            }

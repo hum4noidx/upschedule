@@ -18,7 +18,6 @@ class Timetable(StatesGroup):
 
 class UserSettings(StatesGroup):
     profile = State()
-    change_name = State()
 
 
 class Timetablenew(StatesGroup):
@@ -78,4 +77,14 @@ class AdminPanelSG(StatesGroup):
 
 class HoroscopeSG(StatesGroup):
     main = State()
+    text = State()
     Confirm = State()
+
+
+class SubscriptionsSG(StatesGroup):
+    subscriptions = State()
+
+
+class RegHoroscopeSG(StatesGroup):
+    main = State()
+    finish = State()

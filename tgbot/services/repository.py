@@ -29,13 +29,15 @@ class Repo:
             'FROM main_passport '
             'LEFT JOIN main_grade ON main_passport.user_class_id = main_grade.id '
             'LEFT JOIN main_profile ON main_passport.user_prof_id = main_profile.id '
+            # 'LEFT JOIN horoscopes ON main_passport.horoscope_sign = horoscopes.sign '
             'WHERE main_passport.user_id = $1', user_id))
         msg = (f"ID - {user_data['id']}\n"
                f"Имя - {user_data['full_name']}\n"
                f"Жмякал на кнопки - {user_data['uses']} раз\n"
                f"Класс - {user_data['grade_short']}\n"
                f"Профиль - {user_data['profile_db']}\n"
-               f"VIP - {user_data['vip']}")
+               f"VIP - {user_data['vip']}\n")
+        # f"Знак - {user_data['sign_ru']}")
         return msg
 
     async def user_change_name(self, user_id, name):
@@ -284,22 +286,32 @@ class Repo:
         return data['count']
 
     async def add_horoscope(self, sign, text):
-        await self.conn.execute('UPDATE horoscopes SET sign_text = $2 WHERE sign = $1', sign, text)
+        await self.conn.execute('UPDATE main_horoscope SET sign_text = $2 WHERE sign_name = $1', sign, text)
 
     async def list_horoscope_subscribers(self):
-        result = await self.conn.fetch('SELECT user_id, horoscope_sign FROM main_passport WHERE horoscope_sign IS '
-                                       'NOT NULL')
-        print(result)
+        result = await self.conn.fetch("SELECT user_id, args FROM main_subscription "
+                                       "WHERE main_subscription.title = 'horoscope'")
         return result
 
     async def get_horoscope_texts(self, sign):
         result = await self.conn.fetchrow('SELECT sign_text FROM horoscopes WHERE sign = $1', sign)
-        return result
+        return result['sign_text']
 
     async def db_get_horoscope_signs(self):
-        result = await self.conn.fetchrow('SELECT sign_ru, sign FROM horoscopes')
+        result = dict(await self.conn.fetch('SELECT sign_ru, sign FROM horoscopes ORDER BY id'))
         data = list(result.items())
         return data
 
     async def update_user_horoscope_sign(self, sign, user_id):
-        await self.conn.execute('UPDATE main_passport SET horoscope_sign = $1 WHERE user_id = $2', sign, user_id)
+        await self.conn.execute(
+            'INSERT INTO main_subscription (args,user_id, title, status, title_ru) '
+            'VALUES($1,$2,$3,$4,$5) ON CONFLICT(user_id) DO UPDATE SET args=$1', sign, user_id,
+            'horoscope', True, 'Гороскоп')
+
+    async def get_subscriptions(self, user_id):
+        try:
+            result = dict(
+                await self.conn.fetchrow('SELECT title_ru, status FROM main_subscription WHERE user_id = $1', user_id))
+        except TypeError:
+            result = 'None'
+        return result

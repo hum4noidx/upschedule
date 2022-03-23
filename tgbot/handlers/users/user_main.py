@@ -76,6 +76,7 @@ async def test(m: Message, **kwargs):
     await main()
     print('test')
 
+
 async def test1(c: CallbackQuery, callback_data: typing.Dict[str, str], state: FSMContext):
     pass
 
