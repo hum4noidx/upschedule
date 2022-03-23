@@ -20,4 +20,5 @@ async def main_menu_vip(c: CallbackQuery, state: FSMContext):
 
 
 def register_vip(dp: Dispatcher):
-    dp.register_callback_query_handler(main_menu_vip, text=['go_main'], is_vip=True, state='*')
+    pass
+    # dp.register_callback_query_handler(main_menu_vip, text=['go_main'], is_vip=True, state='*')

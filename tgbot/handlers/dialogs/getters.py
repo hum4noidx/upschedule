@@ -169,3 +169,9 @@ class Getter:
         }
 
     async def get_horoscope_signs(dialog_manager: DialogManager, **kwargs):
+        db = ctx_data.get().get('repo')
+        signs = await db.db_get_horoscope_signs()
+
+        return {
+            'signs': signs
+        }

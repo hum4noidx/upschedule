@@ -3,7 +3,7 @@ from aiogram.utils.callback_data import CallbackData
 
 recent_schedule = CallbackData('user', 'day')
 
-start_button = InlineKeyboardButton(text="Погнали!", callback_data='go_main')
+start_button = InlineKeyboardButton(text="Открыть меню", callback_data='go_main')
 cancel_button = InlineKeyboardButton(text='В главное меню', callback_data='go_main')
 schedule_button = InlineKeyboardButton('📚 Расписание', callback_data='timetable')
 register_button = InlineKeyboardButton('📝 Регистрация', callback_data='user_register')
@@ -22,7 +22,7 @@ turn_compliments = InlineKeyboardButton('Включить', callback_data='turn_
 add_compliment = InlineKeyboardButton('Добавить', callback_data='add_compliment')
 news_link = InlineKeyboardButton('Ссылка', url='https://t.me/news_1208bot/7')
 
-start = InlineKeyboardMarkup(row_width=1).add(register_button)
+start = InlineKeyboardMarkup(row_width=1).add(start_button)
 donut = InlineKeyboardMarkup(row_width=1).add(donut_link)
 back_to_mm = InlineKeyboardMarkup(row_width=1).add(cancel_button)
 main_menu = InlineKeyboardMarkup(resize_keyboard=True, row_width=1).add(schedule_button, register_button, today_button)
@@ -38,3 +38,4 @@ compliments = InlineKeyboardMarkup(resize_keyboard=True, row_width=2).add(turn_c
                                                                           cancel_button)
 compliments_add = InlineKeyboardMarkup(resize_keyboard=True, row_width=2).row(add_compliment, cancel_button)
 news_link_markup = InlineKeyboardMarkup(row_width=1).add(news_link)
+InlineKeyboardMarkup(InlineKeyboardButton(text='Открыть меню', callback_data='go_main'))

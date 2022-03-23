@@ -285,3 +285,21 @@ class Repo:
 
     async def add_horoscope(self, sign, text):
         await self.conn.execute('UPDATE horoscopes SET sign_text = $2 WHERE sign = $1', sign, text)
+
+    async def list_horoscope_subscribers(self):
+        result = await self.conn.fetch('SELECT user_id, horoscope_sign FROM main_passport WHERE horoscope_sign IS '
+                                       'NOT NULL')
+        print(result)
+        return result
+
+    async def get_horoscope_texts(self, sign):
+        result = await self.conn.fetchrow('SELECT sign_text FROM horoscopes WHERE sign = $1', sign)
+        return result
+
+    async def db_get_horoscope_signs(self):
+        result = await self.conn.fetchrow('SELECT sign_ru, sign FROM horoscopes')
+        data = list(result.items())
+        return data
+
+    async def update_user_horoscope_sign(self, sign, user_id):
+        await self.conn.execute('UPDATE main_passport SET horoscope_sign = $1 WHERE user_id = $2', sign, user_id)

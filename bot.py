@@ -14,13 +14,14 @@ from tgbot.handlers.admins.admin import register_admin
 from tgbot.handlers.admins.broadcaster import register_broadcast
 from tgbot.handlers.dialogs.admin_panel import dialog_admin
 from tgbot.handlers.dialogs.broadcaster import dialog_broadcaster
+from tgbot.handlers.dialogs.horoscope_dialog import horoscopes
+from tgbot.handlers.dialogs.horoscope_parser import schedule_jobs
 from tgbot.handlers.dialogs.main_dialog import register_user, dialog_main
 from tgbot.handlers.dialogs.registration import dialog_reg, dialogs
 from tgbot.handlers.dialogs.timetable import dialog_timetable, dialog_fast_timetable
 from tgbot.handlers.dialogs.user_settings import dialog_user_settings
 from tgbot.handlers.groups.group_helper import register_groups
 from tgbot.handlers.users.compliments import register_compliments
-from tgbot.handlers.users.compliments_broadcaster import schedule_jobs
 from tgbot.handlers.users.timetable import register_timetable
 from tgbot.handlers.users.user_settings import register_user_settings
 from tgbot.handlers.users.users_register import register_user_reg
@@ -79,6 +80,7 @@ async def main():
     register_compliments(dp)
     schedule_jobs(dp, scheduler)
     dialogs(dp)
+
     registry.register(dialog_main)
     registry.register(dialog_user_settings)
     registry.register(dialog_broadcaster)
@@ -86,6 +88,7 @@ async def main():
     registry.register(dialog_timetable)
     registry.register(dialog_fast_timetable)
     registry.register(dialog_admin)
+    registry.register(horoscopes)
 
     # start
     try:

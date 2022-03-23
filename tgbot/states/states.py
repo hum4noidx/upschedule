@@ -74,3 +74,8 @@ class BroadcastSG(StatesGroup):
 class AdminPanelSG(StatesGroup):
     main = State()
     users_list = State()
+
+
+class HoroscopeSG(StatesGroup):
+    main = State()
+    Confirm = State()

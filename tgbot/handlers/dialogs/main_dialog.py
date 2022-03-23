@@ -5,9 +5,10 @@ from aiogram_dialog.widgets.kbd import Group, Start, Button, Row
 from aiogram_dialog.widgets.text import Const, Format
 
 from tgbot.handlers.dialogs.getters import Getter
-from tgbot.handlers.dialogs.horoscope_parser import main
+from tgbot.handlers.dialogs.horoscope_parser import main, broadcast_horoscopes
 from tgbot.handlers.dialogs.registration import name_handler, notification
-from tgbot.states.states import MainSG, RegSG, Timetablenew, FastTimetable, UserSettings, AdminPanelSG
+from tgbot.services.repository import Repo
+from tgbot.states.states import MainSG, RegSG, Timetablenew, FastTimetable, UserSettings, AdminPanelSG, HoroscopeSG
 
 dialog_main = Dialog(
     Window(
@@ -21,7 +22,7 @@ dialog_main = Dialog(
             Start(Const('Расписание'), id='utimetable', state=Timetablenew.choose_class),
             Row(Start(Const('Настройки'), id='usettings', state=UserSettings.profile),
                 Start(Const('Админка'), id='admin_panel', state=AdminPanelSG.main, when='admin'), ),
-            Button(Const('ГоРоСкОп'), id='notification', on_click=notification),
+            Start(Const('ГоРоСкОп'), id='horoscopes', state=HoroscopeSG.main),
             Start(Format('Сегодня [{date}]'), id='now', data={'date': 'now'}, state=FastTimetable.main),
             Start(Format('Завтра [{next_date}]'), id='next_day', data={'date': 'next_day'}, state=FastTimetable.main),
             when='registered'
@@ -42,8 +43,9 @@ async def start(c: CallbackQuery, dialog_manager: DialogManager):
     await dialog_manager.start(MainSG.greeting, mode=StartMode.RESET_STACK)
 
 
-async def test(m: Message):
-    await main()
+async def test(m: Message, repo: Repo):
+    # await main()
+    await broadcast_horoscopes(m, repo)
 
 
 def register_user(dp: Dispatcher):

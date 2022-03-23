@@ -127,16 +127,17 @@ async def leave_all(m: Message):
 
 
 def register_admin(dp: Dispatcher):
-    dp.register_callback_query_handler(get_user_list, text=['admin_all_users'], is_admin=True,
-                                       state='*')
-    dp.register_message_handler(get_user_info, commands=['i'], state='*', is_admin=True)
-    dp.register_message_handler(add_vip_user, commands=['vip'], state='*', is_admin=True)
-    dp.register_callback_query_handler(get_today_user_list, text=['admin_today_all_users'], state='*', is_admin=True)
-    dp.register_message_handler(admin_panel_switch, commands='a', commands_prefix='!', state='*')
-    # dp.register_message_handler(compliments, text='/cc', state='*')
-    dp.register_message_handler(restart_server, commands='restart', is_admin=True, state='*')
-    dp.register_message_handler(admin_access, commands=['admin'], is_admin=True, state='*')
-    dp.register_message_handler(admin_access, commands=['admin'], is_vip=True, state='*')
-    dp.register_message_handler(admin_panel_switch, commands='a', commands_prefix='!', state='*')
-    # dp.register_message_handler(compliments, text='/cc', state='*')
-    dp.register_message_handler(restart_server, commands='restart', is_admin=True, state='*')
+    pass
+    # dp.register_callback_query_handler(get_user_list, text=['admin_all_users'], is_admin=True,
+    #                                    state='*')
+    # dp.register_message_handler(get_user_info, commands=['i'], state='*', is_admin=True)
+    # dp.register_message_handler(add_vip_user, commands=['vip'], state='*', is_admin=True)
+    # dp.register_callback_query_handler(get_today_user_list, text=['admin_today_all_users'], state='*', is_admin=True)
+    # dp.register_message_handler(admin_panel_switch, commands='a', commands_prefix='!', state='*')
+    # # dp.register_message_handler(compliments, text='/cc', state='*')
+    # dp.register_message_handler(restart_server, commands='restart', is_admin=True, state='*')
+    # dp.register_message_handler(admin_access, commands=['admin'], is_admin=True, state='*')
+    # dp.register_message_handler(admin_access, commands=['admin'], is_vip=True, state='*')
+    # dp.register_message_handler(admin_panel_switch, commands='a', commands_prefix='!', state='*')
+    # # dp.register_message_handler(compliments, text='/cc', state='*')
+    # dp.register_message_handler(restart_server, commands='restart', is_admin=True, state='*')
