@@ -1,4 +1,3 @@
-from aiogram import Dispatcher
 from aiogram.dispatcher import FSMContext
 from aiogram.types import CallbackQuery
 
@@ -23,8 +22,7 @@ async def level_filter_base(c: CallbackQuery, state: FSMContext):
     await state.reset_state(with_data=True)
     await main_menu(c, state)
 
-
-def register_level_filter(dp: Dispatcher):
-    dp.register_callback_query_handler(level_filter_admin, text='go_main', is_admin=True, state='*')
-    dp.register_callback_query_handler(level_filter_vip, text='go_main', is_vip=True, state='*')
-    dp.register_callback_query_handler(level_filter_base, text='go_main', is_vip=False, state='*')
+# def register_level_filter(dp: Dispatcher):
+#     dp.register_callback_query_handler(level_filter_admin, text='go_main', is_admin=True, state='*')
+#     dp.register_callback_query_handler(level_filter_vip, text='go_main', is_vip=True, state='*')
+#     dp.register_callback_query_handler(level_filter_base, text='go_main', is_vip=False, state='*')

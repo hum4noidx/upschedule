@@ -8,7 +8,7 @@ from aiogram_dialog import Dialog, DialogManager, Window, StartMode
 from aiogram_dialog.widgets.kbd import Button, Select, Group, Back, Cancel
 from aiogram_dialog.widgets.text import Const, Format
 
-from tgbot.handlers.users.dialogs.getters import Getter
+from tgbot.handlers.dialogs.getters import Getter
 from tgbot.states.states import RegSG
 
 
@@ -19,6 +19,12 @@ async def name_handler(c: CallbackQuery, button: Button, manager: DialogManager)
     repo = data.get("repo")
     await repo.add_user(c.from_user.id, c.from_user.full_name)
     await manager.dialog().next()
+
+
+async def notification(c: CallbackQuery, button: Button, manager: DialogManager):
+    await c.answer(
+        'Из-за изменений в коде бота могут возникать ошибки при нажатии на кнопки предыдущих сообщений. '
+        '\nУдалите все предыдущие сообщения, пожалуйста', show_alert=True)
 
 
 async def on_school_selected(c: CallbackQuery, widget: Any, manager: DialogManager, item_id: str):
@@ -34,7 +40,14 @@ async def on_grade_selected(c: CallbackQuery, widget: Any, manager: DialogManage
 
 async def on_profile_selected(c: CallbackQuery, widget: Any, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["profile"] = item_id
+    school = int(manager.current_context().dialog_data['school'])
+    grade = int(manager.current_context().dialog_data['grade'])
+    profile = int(manager.current_context().dialog_data['profile'])
+    user_id = int(manager.current_context().dialog_data['user_id'])
     await manager.dialog().next()
+    data = ctx_data.get()
+    repo = data.get("repo")
+    await repo.register_user(school, grade, profile, user_id)
 
 
 async def on_register_start(c: CallbackQuery, widget: Any, manager: DialogManager):
@@ -43,15 +56,6 @@ async def on_register_start(c: CallbackQuery, widget: Any, manager: DialogManage
 
 async def on_math_selected(c: CallbackQuery, widget: Any, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["math"] = item_id
-    school = int(manager.current_context().dialog_data['school'])
-    grade = int(manager.current_context().dialog_data['grade'])
-    profile = int(manager.current_context().dialog_data['profile'])
-    math = int(manager.current_context().dialog_data['math'])
-    user_id = int(manager.current_context().dialog_data['user_id'])
-    await manager.dialog().next()
-    data = ctx_data.get()
-    repo = data.get("repo")
-    await repo.register_user(school, grade, profile, math, user_id)
 
 
 dialog_reg = Dialog(
@@ -105,23 +109,23 @@ dialog_reg = Dialog(
         getter=Getter.get_profiles,
 
     ),
-    Window(
-        Format("Уровень математики:"),
-        Group(
-            Select(
-                Format('{item[0]}'),
-                id='profile',
-                item_id_getter=operator.itemgetter(1),
-                items='maths',
-                on_click=on_math_selected
-            ),
-            width=2
-        ),
-        Back(Const("Назад")),
-        state=RegSG.math,
-        getter=Getter.get_maths,
-
-    ),
+    # Window(
+    #     Format("Уровень математики:"),
+    #     Group(
+    #         Select(
+    #             Format('{item[0]}'),
+    #             id='profile',
+    #             item_id_getter=operator.itemgetter(1),
+    #             items='maths',
+    #             on_click=on_math_selected
+    #         ),
+    #         width=2
+    #     ),
+    #     Back(Const("Назад")),
+    #     state=RegSG.math,
+    #     getter=Getter.get_maths,
+    #
+    # ),
     Window(
         Format('Успешная регистрация'),
         Cancel(Const('Главное меню')),

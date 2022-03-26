@@ -56,21 +56,7 @@ class Grade(models.Model):
         verbose_name_plural = 'Классы'
 
     def __str__(self):
-        return self.short_name
-
-
-class Profile(models.Model):
-    grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
-    profile = models.CharField('Профиль', max_length=50)
-    profile_db = models.CharField('Имя для бота', max_length=30)
-    profile_short = models.CharField(max_length=15, default='None')
-
-    class Meta:
-        verbose_name = 'Профиль'
-        verbose_name_plural = 'Профили'
-
-    def __str__(self):
-        return self.profile_db
+        return self.grade_short
 
 
 class Math(models.Model):
@@ -83,6 +69,21 @@ class Math(models.Model):
 
     def __str__(self):
         return self.math
+
+
+class Profile(models.Model):
+    grade = models.ForeignKey(Grade, on_delete=models.CASCADE)
+    profile = models.CharField('Профиль', max_length=50)
+    math = models.ForeignKey(Math, on_delete=models.CASCADE, null=True, default=3)
+    profile_db = models.CharField('Имя для бота', max_length=30)
+    profile_short = models.CharField(max_length=15, default='None')
+
+    class Meta:
+        verbose_name = 'Профиль'
+        verbose_name_plural = 'Профили'
+
+    def __str__(self):
+        return self.profile_db
 
 
 class Discipline(models.Model):
@@ -121,24 +122,6 @@ class Date(models.Model):
         return self.day
 
 
-class Passport(models.Model):
-    user_id = models.IntegerField(unique=True)
-    uses = models.IntegerField('Использований', default=1)
-    full_name = models.CharField('Имя', max_length=60, null=True)
-    school = models.ForeignKey(School, on_delete=models.CASCADE, null=True)
-    user_class = models.ForeignKey(Grade, on_delete=models.CASCADE, null=True)
-    user_prof = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
-    user_math = models.ForeignKey(Math, on_delete=models.CASCADE, null=True)
-    registered = models.BooleanField('Зарегистрирован', default=False, null=True)
-    vip = models.BooleanField(default=False, null=True)
-    admin = models.BooleanField(default=False, null=True)
-    last_seen = models.DateTimeField(null=True)
-
-    class Meta:
-        verbose_name = 'Пользователь'
-        verbose_name_plural = 'Пользователи'
-
-
 class Schedule(models.Model):
     lsn_number = models.IntegerField(choices=lsn_numbers)
     lsn_text = models.ForeignKey(Discipline, on_delete=models.CASCADE)
@@ -165,3 +148,49 @@ class Material(models.Model):
     class Meta:
         verbose_name = 'Материал'
         verbose_name_plural = 'Материалы'
+
+
+class Horoscope(models.Model):
+    sign_name = models.CharField(max_length=20)
+    sign_ru = models.CharField(max_length=20)
+    sign_text = models.TextField(max_length=1000)
+
+    class Meta:
+        verbose_name = 'Гороскоп'
+        verbose_name_plural = 'Гороскопы'
+
+    def __str__(self):
+        return self.sign_ru
+
+
+class Passport(models.Model):
+    user_id = models.IntegerField(unique=True)
+    uses = models.IntegerField('Использований', default=1)
+    full_name = models.CharField('Имя', max_length=60, null=True)
+    school = models.ForeignKey(School, on_delete=models.CASCADE, null=True)
+    user_class = models.ForeignKey(Grade, on_delete=models.CASCADE, null=True)
+    user_prof = models.ForeignKey(Profile, on_delete=models.CASCADE, null=True)
+    user_math = models.ForeignKey(Math, on_delete=models.CASCADE, null=True)
+    registered = models.BooleanField('Зарегистрирован', default=False, null=True)
+    vip = models.BooleanField(default=False, null=True)
+    admin = models.BooleanField(default=False, null=True)
+    last_seen = models.DateTimeField(null=True)
+
+    class Meta:
+        verbose_name = 'Пользователь'
+        verbose_name_plural = 'Пользователи'
+
+
+class Subscription(models.Model):
+    user_id = models.IntegerField(unique=True)
+    title = models.CharField('Название подписки', max_length=120, null=True)
+    status = models.BooleanField('Статус подписки', default=False, null=True)
+    args = models.CharField('Дополнительно', max_length=120, null=True)
+    title_ru = models.CharField('Название(ру)', max_length=50, null=True)
+
+    class Meta:
+        verbose_name = 'Подписка'
+        verbose_name_plural = 'Подписки'
+
+    def __str__(self):
+        return self.title

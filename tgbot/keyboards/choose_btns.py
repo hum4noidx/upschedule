@@ -1,4 +1,3 @@
-from aiogram.dispatcher.handler import ctx_data
 from aiogram.types import InlineKeyboardButton, InlineKeyboardMarkup
 from aiogram.utils.callback_data import CallbackData
 
@@ -103,23 +102,3 @@ def make_buttons_y():
     markup_2 = InlineKeyboardMarkup(resize_keyboard=True, row_width=2)
     markup_2.row(letter_a, letter_b, letter_v).row(cancel_butt)
     return markup_2
-
-
-async def make_buttons_class():
-    markup = InlineKeyboardMarkup(row_width=2)
-    data = ctx_data.get()
-    repo = data.get("repo")
-    grades = await repo.get_classes()
-    for grade, short_name in grades:
-        markup.insert(InlineKeyboardButton(text=grade, callback_data=classes.new(classes=short_name)))
-    return markup
-
-
-async def make_buttons_profile():
-    markup1 = InlineKeyboardMarkup(row_width=2)
-    data = ctx_data.get()
-    repo = data.get("repo")
-    profiles = await repo.get_classes()
-    for grade, short_name in profiles:
-        markup1.insert(InlineKeyboardButton(text=grade, callback_data=classes.new(classes=short_name)))
-    return markup1

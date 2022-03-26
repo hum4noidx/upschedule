@@ -23,30 +23,35 @@ class Repo:
             'WHERE user_id = $1', user_id)
 
     async def show_user_info(self, user_id):
-        user_data = dict(await self.conn.fetchrow('SELECT full_name, uses, user_class, user_math, user_prof, vip '
-                                                  'from main_passport Where user_id = $1', user_id))
-        msg = (f"Имя - {user_data['full_name']}\n"
+        user_data = dict(await self.conn.fetchrow(
+            'SELECT main_passport.id,main_passport.full_name, main_passport.uses, main_grade.grade_short, '
+            'main_profile.profile_db, main_passport.vip '
+            'FROM main_passport '
+            'LEFT JOIN main_grade ON main_passport.user_class_id = main_grade.id '
+            'LEFT JOIN main_profile ON main_passport.user_prof_id = main_profile.id '
+            # 'LEFT JOIN horoscopes ON main_passport.horoscope_sign = horoscopes.sign '
+            'WHERE main_passport.user_id = $1', user_id))
+        msg = (f"ID - {user_data['id']}\n"
+               f"Имя - {user_data['full_name']}\n"
                f"Жмякал на кнопки - {user_data['uses']} раз\n"
-               f"Класс - {user_data['user_class']}\n"
-               f"Профиль - {user_data['user_prof']}\n"
-               f"Математика - {user_data['user_math']}\n"
-               f"VIP - {user_data['vip']}")
-        message = msg.replace('prof', 'Профиль').replace('base', 'База').replace('fm', 'Физмат').replace(
-            'bh', 'Биохим').replace('se', 'Соцэконом').replace('gum', 'Гуманитарий')
-        return message
+               f"Класс - {user_data['grade_short']}\n"
+               f"Профиль - {user_data['profile_db']}\n"
+               f"VIP - {user_data['vip']}\n")
+        # f"Знак - {user_data['sign_ru']}")
+        return msg
 
     async def user_change_name(self, user_id, name):
         await self.conn.execute('Update main_passport Set full_name = $1 Where user_id = $2', name, user_id)
 
     # ______________________ REGISTRATION ______________________
-    async def register_user(self, user_school, user_class, user_prof, user_math, userid):
+    async def register_user(self, user_school, user_class, user_prof, userid):
         result = await self.conn.execute(
-            'UPDATE main_passport SET (school_id, user_class_id, user_prof_id, user_math_id, registered) = ($1, $2, '
-            '$3, $4, $5) '
-            'WHERE user_id =$6',
-            user_school, user_class, user_prof, user_math, True, userid
+            'UPDATE main_passport SET (school_id, user_class_id, user_prof_id, registered) = ($1, $2, '
+            '$3, $4) '
+            'WHERE user_id =$5',
+            user_school, user_class, user_prof, True, userid
         )
-        return result
+        return result[-1]
 
     # user_data for recent_schedule
     async def get_timetable(self, userid):
@@ -56,12 +61,11 @@ class Repo:
         return dict(user_profile)
 
     # ______________________ ROLES ______________________
-    async def get_admins(self) -> List[int]:
-        admins = await self.conn.fetch(
-            'SELECT user_id FROM main_passport WHERE admin = True'
+    async def get_admins(self, user_id):
+        data = await self.conn.fetchrow(
+            'SELECT admin FROM main_passport WHERE user_id = $1', user_id
         )
-        data = ([admin['user_id'] for admin in admins])
-        return data
+        return data['admin']
 
     async def get_vips(self) -> List[int]:
         vips = await self.conn.fetch(
@@ -157,7 +161,7 @@ class Repo:
     async def broadcast_get_first_ids(self, user_class, user_profile, user_math1):
         user_math = str(user_math1)
         ids = await self.conn.fetch(
-            'SELECT user_id From main_passport Where user_class = $1 And user_prof = $2 And user_math = $3',
+            'SELECT user_id From main_passport Where user_class_id = $1 And user_prof_id = $2 And user_math_id = $3',
             user_class, user_profile, user_math
         )
         data = ([uid['user_id'] for uid in ids])
@@ -165,14 +169,14 @@ class Repo:
 
     async def broadcast_get_class_ids(self, user_class):
         ids = await self.conn.fetch(
-            'SELECT user_id From main_passport Where user_class = $1', user_class
+            'SELECT user_id From main_passport Where user_class_id = $1', user_class
         )
         data = ([uid['user_id'] for uid in ids])
         return data
 
     async def broadcast_get_profile_ids(self, user_profile):
         ids = await self.conn.fetch(
-            'SELECT user_id From main_passport Where user_prof = $1', user_profile
+            'SELECT user_id From main_passport Where user_prof_id = $1', user_profile
         )
         data = ([uid['user_id'] for uid in ids])
         return data
@@ -193,34 +197,35 @@ class Repo:
     #         user_id, full_name)
 
     #  ______________________ SCHEDULE DATABASE ______________________
-    async def get_schedule(self, grade, profile, math, date):
+    async def get_schedule(self, grade, profile, date):
         #  ======================== META ========================
         raw_meta = await self.conn.fetch(
-            'SELECT main_grade.grade_short, main_profile.profile_short, main_math.math_short, main_date.date_short '
-            'FROM  main_grade,main_profile,main_math,main_date '
-            'WHERE main_grade.id = $1 AND main_profile.id = $2 AND main_math.id = $3 AND main_date.id = $4',
-            grade, profile, math, date
+            'SELECT main_grade.grade_short, main_profile.profile_db, main_date.date_short '
+            'FROM  main_grade,main_profile,main_date '
+            'WHERE main_grade.id = $1 AND main_profile.id = $2 AND main_date.id = $3',
+            grade, profile, date
         )
         meta = str()
         for meta1 in raw_meta:
-            meta = f"{meta1['grade_short']}|{meta1['profile_short']}|{meta1['math_short']}|{meta1['date_short']}"
+            meta = f"{meta1['grade_short']}|{meta1['profile_db']}|{meta1['date_short']}"
         #  ======================== DATA ========================
         if int(date) == 6 or int(date) == 7:
             schedule = meta + '\nТут пусто'
         else:
             raw_schedule = await self.conn.fetch(
-                'SELECT main_schedule.lsn_number, main_discipline.lsn_name, main_schedule.lsn_class_id '
+                'SELECT main_schedule.lsn_number, main_discipline.lsn_name, main_classroom.number '
                 'FROM main_schedule LEFT JOIN main_discipline ON main_schedule.lsn_text_id = main_discipline.id '
+                'LEFT JOIN main_classroom ON main_schedule.lsn_class_id = main_classroom.id '
                 'WHERE (main_schedule.lsn_grade_id=$1 AND main_schedule.lsn_profile_id = $2 '
-                'AND main_schedule.lsn_math_id = $3 AND main_schedule.lsn_date_id = $4) '
-                'ORDER BY main_schedule.lsn_number', grade, profile, math, date)
+                'AND main_schedule.lsn_date_id = $3) '
+                'ORDER BY main_schedule.lsn_number', grade, profile, date)
             # Создаем таблицу
             schedule = PrettyTable()
             schedule.title = meta
             schedule.field_names = ["№", "Урок", "Каб."]
             schedule.align = "l"
             for lesson in raw_schedule:  # Заполняем таблицу данными
-                schedule.add_row([lesson["lsn_number"], lesson["lsn_name"], lesson["lsn_class"]])
+                schedule.add_row([lesson["lsn_number"], lesson["lsn_name"], lesson["number"]])
         return str(schedule)
 
     async def get_schools(self):
@@ -229,7 +234,15 @@ class Repo:
         data = list(data.items())
         return data
 
-    async def get_grades(self, school_id):
+    async def get_grades(self, user_id):
+        data = dict(
+            await self.conn.fetch('SELECT grade, grade_short '
+                                  'FROM main_grade '
+                                  'WHERE school_id = (SELECT school_id FROM main_passport WHERE user_id=$1)', user_id))
+        data = list(data.items())
+        return data
+
+    async def reg_get_grades(self, school_id):
         data = dict(
             await self.conn.fetch('SELECT grade, grade_short '
                                   'FROM main_grade '
@@ -238,7 +251,7 @@ class Repo:
         return data
 
     async def get_profiles(self, grade_id):
-        data = dict(await self.conn.fetch('SELECT profile, id '
+        data = dict(await self.conn.fetch('SELECT profile_db, id '
                                           'FROM main_profile '
                                           'WHERE grade_id = $1 ORDER BY id', int(grade_id)))
         data = list(data.items())
@@ -267,3 +280,38 @@ class Repo:
                                           'FROM main_date ORDER BY id', ))
         data = list(data.items())
         return data
+
+    async def users_count(self):
+        data = await self.conn.fetchrow('SELECT count(id) FROM main_passport')
+        return data['count']
+
+    async def add_horoscope(self, sign, text):
+        await self.conn.execute('UPDATE main_horoscope SET sign_text = $2 WHERE sign_name = $1', sign, text)
+
+    async def list_horoscope_subscribers(self):
+        result = await self.conn.fetch("SELECT user_id, args FROM main_subscription "
+                                       "WHERE main_subscription.title = 'horoscope'")
+        return result
+
+    async def get_horoscope_texts(self, sign):
+        result = await self.conn.fetchrow('SELECT sign_text FROM horoscopes WHERE sign = $1', sign)
+        return result['sign_text']
+
+    async def db_get_horoscope_signs(self):
+        result = dict(await self.conn.fetch('SELECT sign_ru, sign FROM horoscopes ORDER BY id'))
+        data = list(result.items())
+        return data
+
+    async def update_user_horoscope_sign(self, sign, user_id):
+        await self.conn.execute(
+            'INSERT INTO main_subscription (args,user_id, title, status, title_ru) '
+            'VALUES($1,$2,$3,$4,$5) ON CONFLICT(user_id) DO UPDATE SET args=$1', sign, user_id,
+            'horoscope', True, 'Гороскоп')
+
+    async def get_subscriptions(self, user_id):
+        try:
+            result = dict(
+                await self.conn.fetchrow('SELECT title_ru, status FROM main_subscription WHERE user_id = $1', user_id))
+        except TypeError:
+            result = 'None'
+        return result

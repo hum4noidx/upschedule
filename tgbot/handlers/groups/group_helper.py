@@ -67,8 +67,8 @@ async def remind_set_time(m: Message, state: FSMContext):
         text = data['remind_text']
         user_id = data['user_id']
     time_raw = m.text
-    l = len(time_raw)
-    time_value = time_raw[:l - 1]
+    time_len = len(time_raw)
+    time_value = time_raw[:time_len - 1]
     time_scale = time_raw[-1]
     print(time_raw[-1])
     time = 0
@@ -128,7 +128,7 @@ def get_restriction_period(text: str) -> int:
 async def cmd_ro(m: Message):
     """
     Handle /ro command in main group
-    :param message: Telegram message starting with /ro
+    :param m:
     """
     lang = m.bot.get('config').tg_bot.lang
     readonly_to = await m.chat.get_member(m.reply_to_message.from_user.id)
@@ -156,7 +156,7 @@ async def cmd_ro(m: Message):
 async def cmd_nomedia(m: types.Message):
     """
     Handle /nomedia command in main group
-    :param message: Telegram message starting with /nomedia
+    :param m:
     """
     lang = m.bot.get('config').tg_bot.lang
     nomedia_to = await m.chat.get_member(m.reply_to_message.from_user.id)

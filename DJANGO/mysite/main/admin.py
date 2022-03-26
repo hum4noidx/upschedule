@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Discipline, Teacher, Schedule, Passport, Material, School, Grade
+from .models import Discipline, Teacher, Schedule, Passport, Material, School, Grade, Profile
 
 
 class LessonAdmin(admin.ModelAdmin):
@@ -33,7 +33,7 @@ class TeacherAdmin(admin.ModelAdmin):
 
 class PassportAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['user_id', 'uses', 'full_name', 'user_class', 'user_prof', 'user_math', 'vip', 'admin',
+        (None, {'fields': ['user_id', 'uses', 'full_name', 'user_class', 'user_prof', 'vip', 'admin',
                            'registered']}),
     ]
     list_display = ('id', 'user_id', 'full_name', 'user_class', 'user_prof', 'user_math', 'vip', 'admin', 'registered')
@@ -61,7 +61,7 @@ class SchoolAdmin(admin.ModelAdmin):
 
 class GradeAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['grade', 'school', 'short_name', ]}),
+        (None, {'fields': ['grade', 'school', 'grade_short', ]}),
     ]
     list_display = ('grade', 'school',)
     list_filter = ['grade', 'school', ]
@@ -70,7 +70,7 @@ class GradeAdmin(admin.ModelAdmin):
 
 class ProfileAdmin(admin.ModelAdmin):
     fieldsets = [
-        (None, {'fields': ['grade', 'profile', 'profile_db', ]}),
+        (None, {'fields': ['grade', 'profile', 'math', 'profile_db', ]}),
     ]
     list_display = ('id', 'grade', 'profile',)
     list_filter = ['grade', ]
@@ -96,28 +96,28 @@ class ClassroomAdmin(admin.ModelAdmin):
     sortable_by = ['id']
 
 
-class ModelOptions(admin.ModelAdmin):
-    fieldsets = (
-        ('', {
-            'fields': ('title', 'subtitle', 'slug', 'pub_date', 'status',),
-        }),
-        ('Flags', {
-            'classes': ('grp-collapse grp-closed',),
-            'fields': ('flag_front', 'flag_sticky', 'flag_allow_comments', 'flag_comments_closed',),
-        }),
-        ('Tags', {
-            'classes': ('grp-collapse grp-open',),
-            'fields': ('tags',),
-        }),
-    )
+# class ModelOptions(admin.ModelAdmin):
+#     fieldsets = (
+#         ('', {
+#             'fields': ('title', 'subtitle', 'slug', 'pub_date', 'status',),
+#         }),
+#         ('Flags', {
+#             'classes': ('grp-collapse grp-closed',),
+#             'fields': ('flag_front', 'flag_sticky', 'flag_allow_comments', 'flag_comments_closed',),
+#         }),
+#         ('Tags', {
+#             'classes': ('grp-collapse grp-open',),
+#             'fields': ('tags',),
+#         }),
+#     )
 
-
-class StackedItemInline(admin.StackedInline):
-    classes = ('grp-collapse grp-open',)
-
-
-class TabularItemInline(admin.TabularInline):
-    classes = ('grp-collapse grp-open',)
+#
+# class StackedItemInline(admin.StackedInline):
+#     classes = ('grp-collapse grp-open',)
+#
+#
+# class TabularItemInline(admin.TabularInline):
+#     classes = ('grp-collapse grp-open',)
 
 
 # admin.site.register(Question, QuestionAdmin)
@@ -128,7 +128,7 @@ admin.site.register(Passport, PassportAdmin)
 admin.site.register(Material, MaterialAdmin)
 admin.site.register(School, SchoolAdmin)
 admin.site.register(Grade, GradeAdmin)
-# admin.site.register(Profile, ProfileAdmin)
+admin.site.register(Profile, ProfileAdmin)
 # admin.site.register(Math, MathAdmin)
 # admin.site.register(Classroom, ClassroomAdmin)
 # admin.site.register(School, SchoolAdmin)
