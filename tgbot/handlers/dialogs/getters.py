@@ -6,7 +6,7 @@ from aiogram_dialog import DialogManager
 from tgbot.handlers.admins.admin import greeting
 
 
-async def current_date():
+async def get_current_date():
     today = datetime.now()
     wd = date.weekday(today)
     days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
@@ -26,14 +26,14 @@ class Getter:
         name = await greeting(user_id)
         school = await db.db_get_user_school(user_id)
         dialog_manager.current_context().dialog_data["school"] = school
-        date = await current_date()
+        current_date = await get_current_date()
         admin = await db.get_admins(user_id)
         return {
             "registered": exists,
             'not_registered': not exists,
             'name': name,
             'user_id': user_id,
-            'date': date[0],
+            'date': current_date[0],
             'next_date': date[1],
             'school': school,
             'admin': admin
@@ -131,7 +131,7 @@ class Getter:
         dialog_manager.current_context().dialog_data['user_date'] = user_date
 
         timetable = await db.get_schedule(int(user_class), int(user_profile), int(user_date))
-        c_date = await current_date()
+        c_date = await get_current_date()
 
         dates = {'⏮️': 'prev_date', '⏭️': 'next_date'}
         profiles = await db.get_profiles(user_class)

@@ -1,8 +1,6 @@
 import operator
-from typing import Any
 
 from aiogram.dispatcher.handler import ctx_data
-from aiogram.types import CallbackQuery
 from aiogram_dialog import Dialog, Window, DialogManager
 from aiogram_dialog.widgets.kbd import Group, Select, Cancel, Back
 from aiogram_dialog.widgets.text import Const, Format
@@ -11,7 +9,7 @@ from tgbot.handlers.dialogs.getters import Getter
 from tgbot.states.states import HoroscopeSG
 
 
-async def on_horoscope_selected(c: CallbackQuery, widget: Any, manager: DialogManager, item_id: str):
+async def on_horoscope_selected(manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["sign"] = item_id
     db = ctx_data.get().get('repo')
     manager.current_context().dialog_data['horoscope_text'] = await db.get_horoscope_texts(item_id)

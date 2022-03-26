@@ -73,7 +73,7 @@ async def show_help_info(m: Message):
 
 async def test(m: Message, **kwargs):
     # await m.answer('т', reply_markup=await make_buttons_class())
-    await main()
+    await main(m)
     print('test')
 
 

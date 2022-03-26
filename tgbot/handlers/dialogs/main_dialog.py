@@ -1,5 +1,5 @@
 from aiogram import Dispatcher
-from aiogram.types import CallbackQuery, Message
+from aiogram.types import Message
 from aiogram_dialog import DialogManager, StartMode, Dialog, Window
 from aiogram_dialog.widgets.kbd import Group, Start, Button, Row
 from aiogram_dialog.widgets.text import Const, Format
@@ -7,7 +7,6 @@ from aiogram_dialog.widgets.text import Const, Format
 from tgbot.handlers.dialogs.getters import Getter
 from tgbot.handlers.dialogs.horoscope_parser import main
 from tgbot.handlers.dialogs.registration import name_handler
-from tgbot.services.repository import Repo
 from tgbot.states.states import MainSG, RegSG, Timetablenew, FastTimetable, UserSettings, AdminPanelSG, HoroscopeSG
 
 dialog_main = Dialog(
@@ -38,17 +37,17 @@ dialog_main = Dialog(
 )
 
 
-async def start(c: CallbackQuery, dialog_manager: DialogManager):
+async def start(dialog_manager: DialogManager):
     # it is important to reset stack because user wants to restart everything
     await dialog_manager.start(MainSG.greeting, mode=StartMode.RESET_STACK)
 
 
-async def test(m: Message, repo: Repo, ):
+async def test(m: Message):
     await main(m)
     # await broadcast_horoscopes(m, repo)
 
 
-async def test1(m: Message, ):
+async def test1(m: Message):
     await m.answer(m)
 
 

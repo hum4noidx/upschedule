@@ -161,7 +161,7 @@ class Repo:
     async def broadcast_get_first_ids(self, user_class, user_profile, user_math1):
         user_math = str(user_math1)
         ids = await self.conn.fetch(
-            'SELECT user_id From main_passport Where user_class = $1 And user_prof = $2 And user_math = $3',
+            'SELECT user_id From main_passport Where user_class_id = $1 And user_prof_id = $2 And user_math_id = $3',
             user_class, user_profile, user_math
         )
         data = ([uid['user_id'] for uid in ids])
@@ -169,14 +169,14 @@ class Repo:
 
     async def broadcast_get_class_ids(self, user_class):
         ids = await self.conn.fetch(
-            'SELECT user_id From main_passport Where user_class = $1', user_class
+            'SELECT user_id From main_passport Where user_class_id = $1', user_class
         )
         data = ([uid['user_id'] for uid in ids])
         return data
 
     async def broadcast_get_profile_ids(self, user_profile):
         ids = await self.conn.fetch(
-            'SELECT user_id From main_passport Where user_prof = $1', user_profile
+            'SELECT user_id From main_passport Where user_prof_id = $1', user_profile
         )
         data = ([uid['user_id'] for uid in ids])
         return data
