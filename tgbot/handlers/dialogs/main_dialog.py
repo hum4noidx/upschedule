@@ -5,7 +5,7 @@ from aiogram_dialog.widgets.kbd import Group, Start, Button, Row
 from aiogram_dialog.widgets.text import Const, Format
 
 from tgbot.handlers.dialogs.getters import Getter
-from tgbot.handlers.dialogs.horoscope_parser import broadcast_horoscopes
+from tgbot.handlers.dialogs.horoscope_parser import main
 from tgbot.handlers.dialogs.registration import name_handler
 from tgbot.services.repository import Repo
 from tgbot.states.states import MainSG, RegSG, Timetablenew, FastTimetable, UserSettings, AdminPanelSG, HoroscopeSG
@@ -43,12 +43,17 @@ async def start(c: CallbackQuery, dialog_manager: DialogManager):
     await dialog_manager.start(MainSG.greeting, mode=StartMode.RESET_STACK)
 
 
-async def test(m: Message, repo: Repo):
-    # await main()
-    await broadcast_horoscopes(m, repo)
+async def test(m: Message, repo: Repo, ):
+    await main(m)
+    # await broadcast_horoscopes(m, repo)
+
+
+async def test1(m: Message, ):
+    await m.answer(m)
 
 
 def register_user(dp: Dispatcher):
     dp.register_message_handler(start, commands=['start'], state='*')
     dp.register_callback_query_handler(start, text='go_main', state='*')
-    # dp.register_message_handler(test, commands=['test'], state='*')
+    dp.register_message_handler(test, commands=['reload'], state='*')
+    dp.register_message_handler(test1, commands=['test'], state='*')

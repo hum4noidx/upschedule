@@ -91,7 +91,7 @@ def register_user(dp: Dispatcher):
     dp.register_message_handler(donut_info, commands='donut', state='*')
     dp.register_message_handler(show_help_info, commands=['help'], state='*')
     dp.register_message_handler(test, commands=['y'], state='*')
-    # dp.register_callback_query_handler(test, classes.filter(), state='*')
+    dp.register_callback_query_handler(test, state='*')
     dp.register_callback_query_handler(user_feedback, text='notification', state='*')
 
 # TODO: переписать названия функций на нормальный язык
