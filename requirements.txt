@@ -8,6 +8,6 @@ requests~=2.26.0
 xlrd~=1.2.0
 pandas
 prettytable~=3.0.0
-Django~=4.0
+Django~=4.0.3
 openpyxl~=3.0.9
 aiohttp~=3.8.1
