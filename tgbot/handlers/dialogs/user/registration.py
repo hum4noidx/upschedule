@@ -8,7 +8,7 @@ from aiogram_dialog import Dialog, DialogManager, Window, StartMode
 from aiogram_dialog.widgets.kbd import Button, Select, Group, Back, Cancel
 from aiogram_dialog.widgets.text import Const, Format
 
-from tgbot.handlers.dialogs.getters import Getter
+from tgbot.handlers.dialogs.misc.getters import Getter
 from tgbot.states.states import RegSG
 
 
@@ -109,23 +109,6 @@ dialog_reg = Dialog(
         getter=Getter.get_profiles,
 
     ),
-    # Window(
-    #     Format("Уровень математики:"),
-    #     Group(
-    #         Select(
-    #             Format('{item[0]}'),
-    #             id='profile',
-    #             item_id_getter=operator.itemgetter(1),
-    #             items='maths',
-    #             on_click=on_math_selected
-    #         ),
-    #         width=2
-    #     ),
-    #     Back(Const("Назад")),
-    #     state=RegSG.math,
-    #     getter=Getter.get_maths,
-    #
-    # ),
     Window(
         Format('Успешная регистрация'),
         Cancel(Const('Главное меню')),
@@ -135,11 +118,10 @@ dialog_reg = Dialog(
 )
 
 
-async def start(c: CallbackQuery, dialog_manager: DialogManager):
+async def start(dialog_manager: DialogManager):
     await dialog_manager.start(RegSG.school, mode=StartMode.RESET_STACK)
 
 
 def dialogs(dp: Dispatcher):
-    # dp.register_message_handler(user_start, commands=['start'], state='*')
     dp.register_message_handler(start, text="/s", state="*")
     dp.register_callback_query_handler(start, text=['user_register'], state="*")

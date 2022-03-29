@@ -4,8 +4,8 @@ from aiogram_dialog import Dialog, Window
 from aiogram_dialog.widgets.kbd import Group, Select, Cancel, Back
 from aiogram_dialog.widgets.text import Const, Format
 
-from tgbot.handlers.dialogs.getters import Getter
-from tgbot.handlers.dialogs.registration import on_grade_selected, on_profile_selected
+from tgbot.handlers.dialogs.misc.getters import Getter
+from tgbot.handlers.dialogs.user.registration import on_grade_selected, on_profile_selected
 from tgbot.states.states import BroadcastSG
 
 dialog_broadcaster = Dialog(

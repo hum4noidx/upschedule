@@ -4,7 +4,7 @@ from aiogram_dialog import Dialog, Window, DialogManager
 from aiogram_dialog.widgets.kbd import Group, Button, Start, Cancel, Back
 from aiogram_dialog.widgets.text import Const, Format
 
-from tgbot.handlers.dialogs.getters import Getter
+from tgbot.handlers.dialogs.misc.getters import Getter
 from tgbot.states.states import AdminPanelSG, BroadcastSG
 
 

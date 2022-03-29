@@ -7,7 +7,7 @@ from aiogram_dialog import Dialog, Window, DialogManager
 from aiogram_dialog.widgets.kbd import Group, Cancel, Start, Select
 from aiogram_dialog.widgets.text import Format, Const
 
-from tgbot.handlers.dialogs.getters import Getter
+from tgbot.handlers.dialogs.misc.getters import Getter
 from tgbot.states.states import UserSettings, RegSG, SubscriptionsSG, RegHoroscopeSG
 
 

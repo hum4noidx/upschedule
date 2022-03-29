@@ -1,12 +1,12 @@
-from aiogram import Dispatcher
+from aiogram import Dispatcher, types
 from aiogram.types import Message
 from aiogram_dialog import DialogManager, StartMode, Dialog, Window
 from aiogram_dialog.widgets.kbd import Group, Start, Button, Row
 from aiogram_dialog.widgets.text import Const, Format
 
-from tgbot.handlers.dialogs.getters import Getter
-from tgbot.handlers.dialogs.horoscope_parser import main
-from tgbot.handlers.dialogs.registration import name_handler
+from tgbot.handlers.dialogs.misc.getters import Getter
+from tgbot.handlers.dialogs.misc.horoscope_parser import main
+from tgbot.handlers.dialogs.user.registration import name_handler
 from tgbot.states.states import MainSG, RegSG, Timetablenew, FastTimetable, UserSettings, AdminPanelSG, HoroscopeSG
 
 dialog_main = Dialog(
@@ -51,8 +51,15 @@ async def test1(m: Message):
     await m.answer(m)
 
 
+async def restrict_usage_in_groups(m: Message):
+    await m.reply(f'❗ Использование только в личных сообщениях с <a href="https://t.me/upschedulebot">ботом</a>',
+                  disable_web_page_preview=True)
+
+
 def register_user(dp: Dispatcher):
-    dp.register_message_handler(start, commands=['start'], state='*')
-    dp.register_callback_query_handler(start, text='go_main', state='*')
+    dp.register_message_handler(start, commands=['start'], state='*', chat_type=[types.ChatType.PRIVATE])
+    dp.register_callback_query_handler(start, text='go_main', state='*', chat_type=[types.ChatType.PRIVATE])
+    dp.register_message_handler(restrict_usage_in_groups, commands=['start', ''], state='*',
+                                chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
     dp.register_message_handler(test, commands=['reload'], state='*')
     dp.register_message_handler(test1, commands=['test'], state='*')

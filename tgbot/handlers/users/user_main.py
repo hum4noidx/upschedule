@@ -9,9 +9,9 @@ from aiogram_dialog.widgets.kbd import Group, Start, Button
 from aiogram_dialog.widgets.text import Const, Format
 
 from tgbot.handlers.admins.admin import greeting
-from tgbot.handlers.dialogs.getters import Getter
-from tgbot.handlers.dialogs.horoscope_parser import main
-from tgbot.handlers.dialogs.registration import name_handler
+from tgbot.handlers.dialogs.misc.getters import Getter
+from tgbot.handlers.dialogs.misc.horoscope_parser import main
+from tgbot.handlers.dialogs.user.registration import name_handler
 from tgbot.keyboards import nav_btns
 from tgbot.states.states import MainSG, RegSG, FastTimetable
 
@@ -68,7 +68,8 @@ async def user_feedback(c: CallbackQuery):
 async def show_help_info(m: Message):
     await m.answer(f'<b>Информация</b>\n'
                    f'Исходный код - <a href="https://github.com/hum4noidx/1208bot">ссылка</a>\n'
-                   f'По всем вопросам - <a href="tg://user?id=713870562">сюда</a>', parse_mode='HTML')
+                   f'По всем вопросам - <a href="tg://user?id=713870562">тык</a>', parse_mode='HTML',
+                   disable_web_page_preview=True)
 
 
 async def test(m: Message, **kwargs):

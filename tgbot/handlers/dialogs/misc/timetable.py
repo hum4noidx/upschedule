@@ -1,5 +1,4 @@
 import operator
-from typing import Any
 
 from aiogram.dispatcher.handler import ctx_data
 from aiogram.types import CallbackQuery
@@ -7,17 +6,17 @@ from aiogram_dialog import Dialog, DialogManager, Window
 from aiogram_dialog.widgets.kbd import Select, Group, Back, Cancel, Button
 from aiogram_dialog.widgets.text import Format
 
-from tgbot.handlers.dialogs.getters import Getter
-from tgbot.handlers.dialogs.registration import on_grade_selected
+from tgbot.handlers.dialogs.misc.getters import Getter
+from tgbot.handlers.dialogs.user.registration import on_grade_selected
 from tgbot.states.states import Timetablenew, FastTimetable
 
 
-async def on_profile_selected_1(c: CallbackQuery, widget: Any, manager: DialogManager, item_id: str):
+async def on_profile_selected_1(c: CallbackQuery, manager: DialogManager, item_id: str):
     manager.current_context().dialog_data["profile"] = item_id
     await manager.dialog().next()
 
 
-async def timetable_show(c: CallbackQuery, widget: Any, manager: DialogManager, item_id: str):
+async def timetable_show(c: CallbackQuery, manager: DialogManager, item_id: str):
     some_data = manager.current_context().dialog_data
     date = manager.current_context().dialog_data["day"] = int(item_id)
     db = ctx_data.get().get('repo')
@@ -27,30 +26,30 @@ async def timetable_show(c: CallbackQuery, widget: Any, manager: DialogManager, 
     await manager.dialog().next()
 
 
-async def fast_timetable_profile(c: CallbackQuery, widget: Any, manager: DialogManager, item_id: str):
-    user_profile = item_id
-    manager.current_context().dialog_data['user_profile'] = user_profile
+async def fast_timetable_profile(c: CallbackQuery, manager: DialogManager, item_id: str):
+    manager.current_context().dialog_data['user_profile'] = item_id
 
 
-async def fast_timetable_date(c: CallbackQuery, widget: Any, manager: DialogManager, item_id: str):
+async def fast_timetable_date(c: CallbackQuery, manager: DialogManager, item_id: str):
     user_date = manager.current_context().dialog_data['user_date']
     if item_id:
         chosen_date = item_id
         if chosen_date == 'prev_date':
             user_date = user_date - 1
-        elif chosen_date == 'next_date':
+        else:
             user_date = user_date + 1
 
         if user_date == 8:
             user_date -= 7
         elif user_date == 0:
             user_date += 7
+
     manager.current_context().dialog_data['user_date'] = user_date
     db = ctx_data.get().get('repo')
     await db.schedule_user_usage(manager.event.from_user.id)
 
 
-async def change_profile_visibility(c: CallbackQuery, widget: Any, manager: DialogManager):
+async def change_profile_visibility(manager: DialogManager):
     extended = not manager.current_context().dialog_data.get('profile_extended', None)
     manager.current_context().dialog_data['profile_extended'] = extended
 

@@ -7,6 +7,9 @@ from tgbot.handlers.admins.admin import greeting
 
 
 async def get_current_date():
+    """
+    :return: the current day of the week and the next
+    """
     today = datetime.now()
     wd = date.weekday(today)
     days = ["Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Вс"]
@@ -18,8 +21,13 @@ async def get_current_date():
     return day, next_date
 
 
+# noinspection GrazieInspection
 class Getter:
     async def check_exists(dialog_manager: DialogManager, **kwargs):
+        """
+        :param kwargs:
+        :return: the entire user profile
+        """
         user_id = dialog_manager.event.from_user.id
         db = ctx_data.get().get('repo')
         exists = await db.check_registered(user_id)
@@ -40,6 +48,11 @@ class Getter:
         }
 
     async def get_schools(dialog_manager: DialogManager, **kwargs):
+        """
+
+        :param kwargs:
+        :return: list of available schools
+        """
         db = ctx_data.get().get('repo')
         schools = await db.get_schools()
 
@@ -48,6 +61,11 @@ class Getter:
         }
 
     async def get_grades(dialog_manager: DialogManager, **kwargs):
+        """
+
+        :param kwargs:
+        :return: list of available grades in current school
+        """
         school = int(dialog_manager.current_context().dialog_data.get("school", None))
         db = ctx_data.get().get('repo')
         grades = await db.reg_get_grades(school)
@@ -58,6 +76,11 @@ class Getter:
         }
 
     async def get_profiles(dialog_manager: DialogManager, **kwargs):
+        """
+
+        :param kwargs:
+        :return: list of available profiles in current grade
+        """
         grade = dialog_manager.current_context().dialog_data.get("grade", None)
         db = ctx_data.get().get('repo')
         profiles = await db.get_profiles(grade)
@@ -69,6 +92,11 @@ class Getter:
         }
 
     async def get_maths(dialog_manager: DialogManager, **kwargs):
+        """
+
+        :param kwargs:
+        :return: list of available maths in current profile
+        """
         db = ctx_data.get().get('repo')
         math = await db.get_maths()
 
@@ -78,6 +106,11 @@ class Getter:
         }
 
     async def get_days(dialog_manager: DialogManager, **kwargs):
+        """
+
+        :param kwargs:
+        :return: list of available days
+        """
         db = ctx_data.get().get('repo')
         days = await db.get_days()
 
@@ -86,15 +119,16 @@ class Getter:
         }
 
     async def get_user_grades(dialog_manager: DialogManager, **kwargs):
-        user_id = dialog_manager.event.from_user.id
         db = ctx_data.get().get('repo')
-        grades = await db.get_grades(user_id)
+        grades = await db.get_grades(dialog_manager.event.from_user.id)
+
         return {
             'grades': grades,
         }
 
     async def get_timetable(dialog_manager: DialogManager, **kwargs):
         timetable = dialog_manager.current_context().dialog_data.get("timetable", None)
+
         return {
             'timetable': timetable,
         }
@@ -119,7 +153,7 @@ class Getter:
         db = ctx_data.get().get('repo')
         extended = dialog_manager.current_context().dialog_data.get('profile_extended', None)
         user_data = await db.get_timetable(user_id)
-        await db.schedule_user_usage(dialog_manager.event.from_user.id)
+        await db.schedule_user_usage(user_id)
         user_class = user_data['user_class_id']
         if extended:
             user_profile = dialog_manager.current_context().dialog_data.get('user_profile', None)
