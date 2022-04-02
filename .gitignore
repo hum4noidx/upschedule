@@ -138,3 +138,4 @@ bot.ini
 /DJANGO/mysite/static/grappelli/
 /DJANGO/mysite/static/admin/
 /DJANGO/mysite/static/
+/website/static/grappelli/

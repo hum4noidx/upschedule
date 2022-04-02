@@ -38,7 +38,7 @@ class PassportAdmin(admin.ModelAdmin):
                            'registered', 'last_seen']}),
     ]
     list_display = (
-    'id', 'user_id', 'full_name', 'user_class', 'user_prof', 'user_math', 'vip', 'admin', 'registered', 'last_seen')
+        'id', 'user_id', 'full_name', 'user_class', 'user_prof', 'user_math', 'vip', 'admin', 'registered', 'last_seen')
     list_filter = ['user_class', ]
     search_fields = ['full_name']
 

@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 {% extends 'main/base.html' %}
 {% load static%}
 {% block title %}
@@ -5,13 +6,6 @@
 {% endblock%}
 {% block content %}
 <div class="">
-    <!--    <a href="{% url 'main:grade'%}" , style="color: red">*тык*</a>-->
-    <!--    <p>-->
-    <!--        — Вы продоёте расписание?<br>-->
-    <!--        — Нет просто показываю.<br>-->
-    <!--        — Красивое...-->
-    <!--    </p>-->
-    <!--    <span style="color: red">Люба сказала, что цвет ссылки сливается. Надо исправить</span>-->
     <section class="py-10 py-lg-20 text-center bg-bg-1">
         <div class="container">
             <div class="row justify-content-center">
@@ -24,21 +18,21 @@
                 </div>
             </div>
             <div class="card-deck d-flex justify-content-around">
-                <div class="card border-primary mb-3">
+                <div class="card bg-primary shadow-soft text-center border-light">
                     <div class="card-body w-100 p-8 p-md-16 p-lg-8 p-xl-12 p-xxl-20 bg-dark-1">
-                        <object data="{% static 'main/img/telegram_ico.svg' %}" class="h-50 w-50 card-img-top">Your
+                        <object class="h-50 w-50 card-img-top" data="{% static 'main/img/telegram_ico.svg' %}">Your
                             browser does not
                             support
                             SVG
                         </object>
-                        <h5 class="text-light-1">Всегда под рукой</h5>
+                        <h5 class="text-light-1">Всегда под yjyj</h5>
                         <p class="my-4 text-light-2">Бот работает в
                             месседжере Telegram, что делает его удобным для повседневного использования</p>
                     </div>
                 </div>
                 <div class="card border-primary mb-3">
                     <div class="card-body w-100 p-8 p-md-16 p-lg-8 p-xl-12 p-xxl-20 bg-dark-1">
-                        <object data="{% static 'main/img/speedometer_ico.svg' %}" class="h-50 w-50 card-img-top">Your
+                        <object class="h-50 w-50 card-img-top" data="{% static 'main/img/speedometer_ico.svg' %}">Your
                             browser does not
                             support
                             SVG
@@ -51,7 +45,7 @@
                 </div>
                 <div class="card border-primary mb-3">
                     <div class="card-body w-100 p-8 p-md-16 p-lg-8 p-xl-12 p-xxl-20 bg-dark-1">
-                        <object data="{% static 'main/img/collection_ico.svg' %}" class="h-50 w-50 card-img-top">Your
+                        <object class="h-50 w-50 card-img-top" data="{% static 'main/img/collection_ico.svg' %}">Your
                             browser does not
                             support
                             SVG
