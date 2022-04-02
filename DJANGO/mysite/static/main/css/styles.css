@@ -13,7 +13,11 @@
     }
 
     .navbar-logo {
-        width: 6rem !important;
+        width: 14rem !important;
+    }
+
+    .navbar {
+        border-radius: 0 !important;
     }
 }
 
@@ -30,5 +34,9 @@
 @media only screen and (min-device-width: 768px) and (max-device-width: 1224px) {
     .card-deck {
         flex-direction: column;
+    }
+
+    .navbar {
+        border-radius: 0 !important;
     }
 }

@@ -6,29 +6,33 @@
 
 <div class="profiles vh-100">
     {% if profiles %}
-    <h1>{{profiles.first.grade_id}} класс</h1>
-    <h2>Профили</h2>
+    <!--    <h1>{{profiles.first.grade_id}} класс</h1>-->
+    <h2>Профили <span class="badge badge-info bg-primary">{{profiles.first.grade_id}} класс</span></h2>
+    <hr>
     <div class="btn-group-vertical">
-        {% if profiles.first.grade_id == 11%}
         {% for profile in profiles %}
-        <a aria-expanded="false" aria-haspopup="true" class="btn btn-primary mb-3 nav-link dropdown-toggle"
-           data-bs-toggle="dropdown"
-           href="#" role="button">{{profile.profile}}</a>
-        <div class="dropdown-menu" style="">
-            {% if profile.profile_db == 'fm'%}
-            <a class="dropdown-item" href="{% url 'main:days' profile.grade_id profile.id '1' %}">Профиль</a>
-            {% else %}
-            <a class="dropdown-item" href="{% url 'main:days' profile.grade_id profile.id '1' %}">Профиль</a>
-            <a class="dropdown-item" href="{% url 'main:days' profile.grade_id profile.id '2' %}">База</a>
-            {% endif%}
-        </div>
+        <a class="btn btn-primary mb-3" href="{% url 'main:days' profile.grade_id profile.id profile.math_id %}">{{profile.profile}}</a>
         {% endfor %}
-        {%else%}
-        {% for profile in profiles %}
-        <a class="btn btn-primary mb-3" href="{% url 'main:days' profile.grade_id profile.id 'None' %}">{{profile.profile}}</a>
-        {% endfor %}
-        {% endif %}
-        <a class="btn btn-warning shadow-sm mb-1" href="javascript:history.go(-1);">🔙</a>
+        <!--        {% if profiles.first.grade_id == 11%}-->
+        <!--        {% for profile in profiles %}-->
+        <!--        <a aria-expanded="false" aria-haspopup="true" class="btn btn-primary mb-3 nav-link dropdown-toggle"-->
+        <!--           data-bs-toggle="dropdown"-->
+        <!--           href="#" role="button">{{profile.profile}}</a>-->
+        <!--        <div class="dropdown-menu" style="">-->
+        <!--            {% if profile.profile_db == 'fm'%}-->
+        <!--            <a class="dropdown-item" href="{% url 'main:days' profile.grade_id profile.id '1' %}">Профиль</a>-->
+        <!--            {% else %}-->
+        <!--            <a class="dropdown-item" href="{% url 'main:days' profile.grade_id profile.id '1' %}">Профиль</a>-->
+        <!--            <a class="dropdown-item" href="{% url 'main:days' profile.grade_id profile.id '2' %}">База</a>-->
+        <!--            {% endif%}-->
+        <!--        </div>-->
+        <!--        {% endfor %}-->
+        <!--        {%else%}-->
+        <!--        {% for profile in profiles %}-->
+        <!--        <a class="btn btn-primary mb-3" href="{% url 'main:days' profile.grade_id profile.id 'None' %}">{{profile.profile}}</a>-->
+        <!--        {% endfor %}-->
+        <!--        {% endif %}-->
+        <a class="btn btn-dark shadow-sm mb-1" href="javascript:history.go(-1);">Назад</a>
     </div>
     {%else%}
     <h2>Пусто</h2>
@@ -36,8 +40,4 @@
            value="Previous Page">
     {% endif %}
 </div>
-<a class="btn btn-primary shadow-sm mb-3" data-bs-target="#target{{profile.id}}" data-bs-toggle="collapse"
-   href="#target{{profile.id}}">{{profile.profile}}</a>
-<div class="collapse target" id="target{{profile.id}}"></div>
-
 {% endblock%}

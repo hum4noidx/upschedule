@@ -207,7 +207,7 @@ class Repo:
         )
         meta = str()
         for meta1 in raw_meta:
-            meta = f"{meta1['grade_short']}|{meta1['profile_db']}|{meta1['date_short']}"
+            meta = f"{meta1['profile_db']}|{meta1['date_short']}"
         #  ======================== DATA ========================
         if int(date) == 6 or int(date) == 7:
             schedule = meta + '\nТут пусто'

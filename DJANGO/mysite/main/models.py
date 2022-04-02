@@ -22,13 +22,14 @@ class Group(models.Model):
 
 
 class School(models.Model):
-    name = models.CharField(max_length=255, )
-    city = models.CharField(max_length=255, )
-    short_name = models.CharField(max_length=15, unique=True)
+    name = models.CharField('Имя', max_length=255, )
+    city = models.CharField('Город', max_length=255, )
+    short_name = models.CharField('Короткое имя', max_length=15, unique=True)
 
     class Meta:
         verbose_name = 'Школа'
         verbose_name_plural = 'Школы'
+        ordering = ['name']
 
     def __str__(self):
         return self.name
@@ -41,13 +42,14 @@ class Classroom(models.Model):
     class Meta:
         verbose_name = 'Кабинет'
         verbose_name_plural = 'Кабинеты'
+        ordering = ['number']
 
     def __str__(self):
         return self.number
 
 
 class Grade(models.Model):
-    grade = models.IntegerField('Класс', '')
+    grade = models.IntegerField('Класс', )
     school = models.ForeignKey(School, on_delete=models.CASCADE)
     grade_short = models.CharField(max_length=15, default='None')
 
@@ -81,17 +83,19 @@ class Profile(models.Model):
     class Meta:
         verbose_name = 'Профиль'
         verbose_name_plural = 'Профили'
+        ordering = ['grade', 'profile']
 
     def __str__(self):
-        return self.profile_db
+        return self.id
 
 
 class Discipline(models.Model):
-    lsn_name = models.CharField(max_length=50)
+    lsn_name = models.CharField('Предмет', max_length=50)
 
     class Meta:
         verbose_name = 'Предмет'
         verbose_name_plural = 'Предметы'
+        ordering = ['lsn_name', ]
 
     def __str__(self):
         return self.lsn_name
@@ -117,6 +121,7 @@ class Date(models.Model):
     class Meta:
         verbose_name = 'День недели'
         verbose_name_plural = 'Дни недели'
+        ordering = ['id']
 
     def __str__(self):
         return self.day
@@ -179,6 +184,7 @@ class Passport(models.Model):
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
+        ordering = ['id']
 
 
 class Subscription(models.Model):

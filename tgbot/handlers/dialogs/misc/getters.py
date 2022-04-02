@@ -42,7 +42,7 @@ class Getter:
             'name': name,
             'user_id': user_id,
             'date': current_date[0],
-            'next_date': date[1],
+            'next_date': current_date[1],
             'school': school,
             'admin': admin
         }

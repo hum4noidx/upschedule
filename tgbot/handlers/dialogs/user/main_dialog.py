@@ -1,5 +1,5 @@
 from aiogram import Dispatcher, types
-from aiogram.types import Message
+from aiogram.types import Message, CallbackQuery
 from aiogram_dialog import DialogManager, StartMode, Dialog, Window
 from aiogram_dialog.widgets.kbd import Group, Start, Button, Row
 from aiogram_dialog.widgets.text import Const, Format
@@ -37,7 +37,7 @@ dialog_main = Dialog(
 )
 
 
-async def start(dialog_manager: DialogManager):
+async def start(c: CallbackQuery, dialog_manager: DialogManager, **kwargs):
     # it is important to reset stack because user wants to restart everything
     await dialog_manager.start(MainSG.greeting, mode=StartMode.RESET_STACK)
 

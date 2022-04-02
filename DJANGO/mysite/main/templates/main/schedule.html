@@ -5,9 +5,9 @@
 {% block content %}
 <div class="schedule vh-100">
 
-    <table class="table table-stripped table-dark">
+    <table class="table table-stripped table-dark" style="border-radius: 15px;overflow: hidden;">
         <thead>
-        <tr class="table-primary">
+        <tr class="table-default">
             <th id="day" scope="row">День</th>
             <th>Номер</th>
             <th>Урок</th>
@@ -16,7 +16,7 @@
         </thead>
         <tbody>
         {% for lesson in schedule %}
-        <tr class="">
+        <tr class="table-secondary">
             <td>{{lesson.lsn_date}}</td>
             <td>{{lesson.lsn_number}}</td>
             <td>{{lesson.lsn_text}}</td>
@@ -26,7 +26,7 @@
         {% endfor %}
 
     </table>
-    <a class="btn btn-warning shadow-sm mb-1" href="javascript:history.go(-1);">🔙</a>
+    <a class="btn btn-dark shadow-sm mb-1" href="javascript:history.go(-1);">Назад</a>
 </div>
 <script type="text/javascript">
     const table = document.querySelector('table');

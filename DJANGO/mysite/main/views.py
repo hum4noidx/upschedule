@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic import ListView, DetailView
 
-from .models import Grade, Profile, Schedule
+from .models import Grade, Profile, Schedule, Date
 
 
 # №1 generates grades list from db
@@ -30,23 +30,16 @@ class ProfileListlView(ListView):
     context_object_name = 'profiles'
 
     def get_queryset(self):
-        return Profile.objects.values().filter(grade_id=self.kwargs['pk'])
+        return Profile.objects.values().filter(grade_id=self.kwargs['pk']).order_by('profile_db')
 
 
 class Days(ListView):
-    model = {
-        '1': 'Понедельник',
-        '2': 'Вторник',
-        '3': 'Среда',
-        '4': 'Четверг',
-        '5': 'Пятница',
-
-    }
+    model = Date
     template_name = 'main/days.html'
     context_object_name = 'days'
 
-    # def get_queryset(self):
-    #     return Profile.objects.values().filter(grade_id=self.kwargs['pk'])
+    def get_queryset(self):
+        return Date.objects.values('id', 'day')
 
 
 def days(request, pk, prof, math):
@@ -58,7 +51,7 @@ def days(request, pk, prof, math):
         5: 'Пятница',
 
     }
-    profile = Profile.objects.values().filter(profile_db=prof)
+    profile = Profile.objects.values().filter(id=prof)
     return render(request, 'main/days.html', {'grade': pk,
                                               'profile': profile,
                                               'math': math,

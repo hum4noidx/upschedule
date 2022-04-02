@@ -6,14 +6,15 @@
 <div class="schedule vh-100">
     {% if days %}
     <h1>Дни недели</h1>
+    <hr>
     <h2>{{grade}} класс <span class="badge badge-info bg-primary">{{profile.first.profile}}</span></h2>
 
     <div class="d-flex flex-column d-inline-flex">
-        {% for value in days.items%}
+        {% for day in days.items%}
         <a class="btn btn-primary shadow-sm mb-3"
-           href="{% url 'main:schedule' grade profile.first.id math value.0 %}">{{value.1}}</a>
+           href="{% url 'main:schedule' grade profile.first.id math day.0 %}">{{day.1}}</a>
         {% endfor %}
-        <a class="btn btn-warning shadow-sm mb-1" href="javascript:history.go(-1);">🔙</a>
+        <a class="btn btn-dark shadow-sm mb-1" href="javascript:history.go(-1);">Назад</a>
     </div>
     {% endif %}
 </div>
