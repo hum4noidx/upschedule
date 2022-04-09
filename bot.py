@@ -12,14 +12,15 @@ from tgbot.config import load_config
 from tgbot.filters.role import RoleFilter, AdminFilter, VIPFilter
 from tgbot.handlers.admins.admin import register_admin
 from tgbot.handlers.admins.broadcaster import register_broadcast
-from tgbot.handlers.dialogs.admin_panel import dialog_admin
-from tgbot.handlers.dialogs.broadcaster import dialog_broadcaster
-from tgbot.handlers.dialogs.horoscope_dialog import horoscopes
-from tgbot.handlers.dialogs.horoscope_parser import schedule_jobs
-from tgbot.handlers.dialogs.main_dialog import register_user, dialog_main
-from tgbot.handlers.dialogs.registration import dialog_reg, dialogs
-from tgbot.handlers.dialogs.timetable import dialog_timetable, dialog_fast_timetable
-from tgbot.handlers.dialogs.user_settings import dialog_user_settings, dialog_subscriptions, dialog_horoscope_subscribe
+from tgbot.handlers.dialogs.admin.admin_panel import dialog_admin
+from tgbot.handlers.dialogs.admin.broadcaster import dialog_broadcaster
+from tgbot.handlers.dialogs.misc.horoscope_parser import schedule_jobs
+from tgbot.handlers.dialogs.misc.timetable import dialog_timetable, dialog_fast_timetable
+from tgbot.handlers.dialogs.user.horoscope_dialog import horoscopes
+from tgbot.handlers.dialogs.user.main_dialog import register_user, dialog_main
+from tgbot.handlers.dialogs.user.registration import dialog_reg, dialogs
+from tgbot.handlers.dialogs.user.user_settings import dialog_user_settings, dialog_subscriptions, \
+    dialog_horoscope_subscribe
 from tgbot.handlers.groups.group_helper import register_groups
 from tgbot.handlers.users.compliments import register_compliments
 from tgbot.handlers.users.timetable import register_timetable

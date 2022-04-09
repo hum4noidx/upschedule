@@ -201,18 +201,25 @@ async def stickers_switch(m: Message):
         await m.bot.set_chat_permissions(chat_id=m.chat.id, permissions=permissions)
         await m.answer(f'Использование стикеров: {status}')
     else:
-        await m.answer('Нет прав)')
+        await m.reply('Нет прав)')
 
 
 def register_groups(dp: Dispatcher):
     dp.register_message_handler(on_user_left, content_types=types.ContentTypes.LEFT_CHAT_MEMBER)
     dp.register_message_handler(on_user_join, content_types=types.ContentTypes.NEW_CHAT_MEMBERS)
-    dp.register_message_handler(reg_group, commands=['reg'])
-    dp.register_message_handler(remind_group, commands=['remind'], chat_type=types.ChatType.GROUP)
+    dp.register_message_handler(reg_group, commands=['reg'],
+                                chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
+    dp.register_message_handler(remind_group, commands=['remind'],
+                                chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP, types.ChatType.PRIVATE])
     dp.register_message_handler(remind_set_time, state=RemindGroup.SetTime)
     dp.register_callback_query_handler(broadcast_choose_groups, text="group_broadcast", state="*")
-    dp.register_message_handler(kick_user, commands=['kick'], is_reply=True)
-    dp.register_message_handler(error_no_reply, is_reply=False, commands=["ro", "nomedia"])
-    dp.register_message_handler(cmd_ro, is_reply=True, commands=['ro'])
-    dp.register_message_handler(cmd_nomedia, is_reply=True, commands="nomedia")
-    dp.register_message_handler(stickers_switch, commands=['stick'])
+    dp.register_message_handler(kick_user, commands=['kick'], is_reply=True,
+                                chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
+    dp.register_message_handler(error_no_reply, is_reply=False, commands=["ro", "nomedia"],
+                                chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
+    dp.register_message_handler(cmd_ro, is_reply=True, commands=['ro'],
+                                chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
+    dp.register_message_handler(cmd_nomedia, is_reply=True, commands="nomedia",
+                                chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])
+    dp.register_message_handler(stickers_switch, commands=['stick'],
+                                chat_type=[types.ChatType.GROUP, types.ChatType.SUPERGROUP])

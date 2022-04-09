@@ -17,6 +17,7 @@ class ScheduleAdmin(admin.ModelAdmin):
 
     ]
     list_display = ('lsn_date', 'lsn_number', 'lsn_text', 'lsn_class', 'teacher',)
+    ordering = ['lsn_date', 'lsn_number']
     list_filter = ['lsn_grade', 'lsn_profile', 'lsn_math', 'lsn_date', 'teacher']
     search_fields = ['lsn_text', 'teacher']
 
@@ -34,9 +35,10 @@ class TeacherAdmin(admin.ModelAdmin):
 class PassportAdmin(admin.ModelAdmin):
     fieldsets = [
         (None, {'fields': ['user_id', 'uses', 'full_name', 'user_class', 'user_prof', 'vip', 'admin',
-                           'registered']}),
+                           'registered', 'last_seen']}),
     ]
-    list_display = ('id', 'user_id', 'full_name', 'user_class', 'user_prof', 'user_math', 'vip', 'admin', 'registered')
+    list_display = (
+        'id', 'user_id', 'full_name', 'user_class', 'user_prof', 'user_math', 'vip', 'admin', 'registered', 'last_seen')
     list_filter = ['user_class', ]
     search_fields = ['full_name']
 

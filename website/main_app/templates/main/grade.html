@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+{% extends 'main/base.html' %}
+
+{% block title %}Классы{% endblock%}
+
+{% block content %}
+<section class="section section bg-soft pb-5 overflow-hidden z-2">
+    <div class="section section-header pb-7">
+        <div class="container">
+            <h1>Классы</h1>
+            <hr>
+            <div class="btn-group">
+                {% for grade in grades %}
+                <a class="btn btn-primary shadow-sm mb-1" href="{% url 'main:profile' grade.id %}">{{grade.grade}}</a>
+                {% endfor %}
+                <a class="btn btn-dark shadow-sm mb-1" href="javascript:history.go(-1);">Назад</a>
+                <!--        <input class="btn btn-warning shadow-sm" type=button value="🔙" onClick="javascript:history.go(-1);">-->
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock%}

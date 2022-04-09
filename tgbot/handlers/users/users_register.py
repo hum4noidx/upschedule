@@ -24,7 +24,7 @@ async def user_end_registration(c: CallbackQuery, state: FSMContext, callback_da
     else:
         user_math = callback_data['math']
 
-    await repo.register_user(user_class, user_prof, user_math, userid)
+    await repo.update_user_info(user_class, user_prof, user_math, userid)
     await state.reset_state()
     await c.message.edit_text('Регистрация успешна.', reply_markup=nav_btns.back_to_mm)
 

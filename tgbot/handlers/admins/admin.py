@@ -42,17 +42,17 @@ async def main_menu_admin(c: CallbackQuery, state: FSMContext):
 
 async def get_user_list(c: CallbackQuery, repo: Repo):
     await c.answer()
-    await c.message.edit_text(await repo.list_all_users(), reply_markup=nav_btns.admin_users_list)
+    await c.message.edit_text(await repo.get_users_list(), reply_markup=nav_btns.admin_users_list)
 
 
 async def get_today_user_list(c: CallbackQuery, repo: Repo):
-    await c.message.edit_text(await repo.list_all_today_users(), reply_markup=nav_btns.back_to_mm)
+    await c.message.edit_text(await repo.get_today_users_list(), reply_markup=nav_btns.back_to_mm)
 
 
 async def get_user_info(message: types.message, repo: Repo):
     info = message.get_args()
     try:
-        await message.answer(await repo.user_info(info), parse_mode='HTML', reply_markup=nav_btns.back_to_mm)
+        await message.answer(await repo.get_user_info_admin_panel(info), parse_mode='HTML', reply_markup=nav_btns.back_to_mm)
     except ValueError:
         await message.answer('<b>Ошибка!</b>\nИспользование: /i {id пользователя}')
 

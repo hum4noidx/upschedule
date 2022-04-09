@@ -17,12 +17,12 @@ class Repo:
             user_id, full_name)
         return
 
-    async def schedule_user_usage(self, user_id):
+    async def update_user_usage(self, user_id):
         await self.conn.execute(
             'UPDATE main_passport SET (uses, last_seen) = (uses + 1, now()) '
             'WHERE user_id = $1', user_id)
 
-    async def show_user_info(self, user_id):
+    async def get_user_info(self, user_id):
         user_data = dict(await self.conn.fetchrow(
             'SELECT main_passport.id,main_passport.full_name, main_passport.uses, main_grade.grade_short, '
             'main_profile.profile_db, main_passport.vip '
@@ -40,11 +40,11 @@ class Repo:
         # f"Знак - {user_data['sign_ru']}")
         return msg
 
-    async def user_change_name(self, user_id, name):
-        await self.conn.execute('Update main_passport Set full_name = $1 Where user_id = $2', name, user_id)
+    async def update_user_name(self, user_id, name):
+        await self.conn.execute('UPDATE main_passport Set full_name = $1 Where user_id = $2', name, user_id)
 
     # ______________________ REGISTRATION ______________________
-    async def register_user(self, user_school, user_class, user_prof, userid):
+    async def update_user_info(self, user_school, user_class, user_prof, userid):
         result = await self.conn.execute(
             'UPDATE main_passport SET (school_id, user_class_id, user_prof_id, registered) = ($1, $2, '
             '$3, $4) '
@@ -89,7 +89,7 @@ class Repo:
     #     return groups
 
     # ______________________ ADMIN PANEL ______________________
-    async def list_all_users(self):
+    async def get_users_list(self):
         all_info = await self.conn.fetch(
             'SELECT id, full_name, uses, vip From main_passport Order by id'
         )
@@ -103,7 +103,7 @@ class Repo:
         text = text.replace('True', 'VIP')
         return text
 
-    async def list_all_today_users(self):
+    async def get_today_users_list(self):
         today_users = await self.conn.fetch(
             'SELECT id, full_name, uses, last_seen From main_passport WHERE last_seen::date=current_date '
             'Order by last_seen'
@@ -116,7 +116,7 @@ class Repo:
         text = '\n'.join(top_text)
         return text
 
-    async def user_info(self, info):
+    async def get_user_info_admin_panel(self, info):
         uid = int(info)
         user_info = dict(await self.conn.fetchrow(
             'SELECT * FROM main_passport WHERE id = $1', uid
@@ -158,7 +158,7 @@ class Repo:
         data = ([uid['user_id'] for uid in ids])
         return data
 
-    async def broadcast_get_first_ids(self, user_class, user_profile, user_math1):
+    async def get_first_ids(self, user_class, user_profile, user_math1):
         user_math = str(user_math1)
         ids = await self.conn.fetch(
             'SELECT user_id From main_passport Where user_class_id = $1 And user_prof_id = $2 And user_math_id = $3',
@@ -167,14 +167,14 @@ class Repo:
         data = ([uid['user_id'] for uid in ids])
         return data
 
-    async def broadcast_get_class_ids(self, user_class):
+    async def get_class_ids(self, user_class):
         ids = await self.conn.fetch(
             'SELECT user_id From main_passport Where user_class_id = $1', user_class
         )
         data = ([uid['user_id'] for uid in ids])
         return data
 
-    async def broadcast_get_profile_ids(self, user_profile):
+    async def get_profile_ids(self, user_profile):
         ids = await self.conn.fetch(
             'SELECT user_id From main_passport Where user_prof_id = $1', user_profile
         )
@@ -207,7 +207,7 @@ class Repo:
         )
         meta = str()
         for meta1 in raw_meta:
-            meta = f"{meta1['grade_short']}|{meta1['profile_db']}|{meta1['date_short']}"
+            meta = f"{meta1['profile_db']}|{meta1['date_short']}"
         #  ======================== DATA ========================
         if int(date) == 6 or int(date) == 7:
             schedule = meta + '\nТут пусто'
@@ -242,7 +242,7 @@ class Repo:
         data = list(data.items())
         return data
 
-    async def reg_get_grades(self, school_id):
+    async def get_grades_reg(self, school_id):
         data = dict(
             await self.conn.fetch('SELECT grade, grade_short '
                                   'FROM main_grade '
@@ -263,13 +263,13 @@ class Repo:
         data = list(data.items())
         return data
 
-    async def check_registered(self, user_id):
+    async def get_registered_users(self, user_id):
         result = await self.conn.fetchrow('SELECT registered '
                                           'FROM main_passport '
                                           'WHERE user_id=$1', user_id)
         return result['registered']
 
-    async def db_get_user_school(self, user_id):
+    async def get_user_school(self, user_id):
         result = await self.conn.fetchrow('SELECT school_id '
                                           'FROM main_passport '
                                           'WHERE user_id=$1', user_id)
@@ -281,14 +281,14 @@ class Repo:
         data = list(data.items())
         return data
 
-    async def users_count(self):
+    async def get_users_count(self):
         data = await self.conn.fetchrow('SELECT count(id) FROM main_passport')
         return data['count']
 
     async def add_horoscope(self, sign, text):
         await self.conn.execute('UPDATE main_horoscope SET sign_text = $2 WHERE sign_name = $1', sign, text)
 
-    async def list_horoscope_subscribers(self):
+    async def get_horoscope_subscribers_list(self):
         result = await self.conn.fetch("SELECT user_id, args FROM main_subscription "
                                        "WHERE main_subscription.title = 'horoscope'")
         return result
@@ -297,7 +297,7 @@ class Repo:
         result = await self.conn.fetchrow('SELECT sign_text FROM horoscopes WHERE sign = $1', sign)
         return result['sign_text']
 
-    async def db_get_horoscope_signs(self):
+    async def get_horoscope_signs(self):
         result = dict(await self.conn.fetch('SELECT sign_ru, sign FROM horoscopes ORDER BY id'))
         data = list(result.items())
         return data

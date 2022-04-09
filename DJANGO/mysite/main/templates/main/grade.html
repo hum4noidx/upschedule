@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 {% extends 'main/base.html' %}
 
 {% block title %}Классы{% endblock%}
@@ -10,7 +11,7 @@
         {% for grade in grades %}
         <a class="btn btn-primary shadow-sm mb-1" href="{% url 'main:profile' grade.id %}">{{grade.grade}}</a>
         {% endfor %}
-        <a class="btn btn-warning shadow-sm mb-1" href="javascript:history.go(-1);">🔙</a>
+        <a class="btn btn-dark shadow-sm mb-1" href="javascript:history.go(-1);">Назад</a>
         <!--        <input class="btn btn-warning shadow-sm" type=button value="🔙" onClick="javascript:history.go(-1);">-->
     </div>
 

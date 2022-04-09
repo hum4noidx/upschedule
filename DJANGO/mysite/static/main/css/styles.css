@@ -13,7 +13,7 @@
     }
 
     .navbar-logo {
-        width: 6rem !important;
+        width: 14rem !important;
     }
 }
 
@@ -23,7 +23,7 @@
 
 @media only screen  and (min-width: 1224px) {
     .card {
-        max-width: 20rem !important;
+        max-width: 30rem !important;
     }
 }
 
@@ -31,4 +31,9 @@
     .card-deck {
         flex-direction: column;
     }
+}
+
+* {
+    color: white;
+    scroll-behavior: smooth;
 }
