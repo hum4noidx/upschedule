@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @media screen and (max-width: 980px) {
     .schedule {
         justify-content: center;
@@ -15,6 +16,10 @@
     .navbar-logo {
         width: 14rem !important;
     }
+
+    .btn-group {
+        display: grid !important;
+    }
 }
 
 .vh-100 {
@@ -31,10 +36,38 @@
     .card-deck {
         flex-direction: column;
     }
+
 }
 
 * {
+    color: #44476A;
     scroll-behavior: smooth;
 
 }
 
+@media all and (device-width: 834px) and (device-height: 1112px) and (orientation: landscape) {
+    .card-deck {
+        flex-direction: column;
+    }
+}
+
+.navbar-brand {
+    height: 100% !important;
+}
+
+/*.navbar-nav > li > a {*/
+/*    font-size: 1.5rem !important;*/
+/*}*/
+/*.card-body > p{*/
+/*    font-size: 1.4rem !important;*/
+/*}*/
+/*.card-body>h5{*/
+/*    font-size: 1.7rem !important;*/
+/*}*/
+html {
+    font-size: 16px !important;
+}
+
+.d-grid {
+    display: grid !important
+}

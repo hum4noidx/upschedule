@@ -4,20 +4,24 @@
 {% block title %}День недели{% endblock%}
 
 {% block content %}
-<div class="schedule vh-100">
-    {% if days %}
-    <h1>Дни недели</h1>
-    <hr>
-    <h2>{{grade}} класс <span class="badge badge-info bg-primary">{{profile.first.profile}}</span></h2>
+<section class="section section bg-soft pb-5 overflow-hidden z-2">
+    <div class="section section-header pb-7">
+        <div class="container">
+            {% if days %}
+            <h1>Дни недели</h1>
+            <hr>
+            <h2>{{grade}} класс <span class="badge badge-info bg-primary">{{profile.first.profile}}</span></h2>
 
-    <div class="d-flex flex-column d-inline-flex">
-        {% for day in days.items%}
-        <a class="btn btn-primary shadow-sm mb-3"
-           href="{% url 'main:schedule' grade profile.first.id math day.0 %}">{{day.1}}</a>
-        {% endfor %}
-        <a class="btn btn-dark shadow-sm mb-1" href="javascript:history.go(-1);">Назад</a>
+            <div class="d-flex flex-column d-inline-flex">
+                {% for day in days.items%}
+                <a class="btn btn-primary shadow-sm mb-3"
+                   href="{% url 'main:schedule' grade profile.first.id math day.0 %}">{{day.1}}</a>
+                {% endfor %}
+                <a class="btn btn-dark shadow-sm mb-1" href="javascript:history.go(-1);">Назад</a>
+            </div>
+            {% endif %}
+        </div>
     </div>
-    {% endif %}
-</div>
+</section>
 
 {% endblock%}

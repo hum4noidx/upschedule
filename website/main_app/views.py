@@ -64,7 +64,7 @@ def schedule(request, pk, prof, math, day):
     schedule = Schedule.objects.all().filter(lsn_grade=pk).filter(lsn_profile=prof).filter(lsn_math=math).filter(
         lsn_date=day).order_by(
         'lsn_date', 'lsn_number')
-    return render(request, 'main/schedule.html', {'schedule': schedule})
+    return render(request, 'main/schedule.html', {'schedule': schedule, })
 
 
 class ScheduleDetailView(DetailView):

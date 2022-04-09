@@ -3,31 +3,34 @@
 {% block title %}Расписание уроков{% endblock%}
 
 {% block content %}
-<div class="schedule vh-100">
+<section class="section section bg-soft pb-5 overflow-hidden z-2">
+    <div class="section section-header pb-7">
+        <div class="container">
+            <table class="table table-hover shadow-inset rounded">
+                <tbody>
+                <thead>
+                <tr>
+                    <th class="border-0" id="day" scope="row">День</th>
+                    <th class="border-0">Номер</th>
+                    <th class="border-0">Урок</th>
+                    <th class="border-0">Кабинет</th>
+                </tr>
+                </thead>
+                {% for lesson in schedule %}
+                <tr>
+                    <td>{{lesson.lsn_date}}</td>
+                    <td>{{lesson.lsn_number}}</td>
+                    <td>{{lesson.lsn_text}}</td>
+                    <td>{{lesson.lsn_class}}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <a class="btn btn-dark shadow-sm mb-1" href="javascript:history.go(-1);">Назад</a>
+        </div>
+    </div>
+</section>
 
-    <table class="table table-stripped table-dark" style="border-radius: 15px;overflow: hidden;">
-        <thead>
-        <tr class="table-default">
-            <th id="day" scope="row">День</th>
-            <th>Номер</th>
-            <th>Урок</th>
-            <th>Кабинет</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for lesson in schedule %}
-        <tr class="table-secondary">
-            <td>{{lesson.lsn_date}}</td>
-            <td>{{lesson.lsn_number}}</td>
-            <td>{{lesson.lsn_text}}</td>
-            <td>{{lesson.lsn_class}}</td>
-        </tr>
-
-        {% endfor %}
-
-    </table>
-    <a class="btn btn-dark shadow-sm mb-1" href="javascript:history.go(-1);">Назад</a>
-</div>
 <script type="text/javascript">
     const table = document.querySelector('table');
 

@@ -5,40 +5,25 @@
 
 {% block content %}
 
-<div class="profiles vh-100">
-    {% if profiles %}
-    <!--    <h1>{{profiles.first.grade_id}} класс</h1>-->
-    <h2>Профили <span class="badge badge-info bg-primary">{{profiles.first.grade_id}} класс</span></h2>
-    <hr>
-    <div class="btn-group-vertical">
-        {% for profile in profiles %}
-        <a class="btn btn-primary mb-3" href="{% url 'main:days' profile.grade_id profile.id profile.math_id %}">{{profile.profile}}</a>
-        {% endfor %}
-        <!--        {% if profiles.first.grade_id == 11%}-->
-        <!--        {% for profile in profiles %}-->
-        <!--        <a aria-expanded="false" aria-haspopup="true" class="btn btn-primary mb-3 nav-link dropdown-toggle"-->
-        <!--           data-bs-toggle="dropdown"-->
-        <!--           href="#" role="button">{{profile.profile}}</a>-->
-        <!--        <div class="dropdown-menu" style="">-->
-        <!--            {% if profile.profile_db == 'fm'%}-->
-        <!--            <a class="dropdown-item" href="{% url 'main:days' profile.grade_id profile.id '1' %}">Профиль</a>-->
-        <!--            {% else %}-->
-        <!--            <a class="dropdown-item" href="{% url 'main:days' profile.grade_id profile.id '1' %}">Профиль</a>-->
-        <!--            <a class="dropdown-item" href="{% url 'main:days' profile.grade_id profile.id '2' %}">База</a>-->
-        <!--            {% endif%}-->
-        <!--        </div>-->
-        <!--        {% endfor %}-->
-        <!--        {%else%}-->
-        <!--        {% for profile in profiles %}-->
-        <!--        <a class="btn btn-primary mb-3" href="{% url 'main:days' profile.grade_id profile.id 'None' %}">{{profile.profile}}</a>-->
-        <!--        {% endfor %}-->
-        <!--        {% endif %}-->
-        <a class="btn btn-dark shadow-sm mb-1" href="javascript:history.go(-1);">Назад</a>
+<section class="section section bg-soft pb-5 overflow-hidden z-2">
+    <div class="section section-header pb-7">
+        <div class="container">
+            {% if profiles %}
+            <h2>Профили <span class="badge badge-info bg-primary">{{profiles.first.grade_id}} класс</span></h2>
+            <hr>
+            <div class="btn-group-vertical">
+                {% for profile in profiles %}
+                <a class="btn btn-primary mb-3"
+                   href="{% url 'main:days' profile.grade_id profile.id profile.math_id %}">{{profile.profile}}</a>
+                {% endfor %}
+                <a class="btn btn-dark shadow-sm mb-1" href="javascript:history.go(-1);">Назад</a>
+            </div>
+            {%else%}
+            <h2>Пусто</h2>
+            <input class="btn btn-danger shadow-sm" onClick="javascript:history.go(-1);" type=button
+                   value="Previous Page">
+            {% endif %}
+        </div>
     </div>
-    {%else%}
-    <h2>Пусто</h2>
-    <input class="btn btn-danger shadow-sm" onClick="javascript:history.go(-1);" type=button
-           value="Previous Page">
-    {% endif %}
-</div>
+</section>
 {% endblock%}
