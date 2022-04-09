@@ -1,13 +1,6 @@
 # Upschedule
-
-
+![App Logo](https://raw.githubusercontent.com/hum4noidx/upschedule/b0235c203b638e570c92a8eca5b7c90a04e47592/logo.svg)
 ## _Multifunctional Telegram Bot for School_
-
-## Features
-
-- Can simply show lesson schedule for the current day or for tomorrow
-- Simple broadcast for different groups or for everyone
-- Some cool features for groups, including auto-deleting join messages
 
 ## Tech
 
@@ -17,6 +10,12 @@ Upschedule uses a number of open source projects to work properly:
 - [PostgreSQL] - awesome database
 - [Aiogram] - pretty simple and fully asynchronous framework for Telegram Bot API
 - [Asyncpg] - database interface library designed specifically for PostgreSQL and Python/asyncio.
+
+## Features
+
+- Can simply show lesson schedule for the current day or for tomorrow
+- Simple broadcast for different groups or for everyone
+- Some cool features for groups, including auto-deleting join messages
 
 ## Installation
 
@@ -29,9 +28,17 @@ $ python3 -m venv env
 source env/bin/activate
 ```
 
-When venv is activated you need to install requirements.
+When venv is activated you need to install requirements for **bot**
 
 ```bash
+cd tgbot
+pip install -r requirements.txt
+```
+
+If you also want to install a website:
+
+```bash
+cd website
 pip install -r requirements.txt
 ```
 
@@ -41,25 +48,19 @@ To run this project, you will need to add the following environment variables to
 
 ```
 [tg_bot]
-token = your telegram token from @BotFather
-admin_id = your telegram id(optional)
+token = your bot TOKEN here
+admin_id = your telegram id or chat_id
 use_redis = false
+# if you want to store user's state, you need to use redis
+bot_language = ru
 
 [db]
-user = database user(ex. postgres)
-password = pass
-database = somedatabase
-host = 111.111.111.111
+user = your database_user
+password = database_pass
+database = database_name
+host = database_host
+redis_pass = password_for_your_redis
 ```
-
-## Tech Stack
-
-**Back:** Python
-
-**Front:** HTML, CSS, JS, Bootstrap
-
-**Frameworks and libraries:** Aiogram, aiogram_broadcaster, apscheduler, prettytable, DJANGO
-
 ## Run Locally
 
 Clone the project
@@ -74,22 +75,23 @@ Go to the project directory
   cd my-project
 ```
 
-Install dependencies
-
-```bash
-  pip install -r requirements.txt
-```
-
 Start the bot
 
 ```bash
   python3 bot.py
 ```
 
-Start the DJANGO server
+Start the DJANGO server(optionally)
 
 ```bash
 cd mysite
 python3 manage.py runserver
 ```
 
+## Tech Stack
+
+**Back:** Python
+
+**Front:** HTML, CSS, JS, Bootstrap
+
+**Frameworks and libraries:** Aiogram, aiogram_broadcaster, apscheduler, prettytable, DJANGO
