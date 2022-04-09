@@ -47,7 +47,7 @@ async def on_profile_selected(c: CallbackQuery, widget: Any, manager: DialogMana
     await manager.dialog().next()
     data = ctx_data.get()
     repo = data.get("repo")
-    await repo.register_user(school, grade, profile, user_id)
+    await repo.update_user_info(school, grade, profile, user_id)
 
 
 async def on_register_start(c: CallbackQuery, widget: Any, manager: DialogManager):

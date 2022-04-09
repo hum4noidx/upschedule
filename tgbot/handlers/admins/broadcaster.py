@@ -43,13 +43,13 @@ async def broadcast_start(msg: Message, state: FSMContext):
     else:
         user_class = int(user_class)
         if user_profile == 'class_all':
-            users = await repo.broadcast_get_class_ids(int(user_class))
+            users = await repo.get_class_ids(int(user_class))
             # Берем список айдишников для одного класса
         elif user_profile != 'class_all' and user_math == 'all':
-            users = await repo.broadcast_get_profile_ids(user_profile)
+            users = await repo.get_profile_ids(user_profile)
             # Берем айдишники для класса и профиля, математика не учитывается
         elif user_profile != 'prof_all' and user_math != 'all':
-            users = await repo.broadcast_get_first_ids(user_class, user_profile, user_math)
+            users = await repo.get_first_ids(user_class, user_profile, user_math)
             # Берем айдишники для класса, профиля и математики. Полноценная рассылка, получается..
     await state.finish()
     await MessageBroadcaster(users, msg).run()

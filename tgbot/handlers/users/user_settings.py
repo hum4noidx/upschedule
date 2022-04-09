@@ -9,7 +9,7 @@ from tgbot.services.repository import Repo
 
 
 async def show_settings(c: CallbackQuery, repo: Repo):
-    await c.message.edit_text(await repo.show_user_info(c.from_user.id), reply_markup=nav_btns.user_settings)
+    await c.message.edit_text(await repo.get_user_info(c.from_user.id), reply_markup=nav_btns.user_settings)
 
 
 async def vip_change_name(c: CallbackQuery, state: FSMContext):
@@ -19,7 +19,7 @@ async def vip_change_name(c: CallbackQuery, state: FSMContext):
 
 
 async def vip_change_name_text(m: Message, repo: Repo, state: FSMContext):
-    await repo.user_change_name(m.from_user.id, m.text)
+    await repo.update_user_name(m.from_user.id, m.text)
     m_id = await state.get_data()
     await m.bot.delete_message(m.chat.id, m_id['m_id'])
     await m.delete()

@@ -19,7 +19,7 @@ from tgbot.states.states import MainSG, RegSG, FastTimetable
 async def user_usage(user_id):
     data = ctx_data.get()
     repo = data.get("repo")
-    await repo.schedule_user_usage(user_id)
+    await repo.update_user_usage(user_id)
 
 
 dialog_main = Dialog(

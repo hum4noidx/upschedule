@@ -30,9 +30,9 @@ class Getter:
         """
         user_id = dialog_manager.event.from_user.id
         db = ctx_data.get().get('repo')
-        exists = await db.check_registered(user_id)
+        exists = await db.get_registered_users(user_id)
         name = await greeting(user_id)
-        school = await db.db_get_user_school(user_id)
+        school = await db.get_user_school(user_id)
         dialog_manager.current_context().dialog_data["school"] = school
         current_date = await get_current_date()
         admin = await db.get_admins(user_id)
@@ -68,7 +68,7 @@ class Getter:
         """
         school = int(dialog_manager.current_context().dialog_data.get("school", None))
         db = ctx_data.get().get('repo')
-        grades = await db.reg_get_grades(school)
+        grades = await db.get_grades_reg(school)
 
         return {
             "name": dialog_manager.current_context().dialog_data.get("name", ""),
@@ -153,7 +153,7 @@ class Getter:
         db = ctx_data.get().get('repo')
         extended = dialog_manager.current_context().dialog_data.get('profile_extended', None)
         user_data = await db.get_timetable(user_id)
-        await db.schedule_user_usage(user_id)
+        await db.update_user_usage(user_id)
         user_class = user_data['user_class_id']
         if extended:
             user_profile = dialog_manager.current_context().dialog_data.get('user_profile', None)
@@ -183,14 +183,14 @@ class Getter:
     async def settings_getter(dialog_manager: DialogManager, **kwargs):
         db = ctx_data.get().get('repo')
         # repo = data.get("repo")
-        settings = await db.show_user_info(dialog_manager.event.from_user.id)
+        settings = await db.get_user_info(dialog_manager.event.from_user.id)
         return {
             'settings': settings
         }
 
     async def get_users_count(dialog_manager: DialogManager, **kwargs):
         db = ctx_data.get().get('repo')
-        count = await db.users_count()
+        count = await db.get_users_count()
         return {
             'count': count
         }
@@ -204,7 +204,7 @@ class Getter:
 
     async def get_horoscope_signs(dialog_manager: DialogManager, **kwargs):
         db = ctx_data.get().get('repo')
-        signs = await db.db_get_horoscope_signs()
+        signs = await db.get_horoscope_signs()
 
         return {
             'signs': signs

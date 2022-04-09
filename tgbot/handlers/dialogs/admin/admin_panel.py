@@ -10,7 +10,7 @@ from tgbot.states.states import AdminPanelSG, BroadcastSG
 
 async def on_click_users_list(c: CallbackQuery, button: Button, manager: DialogManager):
     db = ctx_data.get().get('repo')
-    manager.current_context().dialog_data["users_list"] = f'<pre>{await db.list_all_users()}</pre>'
+    manager.current_context().dialog_data["users_list"] = f'<pre>{await db.get_users_list()}</pre>'
     await manager.dialog().next()
 
 

@@ -23,7 +23,7 @@ async def timetable_show(c: CallbackQuery, widget: Any, manager: DialogManager, 
     db = ctx_data.get().get('repo')
     schedule = await db.get_schedule(int(some_data['grade']), int(some_data['profile']), date)
     manager.current_context().dialog_data["timetable"] = schedule
-    await db.schedule_user_usage(manager.event.from_user.id)
+    await db.update_user_usage(manager.event.from_user.id)
     await manager.dialog().next()
 
 
@@ -47,7 +47,7 @@ async def fast_timetable_date(c: CallbackQuery, widget: Any, manager: DialogMana
 
     manager.current_context().dialog_data['user_date'] = user_date
     db = ctx_data.get().get('repo')
-    await db.schedule_user_usage(manager.event.from_user.id)
+    await db.update_user_usage(manager.event.from_user.id)
 
 
 async def change_profile_visibility(c: CallbackQuery, widget: Any, manager: DialogManager):
