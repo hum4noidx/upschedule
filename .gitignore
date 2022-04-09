@@ -137,3 +137,5 @@ bot.ini
 
 /DJANGO/mysite/static/grappelli/
 /DJANGO/mysite/static/admin/
+/website/websitevenv/Scripts/
+/website/websitevenv/
