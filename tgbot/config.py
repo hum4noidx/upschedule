@@ -17,6 +17,12 @@ class TgBot:
     admin_id: int
     use_redis: bool
     lang: str
+    webhook_host: str
+    webhook_path: str
+    webapp_host: str
+    webapp_port: str
+    webhook_enabled: bool
+    use_local_server: bool
 
 
 @dataclass
@@ -49,6 +55,12 @@ def load_config(path: str):
             admin_id=int(tg_bot["admin_id"]),
             use_redis=cast_bool(tg_bot.get("use_redis")),
             lang=tg_bot["bot_language"],
+            webhook_host=tg_bot["WEBHOOK_HOST"],
+            webhook_path=tg_bot["WEBHOOK_PATH"],
+            webapp_host=tg_bot["WEBAPP_HOST"],
+            webapp_port=tg_bot["WEBAPP_PORT"],
+            webhook_enabled=cast_bool(tg_bot.get("WEBHOOK_ENABLED")),
+            use_local_server=cast_bool(tg_bot.get("USE_LOCAL_SERVER"))
         ),
         db=DbConfig(**config["db"]),
         hosting=Hosting(**config['host'])

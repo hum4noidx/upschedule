@@ -1,10 +1,10 @@
-import asyncio
 import logging
 
 import asyncpg
 from aiogram import Bot, Dispatcher
 from aiogram.contrib.fsm_storage.memory import MemoryStorage
 from aiogram.contrib.fsm_storage.redis import RedisStorage2
+from aiogram.utils.executor import start_webhook
 from aiogram_dialog import DialogRegistry
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 
@@ -39,29 +39,33 @@ async def create_pool(user, password, database, host):
     return pool
 
 
-async def main():
+config = load_config("bot.ini")
+if config.tg_bot.use_redis:
+    storage = RedisStorage2(host='92.53.105.144', password=config.db.redis_pass)
+else:
+    storage = MemoryStorage()
+
+bot = Bot(token=config.tg_bot.token, parse_mode='HTML')
+dp = Dispatcher(bot, storage=storage)
+bot['config'] = config
+webhook_url = f"{config.tg_bot.webhook_host}/hook"
+
+
+async def on_startup(dp):
     logging.basicConfig(
-        level=logging.INFO,
+        level=logging.ERROR,
         format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
     )
     logger.error("Starting bot")
-    config = load_config("bot.ini")
 
-    if config.tg_bot.use_redis:
-        storage = RedisStorage2(host='92.53.105.144', password=config.db.redis_pass)
-    else:
-        storage = MemoryStorage()
+    await bot.set_webhook(webhook_url)
+    logging.error('Starting Webhook')
     pool = await create_pool(
         user=config.db.user,
         password=config.db.password,
         database=config.db.database,
         host=config.db.host,
     )
-
-    bot = Bot(token=config.tg_bot.token, parse_mode='HTML')
-    dp = Dispatcher(bot, storage=storage)
-    bot['config'] = config
-
     dp.middleware.setup(DbMiddleware(pool))
     dp.middleware.setup(RoleMiddleware(config.tg_bot.admin_id))
     dp.filters_factory.bind(RoleFilter)
@@ -93,18 +97,24 @@ async def main():
     registry.register(dialog_subscriptions)
     registry.register(dialog_horoscope_subscribe)
 
-    # start
-    try:
-        scheduler.start()
-        await dp.start_polling()
-    finally:
-        await dp.storage.close()
-        await dp.storage.wait_closed()
-        await bot.session.close()
+    scheduler.start()
+
+
+async def on_shutdown(dp):
+    await bot.delete_webhook()
+    await dp.storage.close()
+    await dp.storage.wait_closed()
+    await bot.session.close()
+    logging.error('Bot stopped. Bye!')
 
 
 if __name__ == '__main__':
-    try:
-        asyncio.run(main())
-    except (KeyboardInterrupt, SystemExit):
-        logger.error("Bot stopped!")
+    start_webhook(
+        dispatcher=dp,
+        webhook_path=config.tg_bot.webhook_path,
+        on_startup=on_startup,
+        on_shutdown=on_shutdown,
+        skip_updates=True,
+        host='localhost',
+        port=7000,
+    )
