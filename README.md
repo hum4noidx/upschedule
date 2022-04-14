@@ -1,5 +1,5 @@
 # Upschedule
-![App Logo](https://raw.githubusercontent.com/hum4noidx/upschedule/51b43389b6aa607e370a5ba7ce35cbebd1efd702/logo.svg)
+![App Logo](https://github.com/hum4noidx/upschedule/blob/main/logo.png?raw=true)
 ## _Multifunctional Telegram Bot for School_
 
 ## Tech
