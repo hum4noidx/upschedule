@@ -7,6 +7,7 @@ from sqlalchemy import select, insert
 from sqlalchemy import update
 
 from infrastructure.database.models.user import User
+from infrastructure.database.models.user_profile import UserProfile
 from infrastructure.database.repositories.repo import SQLAlchemyRepo
 from infrastructure.domain.dto.user import UserDTO
 
@@ -49,3 +50,9 @@ class UserRepo(SQLAlchemyRepo):
         result = await self.session.execute(select(User).where(User.is_admin == True))
         admins = result.scalars().all()
         return parse_obj_as(list[UserDTO], admins) if admins else None
+
+    async def update_user_profile(self, user_id: int, grade: int = None):
+        await self.session.execute(
+            update(UserProfile).values(grade=grade).where(
+                UserProfile.user_id == user_id))
+        await self.session.commit()
