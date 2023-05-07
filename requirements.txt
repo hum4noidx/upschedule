@@ -1,0 +1,15 @@
+APScheduler==3.9.1
+aiogram-dialog==2.0.0b17
+aiogram==3.0.0b7
+aiohttp>=3.8.1
+aioredis==2.0.1
+asyncpg>=0.25.0
+pydantic[dotenv]>=1.10.2
+pydantic>=1.10.2
+redis==4.4.4
+SQLAlchemy==2.0.5
+psutil~=5.9.3
+cachetools~=4.2.4
+sentry-sdk
+aioboto3~=11.1.0
+openpyxl
