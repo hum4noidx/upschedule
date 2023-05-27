@@ -1,4 +1,4 @@
-# Upschedule
+# Upschedule[LEGACY]
 ![App Logo](https://github.com/hum4noidx/upschedule/blob/main/logo.png?raw=true)
 ## _Multifunctional Telegram Bot for School_
 
